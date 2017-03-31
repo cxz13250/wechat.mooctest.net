@@ -1,6 +1,4 @@
 package com.mooctest.weixin.manager;
-
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -16,11 +14,16 @@ import com.mooctest.weixin.util.HttpRequestUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class WitestManager {
 	
 	//微信服务器url
-	private static String server = "http://e9d0b0ab.ngrok.io/weixin/";	
+	//private static String server = "http://655ab64a.ngrok.io/weixin/";	
+	private static String server= "http://114.55.91.85/weixin";
+	 
 	
 	public static String account_page=server +"";  //账号信息页面url
 	public static String bind_page=server+"q/account/new";  //账号绑定页面url
@@ -95,7 +98,7 @@ public class WitestManager {
 			obj=ja.getJSONObject(i);
 			FinishedTask fTask=new FinishedTask();
 			fTask.setTaskName(obj.getString("taskName"));
-			fTask.setGrade(obj.getInt("grade"));
+			fTask.setGrade(Double.parseDouble(obj.getString("score")));
 			list.add(fTask);
 		}
 		return list;

@@ -3,6 +3,7 @@ package com.mooctest.weixin.controller;
 import com.mooctest.weixin.entity.Group;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,8 +30,22 @@ public class GroupController {
 		
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("list", list);
+		mv.addObject("openid", openid);
 		mv.setViewName("mygroup");
 		return mv;
+	}
+	
+	@RequestMapping(value="/tojoin")
+	public ModelAndView toJoinGroup(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("content-type", "text/html;charset=UTF-8");
+		
+		ModelAndView mView=new ModelAndView();
+		mView.addObject("openid",openid);
+		mView.setViewName("joingroup");
+		return mView;
 	}
 	
 	@RequestMapping(value="/join")

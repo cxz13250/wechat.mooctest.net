@@ -18,7 +18,6 @@ import com.mooctest.weixin.entity.FinishedTask;
 import com.mooctest.weixin.entity.TaskInfo;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
-import com.mooctest.weixin.model.Task;
 
 /**  
 * 类说明   

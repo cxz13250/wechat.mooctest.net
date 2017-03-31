@@ -4,7 +4,7 @@ public class FinishedTask {
 
 	private String taskName;
 	
-	private int grade;
+	private double grade;
 
 	public String getTaskName() {
 		return taskName;
@@ -14,11 +14,11 @@ public class FinishedTask {
 		this.taskName = taskName;
 	}
 
-	public int getGrade() {
+	public double getGrade() {
 		return grade;
 	}
 
-	public void setGrade(int grade) {
+	public void setGrade(Double grade) {
 		this.grade = grade;
 	}
 }

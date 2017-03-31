@@ -19,7 +19,8 @@
  		<constructor-arg index="0" type="java.lang.String" value="wx9239e3bedd4aa66c"></constructor-arg>
 		<constructor-arg index="1" type="java.lang.String" value="c0a74230fcb06331bd9b1ef6cfaa1127"></constructor-arg>
 		<constructor-arg index="2" type="java.lang.String" value="witest"></constructor-arg> 
-		<constructor-arg index="3" type="java.lang.String" value="http://e9d0b0ab.ngrok.io/weixin/"></constructor-arg>
+		<!--<constructor-arg index="3" type="java.lang.String" value="http://655ab64a.ngrok.io/weixin/"></constructor-arg>-->
+		<constructor-arg index="3" type="java.lang.String" value="http://114.55.91.85/weixin/"></constructor-arg>
 	</bean>
 	
 	<context:component-scan base-package="com.mooctest.weixin.model" />
