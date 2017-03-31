@@ -6,6 +6,7 @@ import com.mooctest.weixin.model.Account;
 import com.mooctest.weixin.model.AccountInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,9 +40,10 @@ public class AccountController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/check")
-	public ModelAndView checkAccount(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response) throws IOException{
-		
+	@RequestMapping(value="/check",method = RequestMethod.POST)
+	public ModelAndView checkAccount(HttpServletRequest request,HttpServletResponse response) throws IOException{
+
+		String openid = request.getParameter("openid");
 		String username=request.getParameter("username");
 		String password=request.getParameter("password");
 		
@@ -53,24 +55,28 @@ public class AccountController {
 		boolean flag=WitestManager.isMoocUser(username);
 		PrintWriter out=response.getWriter();
 		
-		if(flag==false)
+		if(!flag)
 		{
-			out.print("该账号已被绑定！");
-			mv.setViewName("account_bind");
-		}
-				
-		flag=WitestManager.isMoocUser1(username,password);
-		if(flag==false){
-			out.print("用户名或密码错误！");
-			mv.setViewName("account_bind");
-		}
-		else{
-			Account account=new Account();
-			account.setUsername(username);
-			account.setOpenid(openid);
-			Managers.accountManager.saveAccount(account, openid);
-			mv.addObject("message", "绑定成功！");
-			mv.setViewName("bind_success");
+			mv.setViewName("danger");
+			mv.addObject("msg","该账号已被绑定！");
+			mv.addObject("msg_title","绑定失败！");
+
+		}else {
+
+			flag = WitestManager.isMoocUser1(username, password);
+			if (!flag) {
+				mv.setViewName("fail");
+				mv.addObject("msg","账户密码输入错误！");
+				mv.addObject("msg_title","绑定失败！");
+			} else {
+				Account account = new Account();
+				account.setUsername(username);
+				account.setOpenid(openid);
+				Managers.accountManager.saveAccount(account, openid);
+				mv.addObject("msg", "您的账户已经成功绑定！");
+				mv.addObject("msg_title","绑定成功！");
+				mv.setViewName("success");
+			}
 		}
 		return mv;
 	}
