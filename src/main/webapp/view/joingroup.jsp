@@ -4,7 +4,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%
-	String date = (String) request.getAttribute("date");
 	String openid=(String)request.getAttribute("openid");
 %>
 <head>
@@ -44,7 +43,7 @@
 
 		<div id="div2">
 			<div id="main">
-				<h1>账号绑定</h1>
+				<h1>加入群组</h1>
 
 				<form name="form" style="width:100%;" method="post" action="q/group/join">
 					<div class="weui_cells weui_cells_form">
