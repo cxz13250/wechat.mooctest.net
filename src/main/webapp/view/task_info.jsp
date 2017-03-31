@@ -4,11 +4,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%
-	String title="我的任务";
-	List<String> list=(List<String>)request.getAttribute("list");
+	String name=(String)request.getAttribute("name");
+	String advisor=(String)request.getAttribute("advisor");
+	String group=(String)request.getAttribute("group");
+	String begin=(String)request.getAttribute("begin");
+	String end=(String)request.getAttribute("end");
+	String password=(String)request.getAttribute("password");
+	
 	JSApiTicket jsApiTicket = (JSApiTicket)request.getAttribute("JSApiTicket");
     String appid=request.getParameter("appid");
-
+	
+	String title="任务详情";
+	
 	String url = "http://mooctest.net/weixin/q/test/close";
 	String jsapi_ticket = jsApiTicket.getTicket();
 	Map<String, String> sign = JsSDKSign.sign(jsapi_ticket, url);
@@ -27,7 +34,7 @@
 <title><%=title%></title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<link rel="stylesheet" type="text/css" href="css/quiz_base.css">
+<link rel="stylesheet" type="text/css" href="../css/quiz_base.css">
 </head>
 <body>
 	<input type="hidden" name="appId" id="appId" value="<%=appid%>">
@@ -37,22 +44,25 @@
 		value="<%=nonceStr%>">
 	<input type="hidden" name="signature" id="signature"
 		value="<%=signature%>">
-	<div id="container">
+		<div id="container">
 		<div id="div1">
-			<h1>任务列表</h1>
+			<h1>任务详情</h1>
 		</div>
 		<div id="div2">
 			<div id="main">
 				<table border='0' width=100%>
-					<tr><td width=60%>任务名称</td>
-						<td width=40%>任务入口</td></tr>
-					<% for(String name:list){ if(name!=null){%> 
-					<tr><td width=60%><%=name%></td>
-						<td width=40%><a href='q/task/taskinfo?openid=${openid}&name=${name}'>执行任务</a></td></tr>
-					<%}else{%>
-					<tr><td width=60%>无</td>
-						<td width=40%>无</td></tr>
-					<%}}%>
+				<tr><td width=40%>任务名称</td>
+					<td width=60%><%=name%></td>
+				<tr><td width=40%>负责人</td>
+					<td width=60%><%=advisor %></td>
+				<tr><td width=40%>所在群组</td>
+					<td width=60%><%=group%></td>
+				<tr><td width=40%>开始时间</td>
+					<td width=60%><%=begin%></td>
+				<tr><td width=40%>结束时间</td>
+					<td width=60%><%=end%></td>	
+				<tr><td width=40%>任务密码</td>
+					<td width=60%><%=password%></td>
 				</table>
 			</div>
 		</div>

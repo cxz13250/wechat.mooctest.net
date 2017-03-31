@@ -1,20 +1,18 @@
 package com.mooctest.weixin.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.mooctest.weixin.manager.Managers;
+import com.mooctest.weixin.manager.WitestManager;
+import com.mooctest.weixin.model.Account;
+import com.mooctest.weixin.model.AccountInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mooctest.weixin.manager.Managers;
-import com.mooctest.weixin.manager.WitestManager;
-import com.mooctest.weixin.model.Account;
-import com.mooctest.weixin.model.AccountInfo;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**  
 * 类说明   
