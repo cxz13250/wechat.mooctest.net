@@ -1,20 +1,17 @@
 package com.mooctest.weixin.controller;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.mooctest.weixin.entity.Group;
+import com.mooctest.weixin.manager.Managers;
+import com.mooctest.weixin.manager.WitestManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mooctest.weixin.entity.Group;
-import com.mooctest.weixin.manager.Managers;
-import com.mooctest.weixin.manager.WitestManager;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/group")
@@ -51,11 +48,16 @@ public class GroupController {
 		ModelAndView mv=new ModelAndView();
 		
 		if(flag==false){
-			mv.addObject("message","加入群组失败");
+			mv.setViewName("failure");
+			mv.addObject("msg","加入群组失败");
+			mv.addObject("msg_title","失败");
 		}
-		else
-			mv.addObject("message", "加入群组成功");
-		mv.setViewName("join_success");
+		else {
+			mv.setViewName("success");
+			mv.addObject("msg_title", "成功");
+			mv.addObject("msg", "加入群组成功");
+		}
+
 		return mv;
 	}
 }

@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page language="java" import="com.mooctest.weixin.pojo.JSApiTicket,com.mooctest.weixin.util.JsSDKSign,java.util.*"%>
+<%@ page import="com.mooctest.weixin.entity.TaskInfo" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%
 	String title="我的任务";
-	List<String> list=(List<String>)request.getAttribute("list");
+	List<TaskInfo> list=(List<TaskInfo>)request.getAttribute("list");
 	JSApiTicket jsApiTicket = (JSApiTicket)request.getAttribute("JSApiTicket");
     String appid=request.getParameter("appid");
 
@@ -27,7 +28,10 @@
 <title><%=title%></title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<link rel="stylesheet" type="text/css" href="../css/quiz_base.css">
+
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+
 </head>
 <body>
 	<input type="hidden" name="appId" id="appId" value="<%=appid%>">
@@ -45,14 +49,13 @@
 			<div id="main">
 				<table border='0' width=100%>
 					<tr><td width=60%>任务名称</td>
-						<td width=40%>任务入口</td></tr>
-					<% for(String name:list){ if(name!=null){%> 
-					<tr><td width=60%><%=name%></td>
-						<td width=40%><a href='q/task/taskinfo?openid=${openid}&name=${name}'>执行任务</a></td></tr>
-					<%}else{%>
-					<tr><td width=60%>无</td>
-						<td width=40%>无</td></tr>
-					<%}}%>
+						<td width=40%>任务密码</td></tr>
+					<% for(TaskInfo name:list){%>
+					<tr><td width=60%><%=name.getTaskName()%></td>
+						<td width=40%><%=name.getPassword()%></td>
+					</tr>
+
+					<%}%>
 				</table>
 			</div>
 		</div>
@@ -64,31 +67,5 @@
 		<a id="closeWindow" class="bottom_bar">关闭页面</a>
 	</div>
 </body>
-<script type="text/javascript">
-	var appid=Document.getElementById("appid");
-	var timestamp=Document.getElementById("timestamp");
-	var nonceStr=Document.getElementById("nonceStr");
-	var signature=Document.getElementById("signature");
-	wx.config({
-		appid:appid,
-		timestamp:timestamp,
-		nonceStr:nonceStr,
-		signature:signature,
-		jsApiList:[ 'checkJsApi', 'onMenuShareTimeline',
-			'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo',
-			'onMenuShareQZone', 'hideMenuItems', 'showMenuItems',
-			'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem',
-			'translateVoice', 'startRecord', 'stopRecord',
-			'onVoiceRecordEnd', 'playVoice', 'onVoicePlayEnd',
-			'pauseVoice', 'stopVoice', 'uploadVoice', 'downloadVoice',
-			'chooseImage', 'previewImage', 'uploadImage', 'downloadImage',
-			'getNetworkType', 'openLocation', 'getLocation',
-			'hideOptionMenu', 'showOptionMenu', 'closeWindow',
-			'scanQRCode', 'chooseWXPay', 'openProductSpecificView',
-			'addCard', 'chooseCard', 'openCard' ]
-	});
-	document.querySelector('#closeWindow').onclick = function() {
-		wx.closeWindow();
-	};
-</script>
+
 </html>
