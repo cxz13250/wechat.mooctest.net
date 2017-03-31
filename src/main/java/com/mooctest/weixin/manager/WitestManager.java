@@ -58,19 +58,19 @@ public class WitestManager {
 	
 	//从主站获取生成任务密码所需信息
 	public static List<TaskInfo> getTaskInfo(String username){
-		String param="username="+username;
+		String param="account="+username;
 		String result=HttpRequestUtil.sendGet(taskinfo_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
-		JSONObject jObject=JSONObject.fromObject(jsonObject.get("data"));
-		JSONArray ja=jsonObject.getJSONArray("TaskInfo");
+		JSONArray ja=JSONArray.fromObject(jsonObject.get("data"));
 		JSONObject obj=new JSONObject();
 		List<TaskInfo> list=new ArrayList<TaskInfo>();
-		TaskInfo taskInfo=new TaskInfo();
+		
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
+			TaskInfo taskInfo=new TaskInfo();
 			taskInfo.setId(obj.getInt("id"));
 			taskInfo.setTaskName(obj.getString("taskName"));
-			taskInfo.setWorkerid(obj.getInt("workerId"));
+			taskInfo.setPassword(obj.getString("password"));
 			list.add(taskInfo);
 		}
 		return list;
@@ -80,6 +80,7 @@ public class WitestManager {
 	public static List<FinishedTask> getFinishedTaskInfo(String username){
 		String param="account="+username;
 		String result=HttpRequestUtil.sendGet(taskgrade_url, param);
+		System.out.println(result);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONArray ja=jsonObject.getJSONArray("data");
 		List<FinishedTask> list=new ArrayList<>();
@@ -115,7 +116,7 @@ public class WitestManager {
 	
 	//加入群组
 	public static boolean joinGroup(String username,String groupId,String managerName){
-		String param="username="+username+"&groupId="+groupId+"&managerName="+managerName;
+		String param="account="+username+"&groupId="+groupId+"&managerName="+managerName;
 		String result=HttpRequestUtil.sendPost(join_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
