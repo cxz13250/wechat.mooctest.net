@@ -1,8 +1,14 @@
 package com.mooctest.weixin.manager;
 
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.codec.net.URLCodec;
+
 import com.mooctest.weixin.entity.FinishedTask;
 import com.mooctest.weixin.entity.Group;
 import com.mooctest.weixin.entity.TaskInfo;
@@ -16,12 +22,13 @@ public class WitestManager {
 	//微信服务器url
 	private static String server = "http://e9d0b0ab.ngrok.io/weixin/";	
 	
-	public static String account_page=server +"q/account/info";  //账号信息页面url
+	public static String account_page=server +"";  //账号信息页面url
 	public static String bind_page=server+"q/account/new";  //账号绑定页面url
 	public static String check_account=server+"q/account/check";  //验证账号控制器url
 	public static String task_page=server+"q/task/query";//任务密码url	
 	public static String grade_page=server+"q/task/grade";//任务成绩url
 	public static String group_page=server+"q/group/query";//我的群组url
+	public static String join_page=server+"q/group/join";//加入群组url
 	
 	//慕测主站url
 	private static String moocserver="http://mooctest.net/api/wechat";
@@ -57,14 +64,14 @@ public class WitestManager {
 	} 
 	
 	//从主站获取生成任务密码所需信息
-	public static List<TaskInfo> getTaskInfo(String username){
+	public static List<TaskInfo> getTaskInfo(String username) throws IOException{
 		String param="account="+username;
 		String result=HttpRequestUtil.sendGet(taskinfo_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
+		System.out.println(jsonObject);
 		JSONArray ja=JSONArray.fromObject(jsonObject.get("data"));
 		JSONObject obj=new JSONObject();
 		List<TaskInfo> list=new ArrayList<TaskInfo>();
-		
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
 			TaskInfo taskInfo=new TaskInfo();
@@ -80,14 +87,13 @@ public class WitestManager {
 	public static List<FinishedTask> getFinishedTaskInfo(String username){
 		String param="account="+username;
 		String result=HttpRequestUtil.sendGet(taskgrade_url, param);
-		System.out.println(result);
 		JSONObject jsonObject=JSONObject.fromObject(result);
-		JSONArray ja=jsonObject.getJSONArray("data");
+		JSONArray ja=JSONArray.fromObject(jsonObject.get("data"));
 		List<FinishedTask> list=new ArrayList<>();
 		JSONObject obj=new JSONObject();
-		FinishedTask fTask=new FinishedTask();
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
+			FinishedTask fTask=new FinishedTask();
 			fTask.setTaskName(obj.getString("taskName"));
 			fTask.setGrade(obj.getInt("grade"));
 			list.add(fTask);
@@ -100,11 +106,11 @@ public class WitestManager {
 		String param="account="+username;
 		String result=HttpRequestUtil.sendGet(group_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
-		JSONArray ja=jsonObject.getJSONArray("data");
+		JSONArray ja=JSONArray.fromObject(jsonObject.get("data"));
 		List<Group> list=new ArrayList<Group>();
-		JSONObject obj=new JSONObject();
 		Group group=new Group();
 		for(int i=0;i<ja.size();i++){
+			JSONObject obj=new JSONObject();
 			obj=ja.getJSONObject(i);
 			group.setGroupName(obj.getString("groupName"));
 			group.setManagerName(obj.getString("managerName"));

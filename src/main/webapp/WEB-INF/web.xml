@@ -10,7 +10,7 @@
 		<param-value>classpath:applicationContext.xml</param-value>
 	</context-param>
 
-	<filter>
+	<!--<filter>
 		<filter-name>characterEncodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 		<init-param>
@@ -26,7 +26,7 @@
 	<filter-mapping>
 		<filter-name>characterEncodingFilter</filter-name>
 		<url-pattern>/q</url-pattern>
-	</filter-mapping>
+	</filter-mapping>-->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>

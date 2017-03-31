@@ -60,12 +60,12 @@ public class UserRequest {
 	
 	//返回任务成绩url
 	public String gradeUrl(){
-		return WitestManager.grade_page +"?openid"+ fromUserName;
+		return WitestManager.grade_page +"?openid="+ fromUserName;
 	}
 		
 	//返回群组信息url
 	public String groupUrl(){
-		return WitestManager.group_page +"?openid"+ fromUserName;
+		return WitestManager.group_page +"?openid="+ fromUserName;
 	}
 	
 	public SessionItem getSession(){

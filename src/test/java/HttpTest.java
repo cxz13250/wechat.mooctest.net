@@ -1,3 +1,4 @@
+import com.mooctest.weixin.manager.WitestManager;
 import com.mooctest.weixin.util.HttpRequestUtil;
 
 import net.sf.json.JSONArray;
@@ -12,19 +13,10 @@ public class HttpTest {
 
     @Test
     public void test1(){
-        String result = HttpRequestUtil.sendGet("http://mooctest.net/api/wechat/getTaskInfo","account=wangjiawei0227@163.com");
+        String result = HttpRequestUtil.sendGet(WitestManager.taskgrade_url,"account=18652376580");
         JSONObject jsonObject = JSONObject.fromObject(result);
         JSONArray jsonArray = JSONArray.fromObject(jsonObject.get("data"));
-//        jsonArray.forEach(e->{
-//            System.out.println(e.get("workerId"));
-//        });
-//
-//
-//        System.out.println(result);
-//        JSONObject jsonObject=JSONObject.fromObject(result);
-//        JSONArray jArray=JSONArray.fromObject(jsonObject.get("data"));
-//        JSONObject obj=jArray.getJSONObject(0);
-//        System.out.println(obj);
+        System.out.println(jsonArray.getJSONObject(0));
     }
 
 }

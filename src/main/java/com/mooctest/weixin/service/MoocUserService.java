@@ -99,6 +99,7 @@ public class MoocUserService extends GuestService{
 						processGrade(userRequest);
 						return userRequest.getResultXml();
 					} else if (eventKey.equals("mygroup")){
+						processGroup(userRequest);
 						return userRequest.getResultXml();
 					}
 				}

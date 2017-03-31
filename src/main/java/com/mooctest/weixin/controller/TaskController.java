@@ -1,6 +1,7 @@
 package com.mooctest.weixin.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mooctest.weixin.entity.FinishedTask;
 import com.mooctest.weixin.entity.TaskInfo;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
@@ -29,14 +31,34 @@ import com.mooctest.weixin.model.Task;
 public class TaskController {
 	
 	@RequestMapping(value="/query")
-	public ModelAndView getTaskInfo(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response){
+	public ModelAndView getTaskInfo(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		
-		String username=Managers.accountManager.getAccount(openid);
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
+		String username=Managers.accountManager.getAccount(openid);		
 		List<TaskInfo> list=WitestManager.getTaskInfo(username);
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("list", list);
 		mv.setViewName("mytask");
+		return mv;
+	}
+	
+	@RequestMapping(value="/grade")
+	public ModelAndView getTaskGrade(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("content-type", "text/html;charset=UTF-8");
+		
+		String username=Managers.accountManager.getAccount(openid);
+		
+		List<FinishedTask> list=WitestManager.getFinishedTaskInfo(username);
+		
+		ModelAndView mv=new ModelAndView();
+		mv.addObject("list", list);
+		mv.setViewName("mygrade");
 		return mv;
 	}
 	
