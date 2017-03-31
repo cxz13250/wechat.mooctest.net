@@ -20,18 +20,19 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-	<link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>/css/weui.css" />
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>/css/weui2.css" />
 	<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.js"></script>
 
 </head>
 <body>
 	<div id="container">
 		<div id="div1">
-			<h1>任务列表</h1>
+			<h1 class="weui-header-title">任务列表</h1>
 		</div>
 		<div id="div2">
 			<div id="main">
-				<table border='0' width=100%>
+				<table border='0' width=100% class="weui-table weui-border-tb">
 					<tr><td width=60%>任务名称</td>
 						<td width=40%>任务密码</td></tr>
 					<% for(TaskInfo name:list){%>
