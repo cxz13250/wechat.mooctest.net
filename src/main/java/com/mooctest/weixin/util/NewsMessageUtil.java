@@ -41,7 +41,7 @@ public class NewsMessageUtil {
         description += "\n-------------------------------------";
         description += "\n点击阅读全文查看更多内容";
         subscribe_message_article.setDescription(description);
-        url = baseUrl + "q/help";
+        url = baseUrl + "q/help/info";
         subscribe_message_article.setUrl(url);
         
         // help_message_article
@@ -53,7 +53,7 @@ public class NewsMessageUtil {
         description += "\n-------------------------------------";
         description += "\n点击阅读全文查看更多内容";
         help_message_article.setDescription(description);
-        url = baseUrl + "q/help";
+        url = baseUrl + "q/help/info";
         help_message_article.setUrl(url);
         
         // stu_score_article

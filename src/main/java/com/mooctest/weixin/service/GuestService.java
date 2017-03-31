@@ -105,6 +105,9 @@ public class GuestService {
 					}else if (eventKey.equals("taskgrade")) {
 						processBingding(userRequest);
 						return userRequest.getResultXml();
+					}else if (eventKey.equals("mygroup")){
+						processBingding(userRequest);
+						return userRequest.getResultXml();
 					}
 				}
 			}			

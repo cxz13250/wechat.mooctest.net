@@ -26,7 +26,7 @@ import com.mooctest.weixin.model.AccountInfo;
 @RequestMapping("/account")
 public class AccountController {
 	
-	@RequestMapping(value="/account/new")
+	@RequestMapping(value="/new")
 	public ModelAndView toAccountBind(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		
 		request.setCharacterEncoding("UTF-8");

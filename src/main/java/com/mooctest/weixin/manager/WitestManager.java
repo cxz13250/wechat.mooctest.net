@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.mooctest.weixin.entity.FinishedTask;
+import com.mooctest.weixin.entity.Group;
+import com.mooctest.weixin.entity.TaskInfo;
 import com.mooctest.weixin.util.HttpRequestUtil;
+import com.thoughtworks.xstream.security.ForbiddenClassException;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -19,13 +23,17 @@ public class WitestManager {
 	public static String account_page=server +"q/account/info";  //账号信息页面url
 	public static String bind_page=server+"q/account/new";  //账号绑定页面url
 	public static String check_account=server+"q/account/check";  //验证账号控制器url
-	public static String task_page=server+"q/task/query";//任务信息url	
+	public static String task_page=server+"q/task/query";//任务密码url	
+	public static String grade_page=server+"q/task/grade";//任务成绩url
+	public static String group_page=server+"q/group/query";//我的群组url
+	
 	//慕测主站url
 	private static String moocserver="";
 	
 	public static String is_Mooc_url=moocserver+"";
 	public static String taskinfo_url=moocserver+"";
 	public static String taskgrade_url=moocserver+"";
+	public static String group_url=moocserver+"";
 	
 	//获取考试密码url
 	public static String exam_pwd_url="http://dev.mooctest.net/taskSecret";
@@ -49,18 +57,22 @@ public class WitestManager {
 		}
 	} 
 	
-	//从主站获取 学生ID,考试ID
-	public static List<String> getID(String username){
+	//从主站获取生成任务密码所需信息
+	public static List<TaskInfo> getID(String username){
 		String param="username="+username;
 		String result=HttpRequestUtil.sendGet(taskinfo_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONArray ja=jsonObject.getJSONArray("TaskInfo");
-		JSONObject object=ja.getJSONObject(0);
-		String taskName=object.getString("taskName1");
-		String worker=object.getString("worker1");
-		List<String> list=new ArrayList<String>();
-		list.add(taskName);
-		list.add(worker);
+		JSONObject obj=new JSONObject();
+		List<TaskInfo> list=new ArrayList<TaskInfo>();
+		TaskInfo taskInfo=new TaskInfo();
+		for(int i=0;i<ja.size();i++){
+			obj=ja.getJSONObject(i);
+			taskInfo.setId(obj.getInt("id"));
+			taskInfo.setTaskName(obj.getString("taskName"));
+			taskInfo.setWorkerid(obj.getInt("workerId"));
+			list.add(taskInfo);
+		}
 		return list;
 	}
 	
@@ -81,14 +93,35 @@ public class WitestManager {
 	}
 	
 	//获取任务成绩
-	public static String getFinishedTaskInfo(String username){
+	public static List<FinishedTask> getFinishedTaskInfo(String username){
 		String param="account="+username;
 		String result=HttpRequestUtil.sendGet(taskgrade_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONArray ja=jsonObject.getJSONArray("data");
-		JSONObject object=ja.getJSONObject(0);
-		String taskName=object.getString("taskName");
-		int grade=object.getInt("grade");
-		return null;
+		List<FinishedTask> list=new ArrayList<>();
+		JSONObject obj=new JSONObject();
+		FinishedTask fTask=new FinishedTask();
+		for(int i=0;i<ja.size();i++){
+			obj=ja.getJSONObject(i);
+			fTask.setTaskName(obj.getString("taskName"));
+			fTask.setGrade(obj.getInt("grade"));
+			list.add(fTask);
+		}
+		return list;
+	}
+	
+	//获取群组信息
+	public static List<Group> getGroup(String username){
+		String param="account="+username;
+		String result=HttpRequestUtil.sendGet(group_url, param);
+		JSONObject jsonObject=JSONObject.fromObject(result);
+		JSONArray ja=jsonObject.getJSONArray("data");
+		List<Group> list=new ArrayList<Group>();
+		JSONObject obj=new JSONObject();
+		Group group=new Group();
+		for(int i=0;i<ja.size();i++){
+			obj=ja.getJSONObject(i);
+			group.setGroupName();
+		}
 	}
 }

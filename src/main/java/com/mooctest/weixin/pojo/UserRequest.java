@@ -43,7 +43,7 @@ public class UserRequest {
 		}
 	}
 	
-	//返回我的任务url
+	//返回任务密码url
 	public String taskUrl(){
 		return WitestManager.task_page+"?openid="+fromUserName;
 	}
@@ -58,8 +58,14 @@ public class UserRequest {
 		return WitestManager.bind_page +"?openid="+ fromUserName;
 	}
 	
-	public String customServiceUrl(){
-		return "http://115.29.242.187/wibug/Wibug/winet/submitProblem.php?openid=" + fromUserName;
+	//返回任务成绩url
+	public String gradeUrl(){
+		return WitestManager.grade_page +"?openid"+ fromUserName;
+	}
+		
+	//返回群组信息url
+	public String groupUrl(){
+		return WitestManager.group_page +"?openid"+ fromUserName;
 	}
 	
 	public SessionItem getSession(){
