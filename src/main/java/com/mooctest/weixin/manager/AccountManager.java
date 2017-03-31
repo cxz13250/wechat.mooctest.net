@@ -47,14 +47,14 @@ public class AccountManager {
 			return true;
 	}
 	
-	//判断微信号是否已经绑定慕测账号
+	//判断慕测号是否已经被绑定
 	public boolean checkAccount1(String username){
 		List<Account> list=accountDao.getAccountByColValue("username", username);
 		if(list.isEmpty()){
-			return false;
+			return true;
 		}
 		else
-			return true;
+			return false;
 	}
 	
 	//将慕测账号与微信号映射存入微信数据库

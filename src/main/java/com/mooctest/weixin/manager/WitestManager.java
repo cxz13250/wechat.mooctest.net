@@ -24,13 +24,13 @@ public class WitestManager {
 	public static String group_page=server+"q/group/query";//我的群组url
 	
 	//慕测主站url
-	private static String moocserver="";
+	private static String moocserver="http://mooctest.net/api/wechat";
 	
-	public static String is_Mooc_url=moocserver+"";
-	public static String taskinfo_url=moocserver+"";
-	public static String taskgrade_url=moocserver+"";
-	public static String group_url=moocserver+"";
-	public static String join_url=moocserver+"";
+	public static String is_Mooc_url=moocserver+"/checkAccount";
+	public static String taskinfo_url=moocserver+"/getTaskInfo";
+	public static String taskgrade_url=moocserver+"/getFinishedTaskInfo";
+	public static String group_url=moocserver+"/getGroupList";
+	public static String join_url=moocserver+"/joinGroup";
 	
 	//获取考试密码url
 	public static String exam_pwd_url="http://dev.mooctest.net/taskSecret";
@@ -43,10 +43,12 @@ public class WitestManager {
 	//判断用户输入的慕测账号密码是否正确
 	public static boolean isMoocUser1(String username,String password){	
 		try{
-			String param="username"+username+"&password="+password;
-			String result=HttpRequestUtil.sendPost(is_Mooc_url, param);
-			JSONObject jsonObject=JSONObject.fromObject(result);
-			boolean isMooc=jsonObject.getBoolean("success");
+			String param="account="+username+"&password="+password;
+			String result=HttpRequestUtil.sendGet(is_Mooc_url, param);
+			System.out.println(result);
+			JSONObject jsonObject=JSONObject.fromObject(result);			
+			JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
+			boolean isMooc=object.getBoolean("success");
 			return isMooc;
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -55,10 +57,11 @@ public class WitestManager {
 	} 
 	
 	//从主站获取生成任务密码所需信息
-	public static List<TaskInfo> getID(String username){
+	public static List<TaskInfo> getTaskInfo(String username){
 		String param="username="+username;
 		String result=HttpRequestUtil.sendGet(taskinfo_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
+		JSONObject jObject=JSONObject.fromObject(jsonObject.get("data"));
 		JSONArray ja=jsonObject.getJSONArray("TaskInfo");
 		JSONObject obj=new JSONObject();
 		List<TaskInfo> list=new ArrayList<TaskInfo>();
@@ -71,22 +74,6 @@ public class WitestManager {
 			list.add(taskInfo);
 		}
 		return list;
-	}
-	
-	//获取任务密码
-	public static String getExamPwd(String stuID,String taskID){
-		String param="stuID="+stuID+"&taskID="+taskID;
-		String result=HttpRequestUtil.sendGet(exam_pwd_url, param);
-		JSONObject jsonObject=JSONObject.fromObject(result);
-		JSONArray jArray=jsonObject.getJSONArray("data");
-		if(jArray.isEmpty()){
-			return "无";
-		}
-		else{
-			JSONObject obj=jArray.getJSONObject(0);
-			String exampwd=obj.getString("taskSecret");
-			return exampwd;
-		}
 	}
 	
 	//获取任务成绩
@@ -131,7 +118,8 @@ public class WitestManager {
 		String param="username="+username+"&groupId="+groupId+"&managerName="+managerName;
 		String result=HttpRequestUtil.sendPost(join_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
-		boolean join=jsonObject.getBoolean("success");
+		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
+		boolean join=object.getBoolean("success");
 		return join;
 	}
 }
