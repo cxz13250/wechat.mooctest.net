@@ -45,17 +45,17 @@ public class UserRequest {
 	
 	//返回我的任务url
 	public String taskUrl(){
-		return WitestManager.task_page+ fromUserName;
+		return WitestManager.task_page+"?openid="+fromUserName;
 	}
 	
 	//返回账号信息url
 	public String accountUrl(){
-		return WitestManager.account_page+ fromUserName;
+		return WitestManager.account_page+"?openid="+fromUserName;
 	}
 	
 	//返回账号绑定url
 	public String bindUrl(){
-		return WitestManager.bind_page + fromUserName;
+		return WitestManager.bind_page +"?openid="+ fromUserName;
 	}
 	
 	public String customServiceUrl(){

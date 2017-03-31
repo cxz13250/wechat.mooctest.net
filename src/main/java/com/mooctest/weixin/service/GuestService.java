@@ -1,15 +1,9 @@
 package com.mooctest.weixin.service;
 
-import java.util.regex.Pattern;
-
 import org.apache.log4j.Logger;
 
 import com.mooctest.weixin.manager.LoggerManager;
-import com.mooctest.weixin.manager.WitestManager;
 import com.mooctest.weixin.pojo.UserRequest;
-import com.mooctest.weixin.session.Operation;
-import com.mooctest.weixin.util.AdvancedUtil;
-import com.mooctest.weixin.util.CommonUtil;
 import com.mooctest.weixin.util.MessageUtil;
 import com.mooctest.weixin.util.NewsMessageUtil;
 
@@ -105,13 +99,15 @@ public class GuestService {
 					if (eventKey.equals("account")) {
 						processBingding(userRequest);
 						return userRequest.getResultXml();
-					} else if (eventKey.equals("mytask")) {
+					} else if (eventKey.equals("taskpwd")) {
+						processBingding(userRequest);
+						return userRequest.getResultXml();
+					}else if (eventKey.equals("taskgrade")) {
 						processBingding(userRequest);
 						return userRequest.getResultXml();
 					}
 				}
-			}
-			
+			}			
 			processHelpMessage(userRequest);
 			return userRequest.getResultXml();
 		} catch (Exception e) {

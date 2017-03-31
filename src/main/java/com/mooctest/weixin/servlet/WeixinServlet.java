@@ -45,14 +45,11 @@ public class WeixinServlet extends HttpServlet {
 		String echostr = request.getParameter("echostr");
 		
 		PrintWriter out = response.getWriter();
-		System.out.println(Managers.config.getTokenStr());
 		// 请求校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败
 		if (SignupUtil.checkSignature(signature, timestamp, nonce, Managers.config.getTokenStr())) {
-			System.out.println("haha");
 			LoggerManager.info(logger, "doGet{signature:"+signature+" timestamp:"+timestamp+" nonce:"+nonce+" echostr"+echostr+"}");
 			out.print(echostr);
 		}else{
-			System.out.println("heihei");
 			LoggerManager.error(logger, "doGet{signature:"+signature+" timestamp:"+timestamp+" nonce:"+nonce+" echostr"+echostr+"}");
 			out.print("hahaha");
 		}

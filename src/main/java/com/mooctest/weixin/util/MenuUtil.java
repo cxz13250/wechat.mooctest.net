@@ -45,6 +45,8 @@ public class MenuUtil {
 			if (0 == errorCode) {
 				result = true;
 			} else {
+				System.out.println(errorCode);
+				System.out.println(errorMsg);
 				result = false;
 				log.error("创建菜单失败 errcode:{} errmsg:{}", errorCode, errorMsg);
 			}

@@ -1,18 +1,16 @@
 package com.mooctest.weixin.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mooctest.weixin.config.Config;
-import com.mooctest.weixin.manager.AccountManager;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
 import com.mooctest.weixin.model.Account;
@@ -28,7 +26,7 @@ import com.mooctest.weixin.model.AccountInfo;
 @RequestMapping("/account")
 public class AccountController {
 	
-	@RequestMapping(value="/new")
+	@RequestMapping(value="/account/new")
 	public ModelAndView toAccountBind(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		
 		request.setCharacterEncoding("UTF-8");
@@ -55,14 +53,18 @@ public class AccountController {
 		
 		ModelAndView mv=new ModelAndView();
 		boolean flag=WitestManager.isMoocUser(username);
+		PrintWriter out=response.getWriter();
+		
 		if(flag==false)
 		{
-			mv.addObject("message", "该账号已被绑定！");			
+			out.print("该账号已被绑定！");
+			mv.setViewName("account_bind");
 		}
 				
-		flag=WitestManager.isMoocUser1(username);
+		flag=WitestManager.isMoocUser1(username,password);
 		if(flag==false){
-			mv.addObject("message", "用户名或密码错误!");
+			out.print("用户名或密码错误！");
+			mv.setViewName("account_bind");
 		}
 		else{
 			Account account=new Account();
@@ -70,6 +72,7 @@ public class AccountController {
 			account.setOpenid(openid);
 			Managers.accountManager.saveAccount(account, openid);
 			mv.addObject("message", "绑定成功！");
+			mv.setViewName("bind_success");
 		}
 		return mv;
 	}

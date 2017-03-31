@@ -11,12 +11,12 @@
     JSApiTicket jsApiTicket = (JSApiTicket)request.getAttribute("JSApiTicket");
     String appid=request.getParameter("appid");
     
-	String url = "http://mooctest.net/weixin/q/test/close";
-	String jsapi_ticket = jsApiTicket.getTicket();
-	Map<String, String> sign = JsSDKSign.sign(jsapi_ticket, url);
-	String timestamp = sign.get("timestamp");
-	String nonceStr = sign.get("nonceStr");
-	String signature = sign.get("signature");
+	///String url = "http://mooctest.net/weixin/q/test/close";
+	//String jsapi_ticket = jsApiTicket.getTicket();
+	//Map<String, String> sign = JsSDKSign.sign(jsapi_ticket, url);
+	//String timestamp = sign.get("timestamp");
+	//String nonceStr = sign.get("nonceStr");
+	//String signature = sign.get("signature");
 %>
 <head>
 <%
@@ -43,11 +43,11 @@
 <body>
 	<input type="hidden" name="appId" id="appId" value="<%=appid%>">
 	<input type="hidden" name="timestamp" id="timestamp"
-		value="<%=timestamp%>">
+		value="">
 	<input type="hidden" name="nonceStr" id="nonceStr"
-		value="<%=nonceStr%>">
+		value="">
 	<input type="hidden" name="signature" id="signature"
-		value="<%=signature%>">
+		value="">
 	<div id="container">
 		<div id="div1">
 			<div style="float: left">

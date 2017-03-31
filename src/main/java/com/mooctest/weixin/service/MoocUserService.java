@@ -1,6 +1,7 @@
 package com.mooctest.weixin.service;
 
 import org.apache.log4j.Logger;
+import org.hibernate.procedure.internal.Util.ResultClassesResolutionContext;
 
 import com.mooctest.weixin.manager.LoggerManager;
 import com.mooctest.weixin.pojo.UserRequest;
@@ -92,8 +93,10 @@ public class MoocUserService extends GuestService{
 					if (eventKey.equals("account")) {
 						processAccount(userRequest);
 						return userRequest.getResultXml();
-					} else if (eventKey.equals("mytask")) {
+					} else if (eventKey.equals("taskpwd")) {
 						processMyTask(userRequest);
+						return userRequest.getResultXml();
+					} else if (eventKey.equals("taskgrade")){
 						return userRequest.getResultXml();
 					}
 				}
@@ -115,10 +118,12 @@ public class MoocUserService extends GuestService{
   		userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
   	}
   	
-    //提示用户进入我的任务页面
+    //提示用户进入任务密码页面
     protected static void processMyTask(UserRequest userRequest){
-    	String respContent= "请点击<a href='"+userRequest.taskUrl()+"'>我的任务</a>查看任务信息";
+    	String respContent= "请点击<a href='"+userRequest.taskUrl()+"'>我的任务</a>查看任务密码";
 		userRequest.getTextMessage().setContent(respContent);
 		userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
     }
+    
+    //提示用户进入任务成绩页面
 }
