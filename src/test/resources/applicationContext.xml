@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                       http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+                         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                   http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+  
+  	<bean id="accountManager" class="com.mooctest.weixin.manager.AccountManager"/>
+	<bean id="taskManager" class="com.mooctest.weixin.manager.TaskManager"/>
+	<bean id="groupManager" class="com.mooctest.weixin.manager.GroupManager"/>
+  
+	<bean id="mooctestConfig" class="com.mooctest.weixin.config.Config">
+ 		<constructor-arg index="0" type="java.lang.String" value="wx9239e3bedd4aa66c"></constructor-arg>
+		<constructor-arg index="1" type="java.lang.String" value="c0a74230fcb06331bd9b1ef6cfaa1127"></constructor-arg>
+		<constructor-arg index="2" type="java.lang.String" value="witest"></constructor-arg> 
+		<constructor-arg index="3" type="java.lang.String" value="http://e9d0b0ab.ngrok.io/weixin/"></constructor-arg>
+	</bean>
+	
+	<context:component-scan base-package="com.mooctest.weixin.model" />
+	<context:component-scan base-package="com.mooctest.weixin.dao" />
+	<context:component-scan base-package="com.mooctest.weixin.manager" />
+
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<!-- 设置JDBC驱动名称 -->
+		<property name="driverClass" value="${jdbc.driver}" />
+		<!-- 设置JDBC连接URL -->
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<!-- 设置数据库用户名 -->
+		<property name="user" value="${jdbc.username}" />
+		<!-- 设置数据库密码 -->
+		<property name="password" value="${jdbc.password}" />
+		
+	    <property name="minPoolSize"><value>1</value></property>
+        <property name="maxPoolSize"><value>20</value></property>
+        <property name="maxIdleTime"><value>1800</value></property>
+        <property name="acquireIncrement"><value>2</value></property>
+        <property name="maxStatements"><value>0</value></property>
+        <property name="initialPoolSize"><value>2</value></property>
+        <property name="idleConnectionTestPeriod"><value>1800</value></property>
+        <property name="acquireRetryAttempts"><value>30</value></property>
+        <property name="breakAfterAcquireFailure"><value>true</value></property>
+        <property name="testConnectionOnCheckout"><value>false</value></property>
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="current_session_context_class">thread</prop>
+				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+
+		<property name="packagesToScan">
+			<list>
+				<value>com.mooctest.weixin.model</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!--hibernate4必须配置为开启事务 否则 getCurrentSession()获取不到 -->
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="find*" propagation="REQUIRED" />
+			<tx:method name="get*" propagation="REQUIRED" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="load*" propagation="REQUIRED" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config proxy-target-class="true">
+		<aop:pointcut expression="execution(* com.mooctest.weixin.dao..*.*(..))" id="pointcut" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut" />
+	</aop:config>
+	
+</beans>

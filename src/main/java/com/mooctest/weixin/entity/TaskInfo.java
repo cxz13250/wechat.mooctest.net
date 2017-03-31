@@ -3,10 +3,14 @@ package com.mooctest.weixin.entity;
 public class TaskInfo {
 
 	private int id;
+
+	private String password;
 	
 	private String taskName;
 	
 	private int workerid;
+
+	private int taskId;
 
 	public int getId() {
 		return id;
@@ -16,8 +20,25 @@ public class TaskInfo {
 		this.id = id;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public int getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(int taskId) {
+		this.taskId = taskId;
+	}
+
 	public String getTaskName() {
 		return taskName;
+
 	}
 
 	public void setTaskName(String taskName) {
