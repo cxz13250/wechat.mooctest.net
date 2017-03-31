@@ -27,10 +27,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<link rel="stylesheet" type="text/css" href="css/quiz_base.css" />
+<link rel="stylesheet" type="text/css" href="../css/quiz_base.css" />
 <title><%=title%></title>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<link rel="stylesheet" type="text/css" href="css/quiz_base.css" />
+<link rel="stylesheet" type="text/css" href="../css/quiz_base.css" />
 <style type="text/css">
 #main h1, #main p {
 	text-align: center;

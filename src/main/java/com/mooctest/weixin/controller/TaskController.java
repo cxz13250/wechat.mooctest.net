@@ -45,7 +45,7 @@ public class TaskController {
         mv.addObject("openid",openid);
         mv.addObject("JSApiTicket", Managers.config.getTicket());
         mv.addObject("appid", Managers.config.getAppid());
-        mv.setViewName("mytask");
+        mv.setViewName("view/mytask");
     	return mv;
 	}
 	
@@ -67,7 +67,7 @@ public class TaskController {
         mv.addObject("begin", task.getBegin());
         mv.addObject("end", task.getEnd());
         mv.addObject("password", task.getPassword());
-        mv.setViewName("task_info");
+        mv.setViewName("view/task_info");
         return mv;
 	}
 }
