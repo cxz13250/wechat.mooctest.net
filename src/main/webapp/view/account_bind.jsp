@@ -5,7 +5,9 @@
 <html>
 <%
 	String date = (String) request.getAttribute("date");
+
 	String openid=(String)request.getAttribute("openid");
+
 %>
 <head>
 <%
@@ -46,18 +48,21 @@
 			<div id="main">
 				<h1>账号绑定</h1>
 
-				<form name="form" style="width:100%;" method="post" action="q/account/check">
+
+				<form name="form" id="loginForm" style="width:100%;" method="post" action="q/account/check">
+					<input type="hidden" value="<%=openid%>">
+
 					<div class="weui_cells weui_cells_form">
 						<div class="weui_cell">
 							<div class="weui_cell_hd"><label class="weui_label">账号</label></div>
 							<div class="weui_cell_bd weui_cell_primary">
-								<input class="weui_input" type="text" required placeholder="请输入幕测账号">
+								<input class="weui_input" type="text" required placeholder="请输入幕测账号" id="username">
 							</div>
 						</div>
 						<div class="weui_cell">
 							<div class="weui_cell_hd"><label class="weui_label">密码</label></div>
 							<div class="weui_cell_bd weui_cell_primary">
-								<input class="weui-input" type="password" required placeholder="请输入幕测账号密码">
+								<input class="weui-input" type="password" required placeholder="请输入幕测账号密码" id="password">
 							</div>
 						</div>
 						<div class="myform-row">
@@ -66,12 +71,12 @@
 					</div>
 				</form>
 
-
 			</div>
 		</div>
 	</div>
 
 
 </body>
+
 
 </html>
