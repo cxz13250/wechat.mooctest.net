@@ -28,23 +28,26 @@
 <body>
 <div id="container">
     <div id="div1">
-        <h1 class="weui-header-title">我的成绩</h1>
+        <h1 align="center">我的成绩</h1>
     </div>
     <div id="div2">
         <div id="main">
             <table border='0' width=100% class="weui-table weui-border-tb">
                 <% if(list.isEmpty()||list == null){ %>
-                    <p>目前任务暂未打分</p>
+                    <p align="center">目前任务暂未打分</p>
                 <% }else{%>
-
+                <thead>
                 <tr><td width=60%>任务名称</td>
                     <td width=40%>任务成绩</td></tr>
+                </thead>
+                <tbody>
                 <% for(FinishedTask name:list){%>
                 <tr><td width=60%><%=name.getTaskName()%></td>
                     <td width=40%><%=name.getGrade()%></td>
                 </tr>
 
                 <%}}%>
+                </tbody>
             </table>
         </div>
     </div>

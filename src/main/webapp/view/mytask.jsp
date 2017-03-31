@@ -33,14 +33,22 @@
 		<div id="div2">
 			<div id="main">
 				<table border='0' width=100% class="weui-table weui-border-tb">
+					<%if(list.isEmpty()||list == null){%>
+					 <p align="center">目前任务暂未打分</p>
+
+					<% }%>
+					<thead>
 					<tr><td width=60%>任务名称</td>
 						<td width=40%>任务密码</td></tr>
+					</thead>
+					<tbody>
 					<% for(TaskInfo name:list){%>
 					<tr><td width=60%><%=name.getTaskName()%></td>
 						<td width=40%><%=name.getPassword()%></td>
 					</tr>
 
 					<%}%>
+					</tbody>
 				</table>
 			</div>
 		</div>

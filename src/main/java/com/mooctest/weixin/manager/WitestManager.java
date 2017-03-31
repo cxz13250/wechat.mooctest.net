@@ -1,14 +1,15 @@
 package com.mooctest.weixin.manager;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import com.mooctest.weixin.entity.FinishedTask;
 import com.mooctest.weixin.entity.Group;
 import com.mooctest.weixin.entity.TaskInfo;
 import com.mooctest.weixin.util.HttpRequestUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class WitestManager {
