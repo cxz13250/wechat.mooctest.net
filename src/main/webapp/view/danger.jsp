@@ -1,9 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="utf-8" %>
 <html>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" type="text/css" href="../css/weui2.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui2.css" />
     <title>警告页</title>
 </head>
 <body>

@@ -7,11 +7,15 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.aspectj.internal.lang.reflect.PointcutBasedPerClauseImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mooctest.weixin.entity.TaskInfo;
 import com.mooctest.weixin.manager.Managers;
+import com.mooctest.weixin.manager.WitestManager;
 import com.mooctest.weixin.model.Task;
 
 /**  
@@ -25,49 +29,61 @@ import com.mooctest.weixin.model.Task;
 public class TaskController {
 	
 	@RequestMapping(value="/query")
-	public ModelAndView queryTask(HttpServletRequest request,HttpServletResponse response) throws IOException{
+	public ModelAndView getTaskInfo(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response){
 		
-		String openid=request.getParameter("openid");
+		String username=Managers.accountManager.getAccount(openid);
 		
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setHeader("content-type", "text/html;charset=UTF-8");
-		
-        List<Task> list=Managers.taskManager.getTaskByOpenid(openid);
-    	ModelAndView mv=new ModelAndView();
-
-    	List<String> taskname=new ArrayList<>();
-        for(Task task : list){
-        	taskname.add(task.getName());
-        }
-        
-        mv.addObject("list", taskname);
-        mv.addObject("openid",openid);
-        mv.addObject("JSApiTicket", Managers.config.getTicket());
-        mv.addObject("appid", Managers.config.getAppid());
-        mv.setViewName("view/mytask");
-    	return mv;
+		List<TaskInfo> list=WitestManager.getTaskInfo(username);
+		ModelAndView mv=new ModelAndView();
+		mv.addObject("list", list);
+		mv.setViewName("mytask");
+		return mv;
 	}
 	
-	@RequestMapping(value="taskinfo")
-	public ModelAndView queryTaskInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
-		
-		String openid=request.getParameter("openid");
-		String name=request.getParameter("name");
-		
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setHeader("content-type", "text/html;charset=UTF-8");
-        
-        Task task=Managers.taskManager.getTaskByCondition(openid, name);
-        ModelAndView mv=new ModelAndView();
-        mv.addObject("name", name);
-        mv.addObject("advisor", task.getAdvisor());
-        mv.addObject("group",task.getGroup());
-        mv.addObject("begin", task.getBegin());
-        mv.addObject("end", task.getEnd());
-        mv.addObject("password", task.getPassword());
-        mv.setViewName("view/task_info");
-        return mv;
-	}
+//	@RequestMapping(value="/query")
+//	public ModelAndView queryTask(HttpServletRequest request,HttpServletResponse response) throws IOException{
+//		
+//		String openid=request.getParameter("openid");
+//		
+//        request.setCharacterEncoding("UTF-8");
+//        response.setCharacterEncoding("UTF-8");
+//        response.setHeader("content-type", "text/html;charset=UTF-8");
+//		
+//        List<Task> list=Managers.taskManager.getTaskByOpenid(openid);
+//    	ModelAndView mv=new ModelAndView();
+//
+//    	List<String> taskname=new ArrayList<>();
+//        for(Task task : list){
+//        	taskname.add(task.getName());
+//        }
+//        
+//        mv.addObject("list", taskname);
+//        mv.addObject("openid",openid);
+//        mv.addObject("JSApiTicket", Managers.config.getTicket());
+//        mv.addObject("appid", Managers.config.getAppid());
+//        mv.setViewName("view/mytask");
+//    	return mv;
+//	}
+	
+//	@RequestMapping(value="taskinfo")
+//	public ModelAndView queryTaskInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
+//		
+//		String openid=request.getParameter("openid");
+//		String name=request.getParameter("name");
+//		
+//        request.setCharacterEncoding("UTF-8");
+//        response.setCharacterEncoding("UTF-8");
+//        response.setHeader("content-type", "text/html;charset=UTF-8");
+//        
+//        Task task=Managers.taskManager.getTaskByCondition(openid, name);
+//        ModelAndView mv=new ModelAndView();
+//        mv.addObject("name", name);
+//        mv.addObject("advisor", task.getAdvisor());
+//        mv.addObject("group",task.getGroup());
+//        mv.addObject("begin", task.getBegin());
+//        mv.addObject("end", task.getEnd());
+//        mv.addObject("password", task.getPassword());
+//        mv.setViewName("view/task_info");
+//        return mv;
+//	}
 }

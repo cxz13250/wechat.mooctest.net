@@ -1,7 +1,6 @@
 package com.mooctest.weixin.service;
 
 import org.apache.log4j.Logger;
-import org.hibernate.procedure.internal.Util.ResultClassesResolutionContext;
 
 import com.mooctest.weixin.manager.LoggerManager;
 import com.mooctest.weixin.pojo.UserRequest;
