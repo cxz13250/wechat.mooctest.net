@@ -3,14 +3,10 @@ package com.mooctest.weixin.manager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import com.mooctest.weixin.entity.FinishedTask;
 import com.mooctest.weixin.entity.Group;
 import com.mooctest.weixin.entity.TaskInfo;
 import com.mooctest.weixin.util.HttpRequestUtil;
-import com.thoughtworks.xstream.security.ForbiddenClassException;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -18,7 +14,7 @@ import net.sf.json.JSONObject;
 public class WitestManager {
 	
 	//微信服务器url
-	private static String server = "http://628122ee.ngrok.io/weixin/";	
+	private static String server = "http://e9d0b0ab.ngrok.io/weixin/";	
 	
 	public static String account_page=server +"q/account/info";  //账号信息页面url
 	public static String bind_page=server+"q/account/new";  //账号绑定页面url
@@ -34,6 +30,7 @@ public class WitestManager {
 	public static String taskinfo_url=moocserver+"";
 	public static String taskgrade_url=moocserver+"";
 	public static String group_url=moocserver+"";
+	public static String join_url=moocserver+"";
 	
 	//获取考试密码url
 	public static String exam_pwd_url="http://dev.mooctest.net/taskSecret";
@@ -121,7 +118,20 @@ public class WitestManager {
 		Group group=new Group();
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
-			group.setGroupName();
+			group.setGroupName(obj.getString("groupName"));
+			group.setManagerName(obj.getString("managerName"));
+			group.setId(obj.getInt("id"));
+			list.add(group);
 		}
+		return list;
+	}
+	
+	//加入群组
+	public static boolean joinGroup(String username,String groupId,String managerName){
+		String param="username="+username+"&groupId="+groupId+"&managerName="+managerName;
+		String result=HttpRequestUtil.sendPost(join_url, param);
+		JSONObject jsonObject=JSONObject.fromObject(result);
+		boolean join=jsonObject.getBoolean("success");
+		return join;
 	}
 }

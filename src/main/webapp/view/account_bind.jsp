@@ -5,6 +5,7 @@
 <html>
 <%
 	String date = (String) request.getAttribute("date");
+	String openid=(String)request.getAttribute("openid");
 %>
 <head>
 <%
@@ -17,12 +18,12 @@
 <title>账号绑定</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<link rel="stylesheet" type="text/css" href="../css/quiz_base.css" />
-	<link rel="stylesheet" type="text/css" href="../css/weui.css" />
-	<link rel="stylesheet" type="text/css" href="../css/weui2.css" />
+	<link rel="stylesheet" type="text/css" href="/css/quiz_base.css" />
+	<link rel="stylesheet" type="text/css" href="/css/weui.css" />
+	<link rel="stylesheet" type="text/css" href="/css/weui2.css" />
 <style type="text/css">
 #main h1, #main p {
-	text-align: center;
+	text-align: center;/*  */
 }
 .myform-row {
 	padding: 5px;
@@ -45,7 +46,7 @@
 			<div id="main">
 				<h1>账号绑定</h1>
 
-				<form name="form" style="width:100%;" method="post" action="q/account/check?openid=${openid} }">
+				<form name="form" style="width:100%;" method="post" action="q/account/check">
 					<div class="weui_cells weui_cells_form">
 						<div class="weui_cell">
 							<div class="weui_cell_hd"><label class="weui_label">账号</label></div>

@@ -13,9 +13,9 @@ public class Managers {
 
     public final static AccountManager accountManager;
     public final static TaskManager taskManager;
+    public final static GroupManager groupManager;
     public final static Config config;
 
-    //public final static String baseUrl = "http://mooctest.net/MOOCWechat/q/";
     public final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     static {
@@ -23,12 +23,8 @@ public class Managers {
         context.start();
         accountManager=context.getBean(AccountManager.class);
         taskManager=context.getBean(TaskManager.class);
+        groupManager=context.getBean(GroupManager.class);
         config = (Config) context.getBean("mooctestConfig");       
     }
-
-//    public Managers(RollcallManager rm, WechatQuizManager qm) {
-//        rollcallManager = rm;
-//        wechatQuizManager = qm;
-//    }
 }
 

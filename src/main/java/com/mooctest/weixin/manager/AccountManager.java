@@ -26,6 +26,12 @@ public class AccountManager {
 	@Autowired
 	private AccountInfoDao accountInfoDao;
 	
+	//根据openid获取慕测账号
+	public String getAccount(String openid){
+		List<Account> list=accountDao.getAccountByColValue("openid", openid);
+		return list.get(0).getUsername();
+	}
+	
 	//检验慕测账号是否存在
 	public boolean checkMooc(String username,String password){
 		return false;
