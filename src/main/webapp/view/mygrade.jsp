@@ -55,9 +55,6 @@
 <br>
 <br>
 <br>
-<div id="div3">
-    <a id="closeWindow" class="bottom_bar">关闭页面</a>
-</div>
 </body>
 
 </html>

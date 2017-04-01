@@ -45,8 +45,6 @@ public class HttpRequestUtil {
                     connection.getInputStream(), "utf-8"));
             String line;
             while ((line = in.readLine()) != null) {
-
-                System.out.println(line);;
                 result += line;
             }
         } catch (Exception e) {
@@ -102,7 +100,7 @@ public class HttpRequestUtil {
                     new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
-                result += line;
+            	result += line;
             }
         } catch (Exception e) {
             System.out.println("发送 POST 请求出现异常！"+e);

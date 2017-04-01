@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Map;
 
 import com.mooctest.weixin.manager.WitestManager;
+import com.mooctest.weixin.message.NewsMessage;
 import com.mooctest.weixin.message.TextMessage;
 import com.mooctest.weixin.session.Operation;
 import com.mooctest.weixin.session.Session;
@@ -20,6 +21,7 @@ public class UserRequest {
 	private String content; // 内容
 	private String createTime; // 生成时间
 	private TextMessage textMessage;
+	private NewsMessage newsMessage;
 	private String resultXml;
 	private boolean isMoocUser;
 
@@ -164,6 +166,14 @@ public class UserRequest {
 
 	public void setMoocUser(boolean isMoocUser) {
 		this.isMoocUser = isMoocUser;
+	}
+
+	public NewsMessage getNewsMessage() {
+		return newsMessage;
+	}
+
+	public void setNewsMessage(NewsMessage newsMessage) {
+		this.newsMessage = newsMessage;
 	}
 
 	

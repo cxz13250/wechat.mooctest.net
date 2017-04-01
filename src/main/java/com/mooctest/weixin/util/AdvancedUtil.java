@@ -37,7 +37,7 @@ import net.sf.json.JSONObject;
  * 高级接口工具类
  * 
  * @author cxz
- * @date 2017-3-219
+ * @date 2017-3-21
  */
 public class AdvancedUtil {
 	private static Logger logger = Logger.getLogger(AdvancedUtil.class);

@@ -13,7 +13,6 @@ public class Managers {
 
     public final static AccountManager accountManager;
     public final static TaskManager taskManager;
-    public final static GroupManager groupManager;
     public final static Config config;
 
     public final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -23,7 +22,6 @@ public class Managers {
         context.start();
         accountManager=context.getBean(AccountManager.class);
         taskManager=context.getBean(TaskManager.class);
-        groupManager=context.getBean(GroupManager.class);
         config = (Config) context.getBean("mooctestConfig");       
     }
 }

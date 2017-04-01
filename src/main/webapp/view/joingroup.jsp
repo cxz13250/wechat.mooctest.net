@@ -47,7 +47,7 @@
 
 				<form name="form" style="width:100%;" method="post" action="q/group/join">
 					<div class="weui_cells weui_cells_form">
-						<input type="hidden" value="<%=openid %>" id="openid">
+						<input type="hidden" value="<%=openid%>" name="openid">
 						<div class="weui_cell">
 							<div class="weui_cell_hd"><label class="weui_label">群主姓名</label></div>
 							<div class="weui_cell_bd weui_cell_primary">

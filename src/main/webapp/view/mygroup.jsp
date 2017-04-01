@@ -38,7 +38,7 @@
                 <%}%>
                 </tbody>
             </table>
-            <button onclick="window.location.href:'<%=basePath%>q/group/tojoin?openid=<%=openid%>'">加入群组</button>
+        	<a href='<%=basePath%>q/group/tojoin?openid=<%=openid%>'>加入群组</a>
         </div>
     </div>
 </div>

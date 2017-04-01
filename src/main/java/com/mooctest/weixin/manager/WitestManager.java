@@ -1,11 +1,7 @@
 package com.mooctest.weixin.manager;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.codec.net.URLCodec;
 
 import com.mooctest.weixin.entity.FinishedTask;
 import com.mooctest.weixin.entity.Group;
@@ -14,15 +10,12 @@ import com.mooctest.weixin.util.HttpRequestUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class WitestManager {
 	
-	//微信服务器url
-	//private static String server = "http://655ab64a.ngrok.io/weixin/";	
-	private static String server= "http://114.55.91.85/weixin";
+	//服务器url
+	//private static String server = "http://4b924cf7.ngrok.io/weixin/";	
+	private static String server= "http://114.55.91.85/weixin/";
 	 
 	
 	public static String account_page=server +"";  //账号信息页面url
@@ -125,8 +118,9 @@ public class WitestManager {
 	
 	//加入群组
 	public static boolean joinGroup(String username,String groupId,String managerName){
-		String param="account="+username+"&groupId="+groupId+"&managerName="+managerName;
+		String param="account="+username+"&managerName="+managerName+"&groupId="+groupId;
 		String result=HttpRequestUtil.sendPost(join_url, param);
+		System.out.print(result);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
 		boolean join=object.getBoolean("success");

@@ -51,29 +51,36 @@ public class AccountController {
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
 		ModelAndView mv=new ModelAndView();
-		boolean flag=Managers.accountManager.checkAccount1(username);
 		
-		if(!flag)
-		{
+		boolean flag=WitestManager.isMoocUser(openid);
+		if(flag){
 			mv.setViewName("danger");
-			mv.addObject("msg","该账号已被绑定！");
-			mv.addObject("msg_title","绑定失败！");
-
-		}else {
-
-			flag = WitestManager.isMoocUser1(username, password);
-			if (!flag) {
-				mv.setViewName("fail");
-				mv.addObject("msg","账户密码输入错误！");
+			mv.addObject("msg", "您已经绑定过账号！");
+			mv.addObject("msg_title", "绑定失败！");
+		}
+		else{
+			flag=Managers.accountManager.checkAccount1(username);
+			if(!flag)
+			{
+				mv.setViewName("danger");
+				mv.addObject("msg","该账号已被绑定！");
 				mv.addObject("msg_title","绑定失败！");
-			} else {
-				Account account = new Account();
-				account.setUsername(username);
-				account.setOpenid(openid);
-				Managers.accountManager.saveAccount(account, openid);
-				mv.addObject("msg", "您的账户已经成功绑定！");
-				mv.addObject("msg_title","绑定成功！");
-				mv.setViewName("success");
+			}else {
+
+				flag = WitestManager.isMoocUser1(username, password);
+				if (!flag) {
+					mv.setViewName("fail");
+					mv.addObject("msg","账户密码输入错误！");
+					mv.addObject("msg_title","绑定失败！");
+				} else {
+					Account account = new Account();
+					account.setUsername(username);
+					account.setOpenid(openid);
+					Managers.accountManager.saveAccount(account, openid);
+					mv.addObject("msg", "您的账户已经成功绑定！");
+					mv.addObject("msg_title","绑定成功！");
+					mv.setViewName("success");
+				}
 			}
 		}
 		return mv;
