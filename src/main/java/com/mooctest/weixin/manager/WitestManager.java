@@ -15,7 +15,7 @@ public class WitestManager {
 	
 	//服务器url
 	//private static String server = "http://4b924cf7.ngrok.io/weixin/";	
-	private static String server= "http://114.55.91.85/weixin/";
+	private static String server= "http://wechat.mooctest.net/weixin/";
 	 
 	
 	public static String account_page=server +"";  //账号信息页面url

@@ -101,7 +101,7 @@ public class MoocUserService extends GuestService{
 					} else if (eventKey.equals("mygroup")){
 						processGroup(userRequest);
 						return userRequest.getResultXml();
-					}
+					} 
 				}
 			}			
 			processHelpMessage(userRequest);

@@ -67,7 +67,7 @@ public class MenuManager {
 		
 		ClickButton btn21=new ClickButton();
 		btn21.setName("小测");
-		btn21.setKey("quiz");
+		btn21.setKey("exam");
 		btn21.setType("click");
 		
 		ClickButton btn22=new ClickButton();

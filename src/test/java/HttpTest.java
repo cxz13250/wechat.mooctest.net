@@ -1,7 +1,6 @@
 import com.mooctest.weixin.manager.WitestManager;
 import com.mooctest.weixin.util.HttpRequestUtil;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.junit.Test;
@@ -13,10 +12,10 @@ public class HttpTest {
 
     @Test
     public void test1(){
-        String result = HttpRequestUtil.sendGet(WitestManager.taskgrade_url,"account=18652376580");
+        String result = HttpRequestUtil.sendPost(WitestManager.join_url,"account=18652376580&managerName=СѕЧе&groupId=1");
         JSONObject jsonObject = JSONObject.fromObject(result);
-        JSONArray jsonArray = JSONArray.fromObject(jsonObject.get("data"));
-        System.out.println(jsonArray.getJSONObject(0));
+        JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
+        System.out.println(result);
     }
 
 }

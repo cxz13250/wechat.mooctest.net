@@ -35,7 +35,7 @@
 	<div id="container">
 		<div id="div1">
 			<div style="float: right">
-				<span style="color: #000; text-align: right;">请输入幕测账号</span>
+				<span style="color: #000; text-align: right;"></span>
 			</div>
 			<div style="clear: both; color: #000;"></div>
 		</div>
