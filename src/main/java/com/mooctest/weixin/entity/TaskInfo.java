@@ -8,7 +8,7 @@ public class TaskInfo {
 	
 	private String taskName;
 	
-	private int workerid;
+	private int workerId;
 
 	private int taskId;
 
@@ -45,11 +45,11 @@ public class TaskInfo {
 		this.taskName = taskName;
 	}
 
-	public int getWorkerid() {
-		return workerid;
+	public int getWorkerId() {
+		return workerId;
 	}
 
-	public void setWorkerid(int workerid) {
-		this.workerid = workerid;
+	public void setWorkerid(int workerId) {
+		this.workerId = workerId;
 	}
 }

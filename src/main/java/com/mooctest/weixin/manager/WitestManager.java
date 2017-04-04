@@ -5,10 +5,13 @@ import java.util.List;
 
 import com.mooctest.weixin.entity.FinishedTask;
 import com.mooctest.weixin.entity.Group;
+import com.mooctest.weixin.entity.JoinGroup;
+import com.mooctest.weixin.entity.JoinResult;
 import com.mooctest.weixin.entity.TaskInfo;
 import com.mooctest.weixin.util.HttpRequestUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
 
 
 public class WitestManager {
@@ -63,67 +66,66 @@ public class WitestManager {
 	public static List<TaskInfo> getTaskInfo(String username) throws IOException{
 		String param="account="+username;
 		String result=HttpRequestUtil.sendGet(taskinfo_url, param);
+		System.out.println(result);
 		JSONObject jsonObject=JSONObject.fromObject(result);
-		System.out.println(jsonObject);
 		JSONArray ja=JSONArray.fromObject(jsonObject.get("data"));
 		JSONObject obj=new JSONObject();
 		List<TaskInfo> list=new ArrayList<TaskInfo>();
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
 			TaskInfo taskInfo=new TaskInfo();
-			taskInfo.setId(obj.getInt("id"));
-			taskInfo.setTaskName(obj.getString("taskName"));
-			taskInfo.setPassword(obj.getString("password"));
+			taskInfo=(TaskInfo)JSONObject.toBean(obj, TaskInfo.class);
 			list.add(taskInfo);
 		}
 		return list;
 	}
 	
 	//获取任务成绩
-	public static List<FinishedTask> getFinishedTaskInfo(String username){
+	public static List<FinishedTask> getFinishedTaskInfo (String username) throws IOException{
 		String param="account="+username;
 		String result=HttpRequestUtil.sendGet(taskgrade_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONArray ja=JSONArray.fromObject(jsonObject.get("data"));
 		List<FinishedTask> list=new ArrayList<>();
 		JSONObject obj=new JSONObject();
+		FinishedTask fTask=new FinishedTask();
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
-			FinishedTask fTask=new FinishedTask();
-			fTask.setTaskName(obj.getString("taskName"));
-			fTask.setGrade(Double.parseDouble(obj.getString("score")));
+			fTask=(FinishedTask)JSONObject.toBean(obj, FinishedTask.class);
 			list.add(fTask);
 		}
 		return list;
 	}
 	
 	//获取群组信息
-	public static List<Group> getGroup(String username){
+	public static List<Group> getGroup(String username) throws IOException{
 		String param="account="+username;
 		String result=HttpRequestUtil.sendGet(group_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONArray ja=JSONArray.fromObject(jsonObject.get("data"));
 		List<Group> list=new ArrayList<Group>();
 		Group group=new Group();
+		JSONObject obj=new JSONObject();
 		for(int i=0;i<ja.size();i++){
-			JSONObject obj=new JSONObject();
 			obj=ja.getJSONObject(i);
-			group.setGroupName(obj.getString("groupName"));
-			group.setManagerName(obj.getString("managerName"));
-			group.setId(obj.getInt("id"));
+			group=(Group)JSONObject.toBean(obj, Group.class);
 			list.add(group);
 		}
 		return list;
 	}
 	
 	//加入群组
-	public static boolean joinGroup(String username,String groupId,String managerName){
-		String param="account="+username+"&managerName="+managerName+"&groupId="+groupId;
-		String result=HttpRequestUtil.sendPost(join_url, param);
-		System.out.print(result);
+	public static JoinResult joinGroup(String username,String groupId,String managerName){
+		JoinGroup joinGroup=new JoinGroup();
+		joinGroup.setAccount(username);
+		joinGroup.setGroupId(groupId);
+		joinGroup.setManagerName(managerName);
+		//对象转JSON
+		String param=JSONSerializer.toJSON(joinGroup).toString();
+		String result=HttpRequestUtil.post(join_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
-		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
-		boolean join=object.getBoolean("success");
-		return join;
+		//JSON转对象
+		JoinResult jr=(JoinResult)JSONObject.toBean(jsonObject, JoinResult.class);
+		return jr;
 	}
 }

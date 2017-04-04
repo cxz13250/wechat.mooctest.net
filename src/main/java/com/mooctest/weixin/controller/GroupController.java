@@ -1,6 +1,7 @@
 package com.mooctest.weixin.controller;
 
 import com.mooctest.weixin.entity.Group;
+import com.mooctest.weixin.entity.JoinResult;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
 
@@ -59,13 +60,13 @@ public class GroupController {
 		String managerName=request.getParameter("managerName"); 
 		String groupId=request.getParameter("groupId");
 		
-		boolean flag=WitestManager.joinGroup(username, groupId, managerName);
+		JoinResult jr=WitestManager.joinGroup(username, groupId, managerName);
 		ModelAndView mv=new ModelAndView();
 		
-		if(flag==false){
-			mv.setViewName("failure");
-			mv.addObject("msg","加入群组失败");
-			mv.addObject("msg_title","失败");
+		if(jr.isSuccess()==false){
+			mv.setViewName("fail");
+			mv.addObject("msg",jr.getMessage());
+			mv.addObject("msg_title","加入群组失败");
 		}
 		else {
 			mv.setViewName("success");
