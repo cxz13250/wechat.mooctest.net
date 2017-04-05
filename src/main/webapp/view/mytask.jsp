@@ -25,17 +25,17 @@
 	<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.js"></script>
 
 </head>
-<body>
+<body ontouchstart style="background-color: #f8f8f8;">
 	<div id="container">
-		<div id="div1">
-			<h1 class="weui-header-title">任务列表</h1>
-		</div>
+		<div id="div1" >
+			<h1 class="weui-header-title" align="center">任务列表</h1>
+		</div> 
 		<div id="div2">
 			<div id="main">
-				<table border='0' width=100% class="weui-table weui-border-tb">
+				<table class="weui-table weui-border-tb">
 					<thead>
-					<tr><td width=60%>任务名称</td>
-						<td width=40%>任务密码</td></tr>
+					<tr><th width=60%>任务名称</th>
+						<th width=40%>任务密码</th></tr>
 					</thead>
 					<tbody>
 					<% for(TaskInfo name:list){%>

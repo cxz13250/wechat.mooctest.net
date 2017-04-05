@@ -130,7 +130,7 @@ public class MoocUserService extends GuestService{
     
     //提示用户进入任务成绩页面
     protected static void processGrade(UserRequest userRequest){
-    	String respContent= "请点击<a href='"+userRequest.gradeUrl()+"'>任务成绩</a>查看成绩'";
+    	String respContent= "请点击<a href='"+userRequest.gradeUrl()+"'>任务成绩</a>查看成绩";
     	userRequest.getTextMessage().setContent(respContent);
     	userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
     }

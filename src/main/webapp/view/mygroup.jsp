@@ -17,28 +17,41 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <title>我的群组</title>
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/quiz_base.css" />
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui.css" />
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui2.css" />
 </head>
-<body>
+<style type="text/css">
+#main h1, #main p {
+	text-align: center;/*  */
+}
+.myform-row {
+	padding: 5px;
+}
+</style>
+<body ontouchstart style="background-color: #f8f8f8;">
 <div id="container">
     <div id="div1">
-        <h1 align="center">我的群组</h1>
     </div>
     <div id="div2">
         <div id="main">
-            <table border='0' width=100% class="weui-table weui-border-tb">
+        	<h1>我的群组</h1>
+            <table class="weui-table weui-border-tb">
                 <thead>
-                <tr><td width=60%>群主名称</td>
-                    <td width=40%>群组名称</td></tr>
+                <tr><th width=50%>群主名称</th>
+                    <th width=50%>群组名称</th></tr>
                 </thead>
                 <tbody>
                 <% for(Group name:list){%>
-                <tr><td width=60%><%=name.getManagerName()%></td>
-                    <td width=40%><%=name.getGroupName()%></td>
+                <tr><td width=50%><%=name.getManagerName()%></td>
+                    <td width=50%><%=name.getGroupName()%></td>
                 </tr>
                 <%}%>
                 </tbody>
-            </table>
-        	<a href='<%=basePath%>q/group/tojoin?openid=<%=openid%>'>加入群组</a>
+            </table> 
+        </div>
+        <div class="myform-row">
+            <a href='<%=basePath%>q/group/tojoin?openid=<%=openid%>' class="weui-btn weui-btn_primary">加入群组</a>    	
         </div>
     </div>
 </div>

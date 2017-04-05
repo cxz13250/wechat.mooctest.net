@@ -128,6 +128,7 @@ public class GuestService {
 		userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
 	}
     
+	//使用帮助图文消息
 	protected static void processHelpMessage(UserRequest userRequest) {
 		userRequest.getTextMessage().setContent(NewsMessageUtil.getHelpMessage(userRequest));		
 	}

@@ -27,6 +27,7 @@ public class GroupController {
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
 		String username=Managers.accountManager.getAccount(openid);
+		System.out.println(username);
 		List<Group> list=WitestManager.getGroup(username);
 		
 		ModelAndView mv=new ModelAndView();

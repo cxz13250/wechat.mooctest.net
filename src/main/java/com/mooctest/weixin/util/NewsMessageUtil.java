@@ -186,6 +186,7 @@ public class NewsMessageUtil {
 		return respXml;
 	}
 	
+	//生成使用帮助图文消息
 	public static String getHelpMessage(UserRequest userRequest){
 		List<Article> articles = new ArrayList<Article>();
 		articles.add(help_message_article);
