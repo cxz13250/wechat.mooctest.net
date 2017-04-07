@@ -30,8 +30,11 @@ public class MenuManager {
 		// 第三方用户唯一凭证密钥
 		//String appSecret = "3928d0aaa4699f132a3ac8380e60d84d";
 		
-		String appId = "wx9239e3bedd4aa66c";//课堂助手公众号
-		String appSecret = "c0a74230fcb06331bd9b1ef6cfaa1127";
+//		String appId = "wx9239e3bedd4aa66c";//课堂助手公众号
+//		String appSecret = "c0a74230fcb06331bd9b1ef6cfaa1127";
+		
+		String appId ="wxad451fbfe07dae1d";
+		String appSecret="fc574a86f5e1e7e0a4f832ac036b6ebe";
 		
 		// 调用接口获取凭证
 		Token token = CommonUtil.getToken(appId, appSecret);
@@ -48,7 +51,7 @@ public class MenuManager {
 
 		ClickButton btn11=new ClickButton();
 		btn11.setName("任务密码");
-		btn11.setKey("taskpwd");
+		btn11.setKey("mytask");
 		btn11.setType("click");
 		
 		ClickButton btn12=new ClickButton();

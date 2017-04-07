@@ -27,6 +27,9 @@ public class Account {
 	
 	@Column(name="username")
 	private String username;
+	
+	@Column(name="type")
+	private int type;
 
 	public Integer getId() {
 		return id;
@@ -51,7 +54,13 @@ public class Account {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
 	
-
-
 }

@@ -23,7 +23,7 @@ public class UserRequest {
 	private TextMessage textMessage;
 	private NewsMessage newsMessage;
 	private String resultXml;
-	private boolean isMoocUser;
+	private int identity;
 
 	public UserRequest(Map<String, String> requestMap) {
 		setRequestMap(requestMap);
@@ -39,7 +39,7 @@ public class UserRequest {
 			textMessage.setFromUserName(toUserName);
 			textMessage.setCreateTime(new Date().getTime());
 			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-			isMoocUser=WitestManager.isMoocUser(fromUserName); // 判断是否已经绑定慕测账户
+			identity=WitestManager.identity(fromUserName); // 判断是否已经绑定慕测账户
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -160,20 +160,20 @@ public class UserRequest {
 		this.textMessage = textMessage;
 	}
 
-	public boolean isMoocUser() {
-		return isMoocUser;
-	}
-
-	public void setMoocUser(boolean isMoocUser) {
-		this.isMoocUser = isMoocUser;
-	}
-
 	public NewsMessage getNewsMessage() {
 		return newsMessage;
 	}
 
 	public void setNewsMessage(NewsMessage newsMessage) {
 		this.newsMessage = newsMessage;
+	}
+
+	public int getIdentity() {
+		return identity;
+	}
+
+	public void setIdentity(int identity) {
+		this.identity = identity;
 	}
 
 	

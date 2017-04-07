@@ -12,7 +12,9 @@ import com.mooctest.weixin.manager.Managers;
 @Controller
 @RequestMapping("/help")
 public class HelpInfoController {
-    @RequestMapping(value="/info")
+    
+	
+	@RequestMapping(value="/info")
     public ModelAndView helpinfo(){
         String text = "<h2>小测</h2><p>教师使用公众号的<span style='color: red'>小测</span>"
                 + "菜单创建小测，创建成功之后，相应班级的学生可以使用<span style='color: red'>小测</span>菜单获取本次小测的内容并参与回答</p>"

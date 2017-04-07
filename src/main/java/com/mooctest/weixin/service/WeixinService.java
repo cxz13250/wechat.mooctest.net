@@ -36,11 +36,14 @@ public class WeixinService {
 			// 调用parseXml方法解析请求消息
 			Map<String, String> requestMap = MessageUtil.parseXml(request);
 			UserRequest userRequest = new UserRequest(requestMap);
-			//return TeacherService.processRequest(userRequest);
-			if (userRequest.isMoocUser()){
+			if (userRequest.getIdentity()==0){
 				LoggerManager.info(logger, "(MoocUserRequest)" +userRequest.getFromUserName() 
 						+ "---->"+ userRequest.getToUserName());
 				return MoocUserService.processRequest(userRequest);
+			}if(userRequest.getIdentity()==1){
+				LoggerManager.info(logger, "(TeacherRequest)" +userRequest.getFromUserName() 
+				+ "---->"+ userRequest.getToUserName());
+				return TeacherService.processRequest(userRequest);
 			}else{
 				LoggerManager.info(logger, "(GuestRequest)" +userRequest.getFromUserName() 
 						+ "---->"+ userRequest.getToUserName());

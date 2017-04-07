@@ -34,35 +34,33 @@
 </head>
 
 <body>
-
 	<div id="container">
 		<div id="div1">
 			<div style="float: right">
-				<span style="color: #000; text-align: right;">请输入幕测账号</span>
+				<span style="color: #000; text-align: right;">请输入慕测账号</span>
 			</div>
 			<div style="clear: both; color: #000;"></div>
 		</div>
-
-
 		<div id="div2">
 			<div id="main">
 				<h1>账号绑定</h1>
-
-
 				<form name="form" id="loginForm" style="width:100%;" method="post" action="q/account/check">
-					<input type="hidden" value="<%=openid%>" name="openid">
-
+					<input type="hidden" value="<%=openid%>" name="openid">					
 					<div class="weui_cells weui_cells_form">
+						<div class="weui_cell" align="center">
+							<input type="radio" value="0" name="type" checked>&nbsp;学生&nbsp;&nbsp;
+							<input type="radio" value="1" name="type">&nbsp;老师
+						</div>
 						<div class="weui_cell">
 							<div class="weui_cell_hd"><label class="weui_label">账号</label></div>
 							<div class="weui_cell_bd weui_cell_primary">
-								<input class="weui_input" type="text" required placeholder="请输入幕测账号" name="username">
+								<input class="weui_input" type="text" required placeholder="请输入慕测账号" name="username">
 							</div>
 						</div>
 						<div class="weui_cell">
 							<div class="weui_cell_hd"><label class="weui_label">密码</label></div>
 							<div class="weui_cell_bd weui_cell_primary">
-								<input class="weui-input" type="password" required placeholder="请输入幕测账号密码" name="password">
+								<input class="weui-input" type="password" required placeholder="请输入慕测账号密码" name="password">
 							</div>
 						</div>
 						<div class="myform-row">

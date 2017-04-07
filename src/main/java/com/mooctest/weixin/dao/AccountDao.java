@@ -31,4 +31,10 @@ public class AccountDao extends BaseDao<Account, Integer> {
 			save(w);
 		}
 	}
+	
+	public void deleteAccount(List<Account> Accounts){
+		for(Account w : Accounts){
+			delete(w);
+		}
+	}
 }

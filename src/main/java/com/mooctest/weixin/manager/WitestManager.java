@@ -17,11 +17,11 @@ import net.sf.json.JSONSerializer;
 public class WitestManager {
 	
 	//服务器url
-	//private static String server = "http://4b924cf7.ngrok.io/weixin/";	
+	//private static String server = "http://629f63aa.ngrok.io/weixin/";	
 	private static String server= "http://wechat.mooctest.net/weixin/";
 	 
 	
-	public static String account_page=server +"";  //账号信息页面url
+	public static String account_page=server +"q/account/info";  //账号信息页面url
 	public static String bind_page=server+"q/account/new";  //账号绑定页面url
 	public static String check_account=server+"q/account/check";  //验证账号控制器url
 	public static String task_page=server+"q/task/query";//任务密码url	
@@ -41,8 +41,8 @@ public class WitestManager {
 	//获取考试密码url
 	public static String exam_pwd_url="http://dev.mooctest.net/taskSecret";
 	
-	//判断用户是否已经绑定慕测账号
-	public static boolean isMoocUser(String openid){		
+	//判断用户身份
+	public static int identity(String openid){		
 		return Managers.accountManager.checkAccount(openid);
 	}	
 	

@@ -92,7 +92,7 @@ public class MoocUserService extends GuestService{
 					if (eventKey.equals("account")) {
 						processAccount(userRequest);
 						return userRequest.getResultXml();
-					} else if (eventKey.equals("taskpwd")) {
+					} else if (eventKey.equals("mytask")) {
 						processMyTask(userRequest);
 						return userRequest.getResultXml();
 					} else if (eventKey.equals("taskgrade")){
@@ -101,7 +101,10 @@ public class MoocUserService extends GuestService{
 					} else if (eventKey.equals("mygroup")){
 						processGroup(userRequest);
 						return userRequest.getResultXml();
-					} 
+					} else if (eventKey.equals("help")){
+						processHelpMessage(userRequest);
+						return userRequest.getResultXml();
+					}
 				}
 			}			
 			processHelpMessage(userRequest);
@@ -137,7 +140,7 @@ public class MoocUserService extends GuestService{
     
     //提示用户进入我的群组页面
     protected static void processGroup(UserRequest userRequest){
-    	String respContent="请点击<a href='"+userRequest.groupUrl()+"'>我的群组</a>查看群组'";
+    	String respContent="请点击<a href='"+userRequest.groupUrl()+"'>我的群组</a>查看群组";
     	userRequest.getTextMessage().setContent(respContent);
     	userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
     }
