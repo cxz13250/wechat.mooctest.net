@@ -21,8 +21,8 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/quiz_base.css" />
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>/css/weui.css" />
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>/css/weui2.css" />
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui.css" />
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui2.css" />
 <style type="text/css">
 #main h1, #main p {
 	text-align: center;/*  */

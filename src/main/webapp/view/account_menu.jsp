@@ -17,8 +17,8 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <title><%=title%></title>
 	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/quiz_base.css" />
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>/css/weui.css" />
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>/css/weui2.css" />
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui.css" />
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui2.css" />
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <style type="text/css">
 #main h1, #main p {
