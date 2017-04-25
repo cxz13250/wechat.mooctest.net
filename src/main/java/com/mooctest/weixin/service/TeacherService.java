@@ -1,10 +1,22 @@
 package com.mooctest.weixin.service;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
+import com.mooctest.weixin.entity.Group;
 import com.mooctest.weixin.manager.LoggerManager;
+import com.mooctest.weixin.manager.Managers;
+import com.mooctest.weixin.manager.WitestManager;
+import com.mooctest.weixin.message.Article;
+import com.mooctest.weixin.model.Quiz;
 import com.mooctest.weixin.pojo.UserRequest;
 import com.mooctest.weixin.util.MessageUtil;
+import com.mooctest.weixin.util.NewsMessageUtil;
+
 
 public class TeacherService extends GuestService{
 
@@ -85,6 +97,15 @@ public class TeacherService extends GuestService{
 					if (eventKey.equals("account")) {
 						processAccount(userRequest);
 						return userRequest.getResultXml();
+					}else if(eventKey.equals("exam")){
+						processQuiz(userRequest);
+						return userRequest.getResultXml();
+					}else if(eventKey.equals("exam_score")){
+						processResult(userRequest);
+						return userRequest.getResultXml();
+					}else if(eventKey.equals("rollcall")){
+						processRollcall(userRequest);
+						return userRequest.getResultXml();
 					}
 				}
 			}			
@@ -98,10 +119,69 @@ public class TeacherService extends GuestService{
 		return respXml;
 	}
 
-//提示用户进入账号信息页面
+	//提示用户进入账号信息页面
 	protected static void processAccount(UserRequest userRequest){
 		String respContent= "请点击<a href='"+userRequest.accountUrl()+"'>账号页面</a>查看账号信息";
 		userRequest.getTextMessage().setContent(respContent);
 		userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
 	}	
+	
+	//提示老师进入创建小测页面
+	protected static void processQuiz(UserRequest userRequest){
+		String respContent = "";
+		int id=Managers.accountManager.getMoocId(userRequest.getFromUserName());
+		List<Group> groups = WitestManager.getGroup2(id);
+		if (groups.isEmpty()){
+			respContent = "您还没有建立任何班级，赶紧登录mooctest.net建立班级吧！";
+			userRequest.removeSession();
+			userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+			return;
+		}
+		userRequest.removeSession();
+		Timestamp quizTime = new Timestamp(new Date().getTime());
+		if (Managers.quizManager.closeQuiz(userRequest,quizTime)) return;
+		else{
+			String xml = NewsMessageUtil.createQuizCreatorXml(userRequest);
+			userRequest.setResultXml(xml);
+		}
+	}
+	
+	//提示老师进入小测结果页面
+	protected static void processResult(UserRequest userRequest){
+		
+		String respContent="";
+		Quiz quiz=Managers.quizManager.getQuiz(userRequest.getFromUserName());
+		if(quiz==null){
+			respContent = "您还没有发布小测，请点击小测菜单创建小测！";
+			userRequest.removeSession();
+			userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+			return;
+		}
+		userRequest.removeSession();
+		String xml=NewsMessageUtil.createQuizResultXml2(userRequest);
+		userRequest.setResultXml(xml);
+	}
+	
+	//提示老师进入创建点名页面
+	protected static void processRollcall(UserRequest userRequest) {
+		String respContent="";
+		userRequest.removeSession();
+		int id=Managers.accountManager.getMoocId(userRequest.getFromUserName());
+		List<Group> groups = WitestManager.getGroup2(id);
+		if (groups.isEmpty()){
+			respContent = "您还没有建立任何班级，赶紧登录mooctest.net建立班级吧";
+			userRequest.removeSession();
+			userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+			return;
+		}
+		if (Managers.rollcallManager.closeRollcall(userRequest)) return;
+		else {
+			String rollcallCreatorXml = NewsMessageUtil.createRollcallCreatorXml(userRequest);
+			userRequest.setResultXml(rollcallCreatorXml);
+		}
+	}
+
 }

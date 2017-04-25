@@ -26,8 +26,7 @@ public class GroupController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
-		String username=Managers.accountManager.getAccount(openid);
-		System.out.println(username);
+		String username=Managers.accountManager.getAccount(openid).getUsername();
 		List<Group> list=WitestManager.getGroup(username);
 		
 		ModelAndView mv=new ModelAndView();
@@ -57,22 +56,35 @@ public class GroupController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
-		String username=Managers.accountManager.getAccount(openid);
+		String username=Managers.accountManager.getAccount(openid).getUsername();
 		String managerName=request.getParameter("managerName"); 
 		String groupId=request.getParameter("groupId");
 		
-		JoinResult jr=WitestManager.joinGroup(username, groupId, managerName);
 		ModelAndView mv=new ModelAndView();
 		
-		if(jr.isSuccess()==false){
+		if(managerName==null){
 			mv.setViewName("fail");
-			mv.addObject("msg",jr.getMessage());
+			mv.addObject("msg","群主名不能为空！");
 			mv.addObject("msg_title","加入群组失败");
 		}
-		else {
-			mv.setViewName("success");
-			mv.addObject("msg_title", "成功");
-			mv.addObject("msg", "加入群组成功");
+		else if(groupId==null){
+			mv.setViewName("fail");
+			mv.addObject("msg","群组编号不能为空！");
+			mv.addObject("msg_title","加入群组失败");
+		}
+		else{
+			JoinResult jr=WitestManager.joinGroup(username, groupId, managerName);
+			
+			if(jr.isSuccess()==false){
+				mv.setViewName("fail");
+				mv.addObject("msg",jr.getMessage());
+				mv.addObject("msg_title","加入群组失败");
+			}
+			else {
+				mv.setViewName("success");
+				mv.addObject("msg_title", "成功");
+				mv.addObject("msg", "加入群组成功");
+			}
 		}
 
 		return mv;

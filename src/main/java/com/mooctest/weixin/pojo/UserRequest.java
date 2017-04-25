@@ -70,6 +70,11 @@ public class UserRequest {
 		return WitestManager.group_page +"?openid="+ fromUserName;
 	}
 	
+	//返回小测结果url
+	public String resultUrl(){
+		return WitestManager.quiz_result_page1+"?openid="+fromUserName;
+	}
+	
 	public SessionItem getSession(){
 		if (!this.hasSession()) {
 			this.initSession();

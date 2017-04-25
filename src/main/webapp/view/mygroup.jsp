@@ -17,9 +17,9 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <title>我的群组</title>
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/quiz_base.css" />
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui.css" />
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui2.css" />
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui.css"/>
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui2.css"/>
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui3.css"/>
 </head>
 <style type="text/css">
 #main h1, #main p {
@@ -51,7 +51,7 @@
             </table> 
         </div>
         <div class="myform-row">
-            <a href='<%=basePath%>q/group/tojoin?openid=<%=openid%>' class="weui-btn weui-btn_primary">加入群组</a>    	
+            <a href='<%=basePath%>q/group/tojoin?openid=<%=openid%>' class="weui_btn weui_btn_primary">加入群组</a>    	
         </div>
     </div>
 </div>

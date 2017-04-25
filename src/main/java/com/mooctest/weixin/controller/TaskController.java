@@ -1,14 +1,11 @@
 package com.mooctest.weixin.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.aspectj.internal.lang.reflect.PointcutBasedPerClauseImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +33,7 @@ public class TaskController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
-		String username=Managers.accountManager.getAccount(openid);		
+		String username=Managers.accountManager.getAccount(openid).getUsername();		
 		List<TaskInfo> list=WitestManager.getTaskInfo(username);
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("list", list);
@@ -51,7 +48,7 @@ public class TaskController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
-		String username=Managers.accountManager.getAccount(openid);
+		String username=Managers.accountManager.getAccount(openid).getUsername();
 		
 		List<FinishedTask> list=WitestManager.getFinishedTaskInfo(username);
 		

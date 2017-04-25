@@ -3,11 +3,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mooctest.weixin.entity.Accountinfo;
 import com.mooctest.weixin.entity.FinishedTask;
 import com.mooctest.weixin.entity.Group;
 import com.mooctest.weixin.entity.JoinGroup;
 import com.mooctest.weixin.entity.JoinResult;
 import com.mooctest.weixin.entity.TaskInfo;
+import com.mooctest.weixin.entity.Worker;
 import com.mooctest.weixin.util.HttpRequestUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -28,15 +30,26 @@ public class WitestManager {
 	public static String grade_page=server+"q/task/grade";//任务成绩url
 	public static String group_page=server+"q/group/query";//我的群组url
 	public static String join_page=server+"q/group/join";//加入群组url
+	public static String createquiz_page=server+"q/quiz/create";//创建小测url
+	public static String showquiz_page=server+"q/quiz/show";//参与小测url
+	public static String quiz_result_page=server +"q/answer/cluster?openid=OPEN&quizid=QUIZID";//老师端本次小测结果url
+	public static String quiz_result_page1=server+"q/answer/result";//老师端历次小测结果url
+	public static String rollcall_create_page=server+"q/rollcall/create";//创建点名url
+	public static String rollcall_join_page=server+"q/rollcall/join_rollcall";//参与点名url
+	public static String rollcall_result_page=server+"q/rollcall/result?openid=OPEN&rollcallid=ROLLCALLID";//老师端点名结果
 	
 	//慕测主站url
-	private static String moocserver="http://mooctest.net/api/wechat";
+	private static String moocserver="http://www.mooctest.net/api/wechat";
 	
-	public static String is_Mooc_url=moocserver+"/checkAccount";
+	public static String is_Mooc_url=moocserver+"/checkWorker";
 	public static String taskinfo_url=moocserver+"/getTaskInfo";
 	public static String taskgrade_url=moocserver+"/getFinishedTaskInfo";
 	public static String group_url=moocserver+"/getGroupList";
 	public static String join_url=moocserver+"/joinGroup";
+	public static String is_Manager_url=moocserver+"/checkManager";
+	public static String getstudent_url=moocserver+"/getWorkersByGroup";
+	public static String group_url2=moocserver+"/getGroupsByManager";
+	public static String accountinfo_url=moocserver+"/getUserInfo";
 	
 	//获取考试密码url
 	public static String exam_pwd_url="http://dev.mooctest.net/taskSecret";
@@ -46,23 +59,43 @@ public class WitestManager {
 		return Managers.accountManager.checkAccount(openid);
 	}	
 	
-	//判断用户输入的慕测账号密码是否正确
-	public static boolean isMoocUser1(String username,String password){	
+	//判断用户输入的慕测学生账号密码是否正确
+	public static int isWorker(String username,String password){	
 		try{
 			String param="account="+username+"&password="+password;
 			String result=HttpRequestUtil.sendGet(is_Mooc_url, param);
-			System.out.println(result);
-			JSONObject jsonObject=JSONObject.fromObject(result);			
+			JSONObject jsonObject=JSONObject.fromObject(result);	
+			if(jsonObject==null){
+				return 0;
+			}
 			JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
-			boolean isMooc=object.getBoolean("success");
+			int isMooc=object.getInt("id");
+			System.out.println(isMooc);
 			return isMooc;
 		}catch(Exception ex){
 			ex.printStackTrace();
-			return false;
+			return 0;
 		}
 	} 
 	
-	//从主站获取生成任务密码所需信息
+	//判断用户输入的慕测老师账号密码是否正确
+	public static int isManager(String username,String password){
+		try {
+			String param="account="+username+"&password="+password;
+			String result=HttpRequestUtil.sendGet(is_Manager_url, param);
+			JSONObject jsonObject=JSONObject.fromObject(result);			
+			JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
+			if(object==null)
+				return 0;
+			int id=object.getInt("id");
+			return id;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	//从主站获取生成任务信息
 	public static List<TaskInfo> getTaskInfo(String username) throws IOException{
 		String param="account="+username;
 		String result=HttpRequestUtil.sendGet(taskinfo_url, param);
@@ -127,5 +160,51 @@ public class WitestManager {
 		//JSON转对象
 		JoinResult jr=(JoinResult)JSONObject.toBean(jsonObject, JoinResult.class);
 		return jr;
+	}
+	
+	//根据老师账号获取群组
+	public static List<Group> getGroup2(int id){
+		List<Group> list=new ArrayList<Group>();
+		String param="managerId="+id;
+		String result=HttpRequestUtil.sendGet(group_url2, param);
+		JSONObject jsonObject=JSONObject.fromObject(result);
+		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
+		JSONArray ja=JSONArray.fromObject(object.get("groups"));
+		Group group=new Group();
+		JSONObject obj=new JSONObject();
+		for(int i=0;i<ja.size();i++){
+			obj=ja.getJSONObject(i);
+			group=(Group)JSONObject.toBean(obj, Group.class);
+			list.add(group);
+		}
+		return list;
+	}
+	
+	//根据群组ID获取成员
+	public static List<Worker> getMember(String groupId){
+		List<Worker> list=new ArrayList<Worker>();
+		String param="groupId="+groupId;
+		String result=HttpRequestUtil.sendGet(getstudent_url, param);
+		JSONObject jsonObject=JSONObject.fromObject(result);
+		JSONObject jObject=JSONObject.fromObject(jsonObject.get("data"));
+		JSONArray jArray=JSONArray.fromObject(jObject.get("workers"));
+		Worker worker=new Worker();
+		JSONObject object=new JSONObject();
+		for(int i=0;i<jArray.size();i++){
+			object=jArray.getJSONObject(i);
+			worker=(Worker)JSONObject.toBean(object, Worker.class);
+			list.add(worker);
+		}
+		return list;
+	}
+	
+	//根据慕测账号获取用户信息
+	public static Accountinfo getInfo(int id,String type){
+		String param="userId="+id+"&identity="+type;
+		String result=HttpRequestUtil.sendGet(accountinfo_url, param);
+		JSONObject jsonObject=JSONObject.fromObject(result);
+		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
+		Accountinfo accountinfo=(Accountinfo)JSONObject.toBean(object, Accountinfo.class);
+		return accountinfo;
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mooctest.weixin.dao.AccountDao;
+import com.mooctest.weixin.entity.Accountinfo;
 import com.mooctest.weixin.model.Account;
 
 /**  
@@ -21,11 +22,16 @@ public class AccountManager {
 	@Autowired
 	private AccountDao accountDao;
 	
+	//根据openid获取慕测账号id
+	public int getMoocId(String openid){
+		List<Account> list=accountDao.getAccountByColValue("openid", openid);
+		return list.get(0).getMoocid();
+	}
 	
 	//根据openid获取慕测账号
-	public String getAccount(String openid){
+	public Account getAccount(String openid){
 		List<Account> list=accountDao.getAccountByColValue("openid", openid);
-		return list.get(0).getUsername();
+		return list.get(0);
 	}
 	
 	//判断微信用户身份
@@ -57,8 +63,23 @@ public class AccountManager {
 		accountDao.saveAccount(Accounts);
 	}
 
+	//删除账号映射
 	public void deleteAccount(String openid){
 		List<Account> Accounts=accountDao.getAccountByColValue("openid", openid);
 		accountDao.deleteAccount(Accounts);
+	}
+	
+	//根据微信号获取用户信息
+	public Accountinfo getAccountInfo(String openid){
+		Account account=getAccount(openid);
+		int id=account.getMoocid();
+		int type=account.getType();
+		String identity;
+		if(type==0){
+			identity="worker";
+		}else{
+			identity="manager";
+		}
+		return WitestManager.getInfo(id,identity);
 	}
 }

@@ -12,6 +12,8 @@
                    http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
   
   	<bean id="accountManager" class="com.mooctest.weixin.manager.AccountManager"/>
+  	<bean id="quizManager" class="com.mooctest.weixin.manager.QuizManager"/>
+  	<bean id="rollcallManager" class="com.mooctest.weixin.manager.RollcallManager"/>
   
 	<bean id="mooctestConfig" class="com.mooctest.weixin.config.Config">
  		<constructor-arg index="0" type="java.lang.String" value="wxad451fbfe07dae1d"></constructor-arg>

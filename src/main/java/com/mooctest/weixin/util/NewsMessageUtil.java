@@ -7,10 +7,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.mooctest.weixin.manager.Managers;
+import com.mooctest.weixin.manager.WitestManager;
 import com.mooctest.weixin.message.Article;
 import com.mooctest.weixin.message.NewsMessage;
+import com.mooctest.weixin.model.QuizItem;
 import com.mooctest.weixin.pojo.UserRequest;
-
 
 
 /**
@@ -74,35 +75,6 @@ public class NewsMessageUtil {
         tea_score_article.setUrl(url);
 	}
 	
-	public static String createStuScoreXml(UserRequest userRequest){
-	    List<Article> articles = new ArrayList<Article>();
-        articles.add(stu_score_article);
-        NewsMessage newsMessage = new NewsMessage();
-        newsMessage.setToUserName(userRequest.getFromUserName());
-        newsMessage.setFromUserName(userRequest.getToUserName());
-        newsMessage.setCreateTime(System.currentTimeMillis());
-        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-        newsMessage.setArticleCount(articles.size());
-        newsMessage.setArticles(articles);
-        
-        return MessageUtil.messageToXml(newsMessage);
-	}
-	
-	public static String createTeaScoreXml(UserRequest userRequest){
-        List<Article> articles = new ArrayList<Article>();
-        articles.add(tea_score_article);
-        NewsMessage newsMessage = new NewsMessage();
-        newsMessage.setToUserName(userRequest.getFromUserName());
-        newsMessage.setFromUserName(userRequest.getToUserName());
-        newsMessage.setCreateTime(System.currentTimeMillis());
-        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-        newsMessage.setArticleCount(articles.size());
-        newsMessage.setArticles(articles);
-        
-        return MessageUtil.messageToXml(newsMessage);
-    }
-	
-
 	public static String createXMLs(int index, String content,
 			String fromUserName, String toUserName) {
 		String xml = "";
@@ -120,8 +92,7 @@ public class NewsMessageUtil {
 		return xml;
 	}
 	
-	
-	
+	//生成参与点名图文消息
 	public static String createRollcallXml(UserRequest userRequest) {
         Article article = new Article();
         article.setTitle("课堂点名");
@@ -129,7 +100,7 @@ public class NewsMessageUtil {
         description += "\n-------------------------------------\n";
         description += "请点击阅读全文参与点名";
         article.setDescription(description);
-        String url = Managers.config.getBaseUrl() + "q/rollcall?openid=" + userRequest.getFromUserName();
+        String url = WitestManager.rollcall_join_page+"?openid=" + userRequest.getFromUserName();
         article.setUrl(url);
         List<Article> articles = new ArrayList<Article>();
         articles.add(article);
@@ -141,12 +112,36 @@ public class NewsMessageUtil {
         newsMessage.setArticleCount(articles.size());
         newsMessage.setArticles(articles);
         String respXml = MessageUtil.messageToXml(newsMessage);
-        userRequest.setResultXml(respXml);
         return respXml;
     }
     
- 
+	//生成点名结果图文消息
+    public static String createRollcallResultXml(String description, String toUserName, String fromUserName, int rollcallId){
+        
+        Article article = new Article();
+        article.setTitle("点名结果");
+
+        article.setDescription(description);
+        String url = WitestManager.rollcall_result_page;
+        url = url.replace("ROLLCALLID", String.valueOf(rollcallId));
+        url = url.replace("OPENID", CommonUtil.urlEncodeUTF8(fromUserName));
+        article.setUrl(url);
+        List<Article> articles = new ArrayList<Article>();
+        articles.add(article);
+        
+        NewsMessage newsMessage = new NewsMessage();
+        newsMessage.setToUserName(fromUserName);
+        newsMessage.setFromUserName(toUserName);
+        newsMessage.setCreateTime(new Date().getTime());
+        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+        newsMessage.setArticleCount(articles.size());
+        newsMessage.setArticles(articles);
+        
+        String respXml = MessageUtil.messageToXml(newsMessage);
+        return respXml;
+    }
     
+    //生成创建点名图文消息
     public static String createRollcallCreatorXml(UserRequest userRequest){
         Article article = new Article();
         article.setTitle("创建点名");
@@ -203,41 +198,110 @@ public class NewsMessageUtil {
 		return respXml;
 	}
 	
-//	private static Article getSubscribeMessageArticle(){
-//		Article article = new Article();
-//		article.setTitle("感谢您的关注！");
-//		String description = "";
-//		description += "慕测平台功能包括：Java测试驱动编程，Java度量驱动编程，JavaBug修复，Java覆盖测试，JavaBug测试。C++和Python相关客户端将于2014年年底发布，Appium和Jmeter客户端将于2015年3年发布。\n\n";
-//		description += "微信端功能包括：考试密码，考试成绩，小测，点名，注册，关联和吐槽。请选择下方按钮使用我们的服务。\n\n";
-//		description += "如您有任何疑问，请使用我们的吐槽功能提出您的宝贵意见！";
-//		description += "\n-------------------------------------";
-//		description += "\n点击阅读全文查看更多内容";
-//		article.setDescription(description);
-//		String url = WitestManager.help_page;
-//		article.setUrl(url);
-//		return article;
-//	}
+	//生成老师小测结果提示图文消息
+	public static String createQuizResultXml(String description, String toUserName, String fromUserName, int quizId){
+	    
+	    Article article = new Article();
+	    article.setTitle("小测结果");
+	    article.setDescription(description);
+	    String url = WitestManager.quiz_result_page;
+	    url = url.replace("QUIZID", String.valueOf(quizId));
+	    url = url.replace("OPENID", CommonUtil.urlEncodeUTF8(fromUserName));
+	    article.setUrl(url);
+	    List<Article> articles = new ArrayList<Article>();
+	    articles.add(article);
+	    
+	    NewsMessage newsMessage = new NewsMessage();
+	    newsMessage.setToUserName(fromUserName);
+	    newsMessage.setFromUserName(toUserName);
+	    newsMessage.setCreateTime(new Date().getTime());
+	    newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+	    newsMessage.setArticleCount(articles.size());
+	    newsMessage.setArticles(articles);
+	    
+	    String respXml = MessageUtil.messageToXml(newsMessage);
+	    return respXml;
+	}
 	
-//	private static Article getHelpMessageArticle(){
-//		Article article = new Article();
-//		article.setTitle(" 使用说明");
-//		String description = "";
-//		description += "微信端功能包括：考试密码，考试成绩，小测，点名，注册，关联和吐槽。请选择下方按钮使用我们的服务。\n\n";
-//		description += "如您有任何疑问，请使用我们的吐槽功能提出您的宝贵意见！";
-//		description += "\n-------------------------------------";
-//		description += "\n点击阅读全文查看更多内容";
-//		article.setDescription(description);
-//		String url = WitestManager.help_page;
-//		article.setUrl(url);
-//		return article;
-//	}
+	//生成创建小测图文消息
+	public static String createQuizCreatorXml(UserRequest userRequest){
+		Article article = new Article();
+		article.setTitle("创建新的小测");
+		String description = "请点击阅读全文创建新的小测";
+		article.setDescription(description);
+		String url = WitestManager.createquiz_page+"?openid=" + CommonUtil.urlEncodeUTF8(userRequest.getFromUserName());
+		article.setUrl(url);
+		
+		List<Article> articles = new ArrayList<Article>();
+		articles.add(article);
+		
+		NewsMessage newsMessage = new NewsMessage();
+		newsMessage.setToUserName(userRequest.getFromUserName());
+		newsMessage.setFromUserName(userRequest.getToUserName());
+		newsMessage.setCreateTime(new Date().getTime());
+		newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+		newsMessage.setArticleCount(articles.size());
+		newsMessage.setArticles(articles);
+		
+		String respXml = MessageUtil.messageToXml(newsMessage);
+		return respXml;
+	}
 	
-//	private static Article createArticle(String title, String description, String picUrl, String url) {
-//		Article article = new Article();
-//		article.setTitle(title);
-//		article.setDescription(description);
-//		article.setPicUrl(picUrl);
-//		article.setUrl(url);
-//		return article;
-//	}
+	
+	//生成学生小测内容图文消息
+	public static String createQuizPageXml2(QuizItem quiz, UserRequest userRequest){
+        Article article = new Article();
+        article.setTitle("小测");
+        
+        String description = "您参与的小测是：" + quiz.getTitle();
+        int quizType = quiz.getType();
+        if (quizType == 1){
+            description += "\n此次小测是单项选择题，请点击阅读全文进行回答";
+        }else if (quizType == 2){
+            description += "\n此次小测是多项选择题，请点击阅读全文进行回答";
+        }else{
+            description += "\n此次小测是其他类型的题目，请点击阅读全文进行回答";
+        }
+        article.setDescription(description);
+        
+        String fromUserName = userRequest.getFromUserName();
+        String url = WitestManager.showquiz_page+"?openid=" + CommonUtil.urlEncodeUTF8(fromUserName);
+        article.setUrl(url);
+        
+        List<Article> articles = new ArrayList<Article>();
+        articles.add(article);
+        
+        NewsMessage newsMessage = new NewsMessage();
+        newsMessage.setToUserName(fromUserName);
+        newsMessage.setFromUserName(userRequest.getToUserName());
+        newsMessage.setCreateTime(new Date().getTime());
+        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+        newsMessage.setArticleCount(articles.size());
+        newsMessage.setArticles(articles);
+        
+        String respXml = MessageUtil.messageToXml(newsMessage);
+        return respXml;
+    }
+	
+	//生成老师查看小测结果的图文消息
+	public static String createQuizResultXml2(UserRequest userRequest){
+		String description="请点击阅读全文查看小测结果";
+		Article article=new Article();
+		article.setDescription(description);
+		article.setTitle("小测结果");
+		article.setUrl(userRequest.resultUrl());
+		
+		List<Article> articles=new ArrayList<Article>();
+		articles.add(article);
+		
+		NewsMessage newsMessage=new NewsMessage();
+		newsMessage.setArticleCount(articles.size());
+		newsMessage.setArticles(articles);
+		newsMessage.setFromUserName(userRequest.getToUserName());
+		newsMessage.setToUserName(userRequest.getFromUserName());
+		newsMessage.setCreateTime(new Date().getTime());
+		newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+		String respXml=MessageUtil.messageToXml(newsMessage);
+		return respXml;
+	}
 }

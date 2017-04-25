@@ -21,8 +21,8 @@ public class AccountDao extends BaseDao<Account, Integer> {
 		return getListByHQL(hqlstring, colValue);
 	}
 	
-	public List<Account> getAccountByUsername(String username){
-		return getAccountByColValue("username", username);
+	public List<Account> getAccountByUsername(int moocid){
+		return getAccountByColValue("moocid", moocid);
 	}
 	
 	public void saveAccount(List<Account> Accounts){

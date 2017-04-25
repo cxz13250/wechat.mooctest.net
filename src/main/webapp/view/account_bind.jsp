@@ -4,8 +4,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%
-	String date = (String) request.getAttribute("date");
-
 	String openid=(String)request.getAttribute("openid");
 
 %>
@@ -20,9 +18,10 @@
 <title>账号绑定</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/quiz_base.css" />
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui.css" />
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui2.css" />
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui.css"/>
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui2.css"/>
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui3.css"/>
+<script src="http://weixin.yoby123.cn/weui/zepto.min.js"></script>
 <style type="text/css">
 #main h1, #main p {
 	text-align: center;/*  */
@@ -60,11 +59,11 @@
 						<div class="weui_cell">
 							<div class="weui_cell_hd"><label class="weui_label">密码</label></div>
 							<div class="weui_cell_bd weui_cell_primary">
-								<input class="weui-input" type="password" required placeholder="请输入慕测账号密码" name="password">
+								<input class="weui_input" type="password" required placeholder="请输入慕测账号密码" name="password">
 							</div>
 						</div>
 						<div class="myform-row">
-							<input class="weui-btn weui-btn_primary" type="submit" value="账号登录">
+							<a href="javascript:;" class="weui_btn weui_btn_primary" id="sd2">绑定账号</a>	
 						</div>
 					</div>
 				</form>
@@ -72,7 +71,16 @@
 			</div>
 		</div>
 	</div>
+<script type="text/javascript">
+$(document).on("click", "#sd2", function() {
+    $.confirm("您确定要绑定此账号?", "确认绑定?", function() {
+      form.submit();
+    }, function() {
+      //取消操作
+    });
+  });
 
+</script>
 
 </body>
 

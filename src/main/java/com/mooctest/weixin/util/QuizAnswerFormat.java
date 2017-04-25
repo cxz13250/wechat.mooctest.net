@@ -7,6 +7,7 @@ public class QuizAnswerFormat {
 	
 	private static Pattern answer_pattern = Pattern.compile("[0-9]+|[a-zA-Z]");
 	
+	//单选题格式
 	public static String formatSingleQuizAnswer(String answer) {
 		Matcher matcher = answer_pattern.matcher(answer);
 		String result = "";
@@ -16,6 +17,7 @@ public class QuizAnswerFormat {
 		return result.toUpperCase();
 	}
 	
+	//多选题格式
 	public static String formatMultipleQuizAnswer(String answer) {
 		Matcher matcher = answer_pattern.matcher(answer);
 		String result = "";

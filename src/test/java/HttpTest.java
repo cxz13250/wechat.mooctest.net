@@ -1,14 +1,18 @@
+import com.mooctest.weixin.entity.Group;
 import com.mooctest.weixin.entity.JoinGroup;
 import com.mooctest.weixin.entity.JoinResult;
 import com.mooctest.weixin.entity.TaskInfo;
+import com.mooctest.weixin.json.JSONObject;
+import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
+import com.mooctest.weixin.model.Quiz;
 import com.mooctest.weixin.util.CommonUtil;
 import com.mooctest.weixin.util.HttpRequestUtil;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -20,29 +24,23 @@ public class HttpTest {
 
     @Test
     public void test1(){
-//    	JoinGroup joinGroup=new JoinGroup();
-//    	joinGroup.setAccount("18652376580");
-//    	joinGroup.setGroupId(Long.parseLong("12"));
-//    	joinGroup.setManagerName("증합");
-//    	String param=JSONSerializer.toJSON(joinGroup).toString();
-//    	System.out.println(param);
-//        String result = HttpRequestUtil.post(WitestManager.join_url,param);
-//        System.out.println(result);
-//        JSONObject jsonObject = JSONObject.fromObject(result);
-////    	JSONObject jsonObject=CommonUtil.httpsRequest(WitestManager.join_url, "POST", param);
-////    	System.out.println(jsonObject);
-//        boolean success=jsonObject.getBoolean("success");
-//    	try {
-//			List<TaskInfo> list=WitestManager.getTaskInfo("18652376580");
-//			for(TaskInfo taskInfo:list){
-//				System.out.print(taskInfo.getTaskName()+" ");
-//				System.out.println(taskInfo.getPassword());
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-    	JoinResult jr=WitestManager.joinGroup("18652376580", "12", "증합");
-    	System.out.println(jr.getMessage());
+    	/*List<Group> list=new ArrayList<Group>();
+		String param="managerId="+725;
+		String result=HttpRequestUtil.sendGet(WitestManager.group_url2, param);
+		JSONObject jsonObject=JSONObject.fromObject(result);
+		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
+		JSONArray ja=JSONArray.fromObject(object.get("groups"));
+		Group group=new Group();
+		JSONObject obj=new JSONObject();
+		for(int i=0;i<ja.size();i++){
+			obj=ja.getJSONObject(i);
+			System.out.println(obj);
+			group=(Group)JSONObject.toBean(obj, Group.class);
+			list.add(group);
+		}*/
+    	Quiz quiz=Managers.quizManager.getQuiz("133");
+    	JSONObject jsonObject=new JSONObject(quiz.getContent());
+    	System.out.println(jsonObject.length());
     }
 
 }

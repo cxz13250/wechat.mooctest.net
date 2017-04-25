@@ -30,6 +30,9 @@ public class Account {
 	
 	@Column(name="type")
 	private int type;
+	
+	@Column(name="mooc_id")
+	private int moocid;
 
 	public Integer getId() {
 		return id;
@@ -55,12 +58,19 @@ public class Account {
 		this.username = username;
 	}
 
+	public int getMoocid() {
+		return moocid;
+	}
+
+	public void setMoocid(int moocid) {
+		this.moocid = moocid;
+	}
+	
 	public int getType() {
 		return type;
 	}
 
 	public void setType(int type) {
 		this.type = type;
-	}
-	
+	}	
 }

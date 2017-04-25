@@ -1,5 +1,6 @@
 package com.mooctest.weixin.controller;
 
+import com.mooctest.weixin.entity.Accountinfo;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
 import com.mooctest.weixin.model.Account;
@@ -31,9 +32,14 @@ public class AccountController {
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
 		ModelAndView mv=new ModelAndView();
+		int flag=WitestManager.identity(openid);
+		if(flag!=2){
+			mv.setViewName("danger");
+			mv.addObject("msg", "您已经绑定过账号！");
+			mv.addObject("msg_title", "绑定失败！");
+			return mv;
+		}
 		mv.addObject("openid", openid);
-		mv.addObject("JSApiTicket", Managers.config.getTicket());
-		mv.addObject("appid", Managers.config.getAppid());
 		mv.setViewName("account_bind");
 		return mv;
 	}
@@ -49,9 +55,19 @@ public class AccountController {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
-		
 		ModelAndView mv=new ModelAndView();
-		
+		if(username==null){
+			mv.setViewName("fail");
+			mv.addObject("msg","用户名不可为空！");
+			mv.addObject("msg_title","绑定失败！");
+			return mv;
+		}
+		else if(password==null){
+			mv.setViewName("fail");
+			mv.addObject("msg","密码不可为空！");
+			mv.addObject("msg_title","绑定失败！");
+			return mv;
+		}
 		int flag=WitestManager.identity(openid);
 		if(flag!=2){
 			mv.setViewName("danger");
@@ -62,13 +78,14 @@ public class AccountController {
 			boolean temp=Managers.accountManager.checkAccount1(username);
 			if(!temp)
 			{
-				mv.setViewName("danger");
+				mv.setViewName("fail");
 				mv.addObject("msg","该账号已被绑定！");
 				mv.addObject("msg_title","绑定失败！");
 			}else {
+				int id;
 				if(type==0){
-					temp = WitestManager.isMoocUser1(username, password);
-					if (!temp) {
+					id = WitestManager.isWorker(username, password);
+					if (id==0) {
 						mv.setViewName("fail");
 						mv.addObject("msg","账户密码输入错误！");
 						mv.addObject("msg_title","绑定失败！");
@@ -77,15 +94,29 @@ public class AccountController {
 						account.setUsername(username);
 						account.setOpenid(openid);
 						account.setType(type);
+						account.setMoocid(id);
 						Managers.accountManager.saveAccount(account);
 						mv.addObject("msg", "您的账户已经成功绑定！");
 						mv.addObject("msg_title","绑定成功！");
 						mv.setViewName("success");
 					}
 				}else{
-					mv.setViewName("fail");
-					mv.addObject("msg","账户密码输入错误！");
-					mv.addObject("msg_title","绑定失败！");
+					id=WitestManager.isManager(username, password);
+					if(id==0){
+						mv.setViewName("fail");
+						mv.addObject("msg","账户密码输入错误！");
+						mv.addObject("msg_title","绑定失败！");
+					} else {
+						Account account = new Account();
+						account.setUsername(username);
+						account.setOpenid(openid);
+						account.setType(type);
+						account.setMoocid(id);
+						Managers.accountManager.saveAccount(account);
+						mv.addObject("msg", "您的账户已经成功绑定！");
+						mv.addObject("msg_title","绑定成功！");
+						mv.setViewName("success");
+					}
 				}
 			}
 		}
@@ -98,8 +129,19 @@ public class AccountController {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
-
+		
 		ModelAndView mv=new ModelAndView();
+		
+		int flag=WitestManager.identity(openid);
+		if(flag==2){
+			mv.setViewName("danger");
+			mv.addObject("msg", "您还未绑定账号！");
+			mv.addObject("msg_title", "查看失败！");
+			return mv;
+		}
+		Accountinfo accountinfo=Managers.accountManager.getAccountInfo(openid);
+		
+		mv.addObject("accouninfo", accountinfo);
 		mv.addObject("openid", openid);
 		mv.addObject("title", "我的信息");
 		mv.setViewName("account_menu");

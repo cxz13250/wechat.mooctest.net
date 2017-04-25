@@ -3,8 +3,13 @@ package com.mooctest.weixin.service;
 import org.apache.log4j.Logger;
 
 import com.mooctest.weixin.manager.LoggerManager;
+import com.mooctest.weixin.manager.Managers;
+import com.mooctest.weixin.model.QuizItem;
+import com.mooctest.weixin.model.RollcallItem;
 import com.mooctest.weixin.pojo.UserRequest;
 import com.mooctest.weixin.util.MessageUtil;
+import com.mooctest.weixin.util.NewsMessageUtil;
+
 
 /**  
 * 类说明   
@@ -104,6 +109,12 @@ public class MoocUserService extends GuestService{
 					} else if (eventKey.equals("help")){
 						processHelpMessage(userRequest);
 						return userRequest.getResultXml();
+					} else if (eventKey.equals("exam")){
+						processQuiz(userRequest);
+						return userRequest.getResultXml();
+					} else if(eventKey.equals("rollcall")){
+						processRollcall(userRequest);
+						return userRequest.getResultXml();
 					}
 				}
 			}			
@@ -143,5 +154,50 @@ public class MoocUserService extends GuestService{
     	String respContent="请点击<a href='"+userRequest.groupUrl()+"'>我的群组</a>查看群组";
     	userRequest.getTextMessage().setContent(respContent);
     	userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+    }
+    
+    //提示用户进入小测页面
+    protected static void processQuiz(UserRequest userRequest){
+		userRequest.removeSession();
+		String respContent;
+		QuizItem quiz = Managers.quizManager.getQuizItem(userRequest.getFromUserName());
+		if (quiz == null){
+			respContent = "您暂无参与的小测！";
+			userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+		}else if(Managers.quizManager.checkQuizContent(quiz)){
+			String xml = NewsMessageUtil.createQuizPageXml2(quiz, userRequest);
+			userRequest.setResultXml(xml);
+		}else {
+			if (quiz.getType() == 1){
+				String xml = NewsMessageUtil.createQuizPageXml2(quiz, userRequest);
+				userRequest.setResultXml(xml);
+			}else if (quiz.getType() == 2){
+				String xml = NewsMessageUtil.createQuizPageXml2(quiz, userRequest);
+				userRequest.setResultXml(xml);
+			}else if (quiz.getType() == 3){
+				String xml = NewsMessageUtil.createQuizPageXml2(quiz, userRequest);
+				userRequest.setResultXml(xml);
+				
+//				respContent = "您参与的小测是：" + quiz.getQuizTitle() + "\n\n请输入您的回答并提交";
+//				userRequest.getTextMessage().setContent(respContent);
+//				userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+//				userRequest.getSession().setOper(Operation.OPER6);
+			}
+		}
+	}
+    
+    //提示用户进入签到页面
+    protected static void processRollcall(UserRequest userRequest){
+    	userRequest.removeSession();
+    	String respContent;
+    	RollcallItem rItem=Managers.rollcallManager.getRollcall(userRequest.getFromUserName());
+    	if(rItem==null){
+    		respContent = "您暂无参与的点名！";
+    		userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+    	}else{
+			userRequest.setResultXml(NewsMessageUtil.createRollcallXml(userRequest));
+		}
     }
 }

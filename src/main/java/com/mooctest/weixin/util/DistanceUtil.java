@@ -31,7 +31,15 @@ public class DistanceUtil {
 	}
 	
 	public static void main(String[] args) {
-		double distance = DistanceUtil.getDistance(118.777223, 32.05378, 118.777222, 32.053722);
+		String location1="118.777223 32.05378";
+		String location2="118.777222 32.053722";
+		String[] s1=location1.split(" ");
+		String[] s2=location2.split(" ");
+		double lng1=Double.valueOf(s1[0]);
+		double lat1=Double.valueOf(s1[1]);
+		double lng2=Double.valueOf(s2[0]);
+		double lat2=Double.valueOf(s2[1]);
+		double distance = DistanceUtil.getDistance(lng1, lat1, lng2, lat2);
 		System.out.println(distance);
 	}
 }

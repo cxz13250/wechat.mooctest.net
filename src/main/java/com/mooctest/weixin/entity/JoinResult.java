@@ -1,7 +1,6 @@
 package com.mooctest.weixin.entity;
 
 public class JoinResult {
-
 	
 	private boolean success;
 	
