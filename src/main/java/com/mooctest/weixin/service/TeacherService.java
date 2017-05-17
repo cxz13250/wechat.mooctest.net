@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.mooctest.weixin.entity.Task;
 import org.apache.log4j.Logger;
 
 import com.mooctest.weixin.entity.Group;
@@ -106,6 +107,12 @@ public class TeacherService extends GuestService{
 					}else if(eventKey.equals("rollcall")){
 						processRollcall(userRequest);
 						return userRequest.getResultXml();
+					}else if(eventKey.equals("taskgrade")){
+						processGrade(userRequest);
+						return userRequest.getResultXml();
+					}else if(eventKey.equals("mytask")){
+						processPassword(userRequest);
+						return userRequest.getResultXml();
 					}
 				}
 			}			
@@ -129,7 +136,7 @@ public class TeacherService extends GuestService{
 	//提示老师进入创建小测页面
 	protected static void processQuiz(UserRequest userRequest){
 		String respContent = "";
-		int id=Managers.accountManager.getMoocId(userRequest.getFromUserName());
+		int id=Managers.accountManager.getAccount(userRequest.getFromUserName()).getMoocid();
 		List<Group> groups = WitestManager.getGroup2(id);
 		if (groups.isEmpty()){
 			respContent = "您还没有建立任何班级，赶紧登录mooctest.net建立班级吧！";
@@ -168,7 +175,7 @@ public class TeacherService extends GuestService{
 	protected static void processRollcall(UserRequest userRequest) {
 		String respContent="";
 		userRequest.removeSession();
-		int id=Managers.accountManager.getMoocId(userRequest.getFromUserName());
+		int id=Managers.accountManager.getAccount(userRequest.getFromUserName()).getMoocid();
 		List<Group> groups = WitestManager.getGroup2(id);
 		if (groups.isEmpty()){
 			respContent = "您还没有建立任何班级，赶紧登录mooctest.net建立班级吧";
@@ -184,4 +191,39 @@ public class TeacherService extends GuestService{
 		}
 	}
 
+	//提示老师进入查看任务成绩页面
+	protected  static void processGrade(UserRequest userRequest){
+		String respContent="";
+		userRequest.removeSession();
+		int id=Managers.accountManager.getAccount(userRequest.getFromUserName()).getMoocid();
+		List<Task> list=WitestManager.getFinishedTask(id);
+		if (list.isEmpty()){
+			respContent = "您当前没有已结束的任务，请登录mooctest.net查看！";
+			userRequest.removeSession();
+			userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+			return;
+		}else{
+			String getGradeCreatorXml=NewsMessageUtil.createGradeCreatorXml(userRequest);
+			userRequest.setResultXml(getGradeCreatorXml);
+		}
+	}
+
+	protected static void processPassword(UserRequest userRequest){
+		String respContent="";
+		userRequest.removeSession();
+		int id=Managers.accountManager.getAccount(userRequest.getFromUserName()).getMoocid();
+		List<Task> list=WitestManager.getUnstartedTask(id);
+		List<Task> list1=WitestManager.getCurrentTask(id);
+		if (list.isEmpty()&&list1.isEmpty()){
+			respContent = "您还没有创建任务，赶紧登录mooctest.net发布任务吧！";
+			userRequest.removeSession();
+			userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+			return;
+		}else{
+			String getPassowrdXml=NewsMessageUtil.CreatePasswordXml(userRequest);
+			userRequest.setResultXml(getPassowrdXml);
+		}
+	}
 }

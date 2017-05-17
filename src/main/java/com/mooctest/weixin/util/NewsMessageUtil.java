@@ -13,6 +13,8 @@ import com.mooctest.weixin.message.NewsMessage;
 import com.mooctest.weixin.model.QuizItem;
 import com.mooctest.weixin.pojo.UserRequest;
 
+import javax.jws.soap.SOAPBinding;
+
 
 /**
  * 图文消息发送工具类(没完成)
@@ -206,7 +208,6 @@ public class NewsMessageUtil {
 	    article.setDescription(description);
 	    String url = WitestManager.quiz_result_page;
 	    url = url.replace("QUIZID", String.valueOf(quizId));
-	    url = url.replace("OPENID", CommonUtil.urlEncodeUTF8(fromUserName));
 	    article.setUrl(url);
 	    List<Article> articles = new ArrayList<Article>();
 	    articles.add(article);
@@ -249,19 +250,13 @@ public class NewsMessageUtil {
 	
 	
 	//生成学生小测内容图文消息
-	public static String createQuizPageXml2(QuizItem quiz, UserRequest userRequest){
+	public static String createQuizPageXml2(List<QuizItem> quiz, UserRequest userRequest){
         Article article = new Article();
         article.setTitle("小测");
         
-        String description = "您参与的小测是：" + quiz.getTitle();
-        int quizType = quiz.getType();
-        if (quizType == 1){
-            description += "\n此次小测是单项选择题，请点击阅读全文进行回答";
-        }else if (quizType == 2){
-            description += "\n此次小测是多项选择题，请点击阅读全文进行回答";
-        }else{
-            description += "\n此次小测是其他类型的题目，请点击阅读全文进行回答";
-        }
+        String description = "您参与的小测共有" + quiz.size()+"道题";
+        description += "\n请点击阅读全文进行回答";
+
         article.setDescription(description);
         
         String fromUserName = userRequest.getFromUserName();
@@ -294,6 +289,52 @@ public class NewsMessageUtil {
 		List<Article> articles=new ArrayList<Article>();
 		articles.add(article);
 		
+		NewsMessage newsMessage=new NewsMessage();
+		newsMessage.setArticleCount(articles.size());
+		newsMessage.setArticles(articles);
+		newsMessage.setFromUserName(userRequest.getToUserName());
+		newsMessage.setToUserName(userRequest.getFromUserName());
+		newsMessage.setCreateTime(new Date().getTime());
+		newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+		String respXml=MessageUtil.messageToXml(newsMessage);
+		return respXml;
+	}
+
+	//生成群主查看任务成绩的图文消息
+	public static String createGradeCreatorXml(UserRequest userRequest){
+		String description="请点击阅读全文查看任务成绩";
+		String url=WitestManager.manager_grade_page+"?openid="+CommonUtil.urlEncodeUTF8(userRequest.getFromUserName());
+		Article article=new Article();
+		article.setDescription(description);
+		article.setTitle("任务成绩");
+		article.setUrl(url);
+
+		List<Article> articles=new ArrayList<Article>();
+		articles.add(article);
+
+		NewsMessage newsMessage=new NewsMessage();
+		newsMessage.setArticleCount(articles.size());
+		newsMessage.setArticles(articles);
+		newsMessage.setFromUserName(userRequest.getToUserName());
+		newsMessage.setToUserName(userRequest.getFromUserName());
+		newsMessage.setCreateTime(new Date().getTime());
+		newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+		String respXml=MessageUtil.messageToXml(newsMessage);
+		return respXml;
+	}
+
+	//生成群主查看任务密码的图文消息
+	public  static String CreatePasswordXml(UserRequest userRequest){
+		String description="请点击阅读全文查看任务密码";
+		String url=WitestManager.manager_task_page+"?openid="+CommonUtil.urlEncodeUTF8(userRequest.getFromUserName());
+		Article article=new Article();
+		article.setDescription(description);
+		article.setTitle("任务密码");
+		article.setUrl(url);
+
+		List<Article> articles=new ArrayList<Article>();
+		articles.add(article);
+
 		NewsMessage newsMessage=new NewsMessage();
 		newsMessage.setArticleCount(articles.size());
 		newsMessage.setArticles(articles);

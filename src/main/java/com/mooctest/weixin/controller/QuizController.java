@@ -1,7 +1,6 @@
 package com.mooctest.weixin.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mooctest.weixin.model.Quiz;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +31,7 @@ import com.mooctest.weixin.util.QuizAnswerFormat;
 @RequestMapping("/quiz")
 public class QuizController {
 
+	//老师创建小测
 	@RequestMapping(value = "/create")
 	public ModelAndView create(@RequestParam("openid") String openid,HttpServletRequest request,HttpServletResponse response) throws IOException {
 		
@@ -52,7 +53,7 @@ public class QuizController {
 		List<String> groupIdList = new ArrayList<String>();
 		List<String> groupNameList = new ArrayList<String>();
 
-		List<Group> groups = WitestManager.getGroup2(Managers.accountManager.getMoocId(openid));
+		List<Group> groups = WitestManager.getGroup2(Managers.accountManager.getAccount(openid).getMoocid());
 		List<List<PreparedQuiz>> list = new ArrayList<List<PreparedQuiz>>();
 		for (Group group : groups) {
 			groupIdList.add(String.valueOf(group.getId()));
@@ -61,16 +62,15 @@ public class QuizController {
 		}
 
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("classIdList", groupIdList);
-		mv.addObject("classNameList", groupNameList);
+		mv.addObject("groupIdList", groupIdList);
+		mv.addObject("groupNameList", groupNameList);
 		mv.addObject("openid", openid);
 		mv.addObject("date", date);
-		// mv.setViewName("quiz_create2");
-		// modify by lsy
 		mv.setViewName("quiz_create_new");
 		return mv;
 	}
 	
+	//学生参与小测
 	@RequestMapping(value = "/show")
 	public ModelAndView quiz(@RequestParam("openid") String openid,HttpServletRequest request,HttpServletResponse response) throws IOException {
 		
@@ -81,52 +81,29 @@ public class QuizController {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String date = dateFormat.format(new Date());
 
-		QuizItem quiz = Managers.quizManager.getQuizItem(openid);
+		List<QuizItem> list = Managers.quizManager.getQuizItem(openid);
 		ModelAndView mv = new ModelAndView();
-		if (null == quiz) {
+		if (list.isEmpty()) {
 			mv.setViewName("fail");
 			mv.addObject("msg", "小测已经结束！");
 			mv.addObject("msg_title", "无法参与！");
-			return mv;
 		}
-		
-		if(quiz.getWorAnswer()!=""){
-			mv.setViewName("fail");
-			mv.addObject("msg","您已经提交过答案了！");
-			mv.addObject("msg_title","答题失败！");
-			return mv;
-		}
-
-		if (quiz.getType() == 1) {
-			List<String> options = buildQuizOptionsList(quiz.getContent());
-			if (options != null && options.size() > 0) {
-				mv.addObject("options", options);
-			}
-			mv.addObject("quiz", quiz);
-			mv.addObject("date", date);
-			mv.setViewName("quiz_1");
-		} else if (quiz.getType() == 2) {
-			List<String> options = buildQuizOptionsList(quiz.getContent());
-			if (options != null && options.size() > 0) {
-				mv.addObject("options", options);
-			}
-			mv.addObject("quiz", quiz);
-			mv.addObject("date", date);
-			mv.setViewName("quiz_2");
-		} else {
-			mv.addObject("quiz", quiz);
-			mv.addObject("date", date);
-			mv.setViewName("quiz_3");
+		else{
+			QuizItem quiz=list.get(0);
+			setMV(quiz, mv, 0,list.size());
 		}
 		return mv;
 	}
 	
+	//老师提交小测及第一个题
 	@RequestMapping(value = "/submit_quiz")
 	public ModelAndView submitQuizNew(@RequestParam("openid") String openid,
-			@RequestParam("quizList") String preparedQuizId, HttpServletRequest request) {
-		
+			@RequestParam("quizList") String preparedQuizId, @RequestParam("param")String param,HttpServletRequest request) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String date = dateFormat.format(new Date());
 		ModelAndView mv = new ModelAndView();
-
+		String quizid;
+		
 		//如果是新的小测
 		if (preparedQuizId.equals("-1")) {
 			String quizTitle = request.getParameter("quiz_title");
@@ -135,7 +112,7 @@ public class QuizController {
 				quizTitle = "未命名的小测";
 
 			String quizType = request.getParameter("quiz_type"); //小测类型
-			String groupId = request.getParameter("classId");  //群组ID
+			String groupId = request.getParameter("groupId");  //群组ID
 
 			JSONObject jo = new JSONObject();
 			if (quizType.equals("1") || quizType.equals("2")) {
@@ -150,7 +127,7 @@ public class QuizController {
 					jo.put(key, value);
 				}
 				List<Worker> workers = WitestManager.getMember(groupId);
-				Managers.quizManager.startQuiz(workers,
+				quizid=Managers.quizManager.startQuiz(workers,
 				Integer.parseInt(groupId), Integer.parseInt(quizType),
 				quizTitle, jo.toString(), openid);
 			} else {
@@ -159,54 +136,109 @@ public class QuizController {
 					description = "暂无题目描述";
 				};
 				List<Worker> workers = WitestManager.getMember(String.valueOf(groupId));
-				Managers.quizManager.startQuiz(workers,
+				quizid=Managers.quizManager.startQuiz(workers,
 				Integer.parseInt(groupId), Integer.parseInt(quizType),
 				quizTitle, description, openid);
 			}
-
 		} else {
 			PreparedQuiz quiz = Managers.quizManager.getPreparedQuizById(Integer.valueOf(preparedQuizId));
-			int classId = quiz.getGroupId();
+			int groupId = quiz.getGroupId();
 			int quizType = quiz.getQuizType();
 			String quizTitle = quiz.getQuizTitle();
-			List<Worker> workers = WitestManager.getMember(String.valueOf(classId));
-			 Managers.quizManager.startQuiz(workers, classId, quizType,
+			List<Worker> workers = WitestManager.getMember(String.valueOf(groupId));
+			 quizid=Managers.quizManager.startQuiz(workers, groupId, quizType,
 			  quizTitle, quiz.getQuizContent(),
 			 openid);
 		}
-
-		CustomMessageUtil.sendTextCustomMessage(openid,
-				"小测创建成功！\n\n您的学生在此公众号中点击【小测菜单】就可以获得这次小测的内容。\n\n如需结束此次小测请【再次】点击下方的【小测菜单】", Managers.config.getToken());
-		mv.addObject("msg","小测创建成功！");
-		mv.addObject("msg_title","创建成功");
-		mv.setViewName("success");
-		return mv;
+		if(param=="next"||param.equals("next")){
+			mv.addObject("groupId", request.getParameter("groupId"));
+			mv.addObject("date", date);
+			mv.addObject("openid", openid);
+			mv.addObject("quizid",quizid);
+			mv.setViewName("quiz_create_next");
+			return mv;
+		}
+		else{
+			CustomMessageUtil.sendTextCustomMessage(openid,
+					"小测创建成功！\n\n您的学生在此公众号中点击【小测菜单】就可以获得这次小测的内容。\n\n如需结束此次小测请【再次】点击下方的【小测菜单】", Managers.config.getToken());
+			mv.addObject("msg","小测创建成功！");
+			mv.addObject("msg_title","创建成功");
+			mv.setViewName("success");
+			return mv;
+		}
 	}
 	
-	@RequestMapping(value = "/submit_answer")
-	public ModelAndView submitAnswer(@RequestParam("openid") String openid, @RequestParam("quiz_type") String quiz_type,
-			HttpServletRequest request) {
+	//老师继续提交题目
+	@RequestMapping(value = "/submit_quiz_next")
+	public ModelAndView nextQuiz(@RequestParam("openid")String openid,@RequestParam("quizid")String quizid,@RequestParam("groupId")String groupId,@RequestParam("param")String param,HttpServletRequest request){
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String date = dateFormat.format(new Date());
+		ModelAndView mv=new ModelAndView();
+		
+		String quizTitle = request.getParameter("quiz_title");
+		String defaultTitle = "老师您想问什么？";
+		if (quizTitle == null || quizTitle.length() == 0 || quizTitle.equals(defaultTitle))
+			quizTitle = "未命名的小测";
+		String quizType = request.getParameter("quiz_type"); //小测类型
+		
+		JSONObject jo = new JSONObject();
+		if (quizType.equals("1") || quizType.equals("2")) {
+			String[] content = request.getParameterValues("optionText");
+			// 单选题 or 多选题
+			for (int i = 0; i < content.length; i++) {
+				String key = String.valueOf((char) ('A' + i));
+				String value = content[i];
+				if (value.equals("")) {
+					value = "选项"+key;
+				}
+				jo.put(key, value);
+			}
+			List<Worker> workers = WitestManager.getMember(groupId);
+			Managers.quizManager.creatQuestion(workers,
+					Integer.parseInt(groupId), Integer.parseInt(quizType),
+					quizTitle, jo.toString(), openid, Integer.parseInt(quizid));
+		} else {
+			String description = request.getParameter("quizDescription");//小测描述
+			if(description.equals("")){
+				description = "暂无题目描述";
+			};
+			List<Worker> workers = WitestManager.getMember(String.valueOf(groupId));
+			Managers.quizManager.creatQuestion(workers,
+					Integer.parseInt(groupId), Integer.parseInt(quizType),
+					quizTitle, description, openid,Integer.parseInt(quizid));
+		}
+		
+		if(param.equals("next")||param=="next"){
+			mv.addObject("date", date);
+			mv.addObject("groupId", groupId);
+			mv.addObject("quizid", quizid);
+			mv.addObject("openid", openid);
+			mv.setViewName("quiz_create_next");
+			return mv;
+		}
+		else{
+			CustomMessageUtil.sendTextCustomMessage(openid,
+					"小测创建成功！\n\n您的学生在此公众号中点击【小测菜单】就可以获得这次小测的内容。\n\n如需结束此次小测请【再次】点击下方的【小测菜单】", Managers.config.getToken());
+			mv.addObject("msg","小测创建成功！");
+			mv.addObject("msg_title","创建成功");
+			mv.setViewName("success");
+			return mv;
+		}
+	}
+	
+	//学生提交答案
+	@RequestMapping(value = "/submit_answer")
+	public ModelAndView submitAnswer(@RequestParam("openid") String openid, @RequestParam("quiz_type") String quiz_type,@RequestParam("param")String param,@RequestParam("index")int index,
+			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 
+		List<QuizItem> list=Managers.quizManager.getQuizItem(openid);
+		QuizItem quiz=new QuizItem();
+		
 		if (quiz_type.equals("1")) {
 			String answer = request.getParameter("answer");
 			String formatedAnswer = QuizAnswerFormat.formatSingleQuizAnswer(answer);
-			if(!Managers.quizManager.writeQuizAnswer(openid, formatedAnswer)){
-				mv.setViewName("fail");
-				mv.addObject("msg","该小测已结束！");
-				mv.addObject("msg_title","提交失败！");
-			}
-			else{
-				// 向用户发送反馈信息
-				CustomMessageUtil.sendTextCustomMessage(openid,
-						"你已成功提交回答:\n\n  " + formatedAnswer + "\n\n您可以在小测结束前重复提交回答，最后一次提交的结果将作为您的最终回答",
-						Managers.config.getToken());
-				mv.addObject("msg","成功提交答案！");
-				mv.addObject("msg_title","提交成功");
-				mv.setViewName("success");
-			}
+			writeAnswer(openid,formatedAnswer,index,param,mv,quiz,list);
 		} else if (quiz_type.equals("2")) {
 			String[] answers = request.getParameterValues("answer");
 			String answerStr = "";
@@ -214,36 +246,10 @@ public class QuizController {
 				answerStr += string;
 			}
 			String formatedAnswer = QuizAnswerFormat.formatMultipleQuizAnswer(answerStr);
-			if(!Managers.quizManager.writeQuizAnswer(openid, formatedAnswer)){
-				mv.setViewName("fail");
-				mv.addObject("msg","该小测已结束！");
-				mv.addObject("msg_title","提交失败！");
-				return mv;
-			}
-			// 向用户发送反馈信息
-			CustomMessageUtil.sendTextCustomMessage(openid,
-					"你已成功提交回答:\n\n  " + formatedAnswer + "\n\n您可以在小测结束前重复提交回答，最后一次提交的结果将作为您的最终回答",
-					Managers.config.getToken());
-
-			mv.addObject("msg","成功提交答案！");
-			mv.addObject("msg_title","提交成功");
-			mv.setViewName("success");
+			writeAnswer(openid,formatedAnswer,index,param,mv,quiz,list);
 		} else if (quiz_type.equals("3")) {
 			String formatedAnswer = request.getParameter("answer");
-			if(!Managers.quizManager.writeQuizAnswer(openid, formatedAnswer)){
-				mv.setViewName("fail");
-				mv.addObject("msg","该小测已结束！");
-				mv.addObject("msg_title","提交失败！");
-				return mv;
-			}
-			// 向用户发送反馈信息
-			CustomMessageUtil.sendTextCustomMessage(openid,
-					"你已成功提交回答:\n\n  " + formatedAnswer + "\n\n您可以在小测结束前重复提交回答，最后一次提交的结果将作为您的最终回答",
-					Managers.config.getToken());
-
-			mv.addObject("msg","成功提交答案！");
-			mv.addObject("msg_title","提交成功");
-			mv.setViewName("success");
+			writeAnswer(openid,formatedAnswer,index,param,mv,quiz,list);
 		}
 		return mv;
 	}
@@ -318,6 +324,74 @@ public class QuizController {
 			return content;
 		} catch (Exception e) {
 			return null;
+		}
+	}
+	
+	//设置回传ModelandView
+	public void setMV(QuizItem quiz,ModelAndView mv,int index,int size){	
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String date = dateFormat.format(new Date());
+		String judge;//判断前台是否需要隐藏下一题按钮
+		if(size==(index+1)){			
+			judge="0";
+		}else{
+			judge="1";
+		}
+		if (quiz.getType() == 1) {
+			List<String> options = buildQuizOptionsList(quiz.getContent());
+			if (options != null && options.size() > 0) {
+				mv.addObject("options", options);
+			}
+			mv.addObject("judge", judge);
+			mv.addObject("index", String.valueOf(index));
+			mv.addObject("quiz", quiz);
+			mv.addObject("date", date);
+			mv.setViewName("quiz_1");
+		} else if (quiz.getType() == 2) {
+			List<String> options = buildQuizOptionsList(quiz.getContent());
+			if (options != null && options.size() > 0) {
+				mv.addObject("options", options);
+			}
+			mv.addObject("judge", judge);
+			mv.addObject("index", String.valueOf(index));
+			mv.addObject("quiz", quiz);
+			mv.addObject("date", date);
+			mv.setViewName("quiz_2");
+		} else {
+			mv.addObject("judge", judge);
+			mv.addObject("index", String.valueOf(index));
+			mv.addObject("quiz", quiz);
+			mv.addObject("date", date);
+			mv.setViewName("quiz_3");
+		}
+	}
+	
+	// 向学生发送反馈信息	
+	public void sendCustomMessage(String openid,String formatedAnswer,ModelAndView mv){
+		CustomMessageUtil.sendTextCustomMessage(openid,
+				"你已成功提交回答:\n\n  " + formatedAnswer + "\n\n您可以在小测结束前重复提交回答，最后一次提交的结果将作为您的最终回答",
+				Managers.config.getToken());
+
+		mv.addObject("msg","成功提交答案！");
+		mv.addObject("msg_title","提交成功");
+		mv.setViewName("success");
+	}
+
+	public void writeAnswer(String openid, String formatedAnswer, int index, String param, ModelAndView mv, QuizItem quiz,List<QuizItem> list){
+		if(!Managers.quizManager.writeQuizAnswer(openid, formatedAnswer,index)){
+			mv.setViewName("fail");
+			mv.addObject("msg","该小测已结束！");
+			mv.addObject("msg_title","提交失败！");
+		}
+		else{
+			if(param=="next"||param.equals("next")){
+				index++;
+				quiz=list.get(index);
+				setMV(quiz, mv, index, list.size());
+			}
+			else{
+				sendCustomMessage(openid, formatedAnswer, mv);
+			}
 		}
 	}
 }

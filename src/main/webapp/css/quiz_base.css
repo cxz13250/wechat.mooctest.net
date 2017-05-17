@@ -40,15 +40,35 @@ a.bottom_bar {
 	cursor: pointer;
 	border-radius: .2em;
 	display: block;
-	float: right;
 	margin: 10px 20px 10px 0;
 /*  padding: 5px 0px 0px 0px;*/
 	width: 35%;
 	height: 32px;
     line-height: 32px;
 	color: #FFF;
-	position: absolute;
+	position: fixed;
 	right: 0;
+	text-decoration: none;
+	font-size: 22px;
+	font-family: "Microsoft YaHei";
+}
+
+a.next_bar {
+	background-color: #49b7e8;
+	color: white;
+	text-align: center;
+	padding: .2em .3em;
+	cursor: pointer;
+	border-radius: .2em;
+	display: block;
+	margin: 10px 0 10px 20px;
+/*  padding: 5px 0px 0px 0px;*/
+	width: 35%;
+	height: 32px;
+    line-height: 32px;
+	color: #FFF;
+	position: fixed;
+	left: 0;
 	text-decoration: none;
 	font-size: 22px;
 	font-family: "Microsoft YaHei";

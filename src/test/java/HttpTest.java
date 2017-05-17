@@ -38,9 +38,6 @@ public class HttpTest {
 			group=(Group)JSONObject.toBean(obj, Group.class);
 			list.add(group);
 		}*/
-    	Quiz quiz=Managers.quizManager.getQuiz("133");
-    	JSONObject jsonObject=new JSONObject(quiz.getContent());
-    	System.out.println(jsonObject.length());
     }
 
 }

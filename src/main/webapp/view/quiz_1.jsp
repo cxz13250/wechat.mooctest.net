@@ -18,6 +18,10 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <title>课堂小测</title>
 <link rel="stylesheet" type="text/css" href="css/quiz_base.css" />
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui.css"/>
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui2.css"/>
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui3.css"/>
+<script src="http://weixin.yoby123.cn/weui/zepto.min.js"></script>
 <style type="text/css">
 div#head h2 {
 	text-align: left;
@@ -28,13 +32,12 @@ div#head h2 {
 <body>
 	<br>
 	<%
-		//List<PreparedQuiz> list = test.getQuizzes();
-		//out.write("size:" + list.size());
 		QuizItem quiz = (QuizItem) request.getAttribute("quiz");
 		int quizType = quiz.getType();
-		//out.write("TestInfo:" + quiz.getQuizTitle());
 		String date = (String) request.getAttribute("date");
 		List<String> options = (List<String>) request.getAttribute("options");
+		String index=(String)request.getAttribute("index");
+		String judge=(String)request.getAttribute("judge");
 	%>
 	<div id="container">
 
@@ -58,11 +61,16 @@ div#head h2 {
 				</p>
 			</div>
 			<div id="main">
-				<form name="form" method="post" action="q/quiz/submit_answer">
+				<form id="answer" name="form" method="post" action="q/quiz/submit_answer">
 				<input type="hidden" name="quiz_type" value="<%= quizType %>">
 				<input type="hidden" name="openid" value="<%=quiz.getWorOpenId() %>">
+				<input type="hidden" name="index" value="<%=index%>">
+				<input type="hidden" name="param" id="param">
+				<input type="hidden" name="judge" id="judge" value="<%=judge%>">
+				<input type="radio" name="answer" id="quiz_<%=0%>"
+							value="A" checked> <label for="quiz_<%=0%>"><%="A" + ". " + options.get(0)%></label>	
 					<%
-						for (int i = 0; i < options.size(); i++) {
+						for (int i = 1; i < options.size(); i++) {
 							String optionValue = String.valueOf((char) ('A' + i));
 							String optionName = options.get(i);
 							System.out.println(optionValue + ". " + optionName);
@@ -75,18 +83,38 @@ div#head h2 {
 						}
 					%>
 					<div>
-						<br> <a href="javascript:form.submit();"
-							class="submit_button">提交回答</a> <br> <br> <br>
+						<a href="javascript:void(0);" class="weui_btn weui_btn_primary" id="nextBtn">下一题</a>
+						<a href="javascript:void(0);" class="weui_btn weui_btn_primary" id="submitBtn">提交回答</a> 
 					</div>
 				</form>
 			</div>
 		</div>
-
-
 	</div>
 	<div id="div3">
 		<p style="color:white;">请完成回答后点击<span style="color:red;">提交回答</span>按钮</p>
 	</div>
+	<script type="text/javascript">
+	$(function() {
+		var judge=document.getElementById("judge").value;
+		if(judge.trim()=="0"){
+			$('#nextBtn').hide();
+		}else{
+			$('#submitBtn').hide();
+		}
+	});
+	$('#submitBtn').click(function() {
+	    $.confirm("您确定要提交回答?", "确认提交?", function() {
+	    	$('#param').val('finish');
+			$('#answer').submit();
+	    }, function() {
+	      //取消操作
+	    });
+	  });
+		
+		$('#nextBtn').click(function() {
+			$('#param').val('next');
+			$('#answer').submit();
+		});
+	</script>
 </body>
-
 </html>

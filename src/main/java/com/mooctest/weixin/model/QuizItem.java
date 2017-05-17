@@ -18,25 +18,28 @@ public class QuizItem {
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "wor_openid", length = 50)
+	@Column(name = "worOpenid", length = 50)
 	private String worOpenId;
 
-	@Column(name = "group_id")
+	@Column(name = "groupid")
 	private Integer groupid;
 
-	@Column(name = "quiz_id")
-	private Integer quizId;
+	@Column(name = "quizid")
+	private Integer quizid;
 	
-	@Column(name = "quiz_type")
+	@Column(name = "questionid")
+	private Integer questionid;
+	
+	@Column(name = "type")
 	private Integer type;
 
-	@Column(name = "quiz_title", length = 50)
+	@Column(name = "title", length = 50)
 	private String title;
 
-	@Column(name = "quiz_content", length = 400)
+	@Column(name = "content", length = 400)
 	private String content;
 
-	@Column(name = "wor_answer", length = 100)
+	@Column(name = "worAnswer", length = 100)
 	private String worAnswer;
 
 	@Column(name = "state")  //小测状态:1为正在进行,-1为已经结束
@@ -45,11 +48,11 @@ public class QuizItem {
 	@Column(name = "grade")
 	private Integer grade;
 
-	@Column(name = "man_openid", length = 50)
+	@Column(name = "manOpenid", length = 50)
 	private String manOpenId;
 	
-	@Column(name = "create_time")
-	private Timestamp createtime;
+	@Column(name = "createTime")
+	private Timestamp createTime;
 
 	public Integer getId() {
 		return id;
@@ -91,22 +94,6 @@ public class QuizItem {
 		this.content = content;
 	}
 
-	public Timestamp getCreatetime() {
-		return createtime;
-	}
-
-	public void setCreatetime(Timestamp createtime) {
-		this.createtime = createtime;
-	}
-
-	public Integer getQuizId() {
-		return quizId;
-	}
-
-	public void setQuizId(Integer quizId) {
-		this.quizId = quizId;
-	}
-
 	public String getWorOpenId() {
 		return worOpenId;
 	}
@@ -145,7 +132,30 @@ public class QuizItem {
 
 	public void setGrade(Integer grade) {
 		this.grade = grade;
+	}
+
+	public Integer getQuizid() {
+		return quizid;
+	}
+
+	public void setQuizid(Integer quizid) {
+		this.quizid = quizid;
+	}
+
+	public Integer getQuestionid() {
+		return questionid;
+	}
+
+	public void setQuestionid(Integer questionid) {
+		this.questionid = questionid;
+	}
+
+	public Timestamp getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
 	}	
-	
-	
+		
 }

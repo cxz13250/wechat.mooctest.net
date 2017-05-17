@@ -43,7 +43,7 @@
                 <tbody>
                 <% for(FinishedTask name:list){%>
                 <tr><td width=60%><%=name.getTaskName()%></td>
-                    <td width=40%><%=name.getGrade()%></td>
+                    <td width=40%><%=name.getScore()%></td>
                 </tr>
 
                 <%}}%>

@@ -24,8 +24,11 @@ public class QuizAnswer {
     @Column(name = "wor_answer")
     private String worAnswer;
 
-    @Column(name = "quiz_id")
-    private Integer quizId;
+    @Column(name = "quizid")
+    private Integer quizid;
+    
+    @Column(name = "questionid")
+    private Integer questionid;
     
     @Column(name = "worNum")
     private String worNum;
@@ -39,14 +42,6 @@ public class QuizAnswer {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getQuizId() {
-		return quizId;
-	}
-
-	public void setQuizId(Integer quizId) {
-		this.quizId = quizId;
 	}
 
 	public Timestamp getRecordCreateTime() {
@@ -79,5 +74,21 @@ public class QuizAnswer {
 
 	public void setOpenid(String openid) {
 		this.openid = openid;
-	}  
+	}
+
+	public Integer getQuizid() {
+		return quizid;
+	}
+
+	public void setQuizid(Integer quizid) {
+		this.quizid = quizid;
+	}
+
+	public Integer getQuestionid() {
+		return questionid;
+	}
+
+	public void setQuestionid(Integer questionid) {
+		this.questionid = questionid;
+	} 
 }

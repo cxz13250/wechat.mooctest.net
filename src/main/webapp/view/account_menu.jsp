@@ -13,11 +13,6 @@
  	String level=accountinfo.getLevel()==1?"教师用户":"普通用户";
  	String name=accountinfo.getName()!=null?accountinfo.getName():"无";
  	String company=accountinfo.getCompany()!=null?accountinfo.getCompany():"无";
- 	//String email="无";
- 	//String mobile="无";
- 	//String level="无";
- 	//String name="无";
- 	//String company="无";
 %>
 <head>
 <%

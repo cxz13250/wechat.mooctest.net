@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mooctest.weixin.dao.AccountDao;
 import com.mooctest.weixin.dao.PreparedQuizDao;
+import com.mooctest.weixin.dao.QuestionDao;
 import com.mooctest.weixin.dao.QuizAnswerDao;
 import com.mooctest.weixin.dao.QuizDao;
 import com.mooctest.weixin.dao.QuizItemDao;
@@ -19,6 +18,7 @@ import com.mooctest.weixin.entity.Worker;
 import com.mooctest.weixin.json.JSONObject;
 import com.mooctest.weixin.model.Account;
 import com.mooctest.weixin.model.PreparedQuiz;
+import com.mooctest.weixin.model.Question;
 import com.mooctest.weixin.model.Quiz;
 import com.mooctest.weixin.model.QuizAnswer;
 import com.mooctest.weixin.model.QuizItem;
@@ -49,36 +49,51 @@ public class QuizManager {
 	@Autowired
 	QuizDao quizDao;
 	
+	@Autowired
+	QuestionDao questionDao;
+	
 	//获取学生小测回答内容
-	public List<QuizAnswer> getQuizAnswer(int quizId){
-        List<QuizAnswer> list = quizAnswerDao.getListByQuizId(quizId);
+	public List<QuizAnswer> getQuizAnswer(int questionId){
+        List<QuizAnswer> list = quizAnswerDao.getListByQuizId(questionId);
         return list;
     }
 	
-	//发起小测
-	public void startQuiz(List<Worker> workers,Integer groupId, int quizType, 
+	//根据小测id题目获取本次小测
+	public List<Question> getQuestion(int quizid){
+        List<Question> list = questionDao.getQuestionByQuizid(quizid);
+        return list;
+    }
+	
+	//根据题目id获取本题
+	public List<Question> getQuestionById(int id){
+	    List<Question> list = questionDao.getQuestionById(id);
+	    return list;
+	}
+	
+	//创建小测并生成第一个题
+	public String startQuiz(List<Worker> workers,Integer groupId, int quizType, 
 			 String quizTitle, String quizContent, String teaOpenid) {
 
 		Timestamp quizTime = new Timestamp(new Date().getTime());
 		Timestamp endTime=null;
 		String openid;
-		//将小测存入表quiz
+		//生成本次小测信息
 		Quiz quiz=new Quiz();
-		quiz.setContent(quizContent);
 		quiz.setGroupid(groupId);
 		quiz.setOpenid(teaOpenid);
-		quiz.setTitle(quizTitle);
-		quiz.setType(quizType);
 		quiz.setStart(quizTime);
 		quiz.setEnd(endTime);
 		quizDao.saveQuiz(quiz);
+		//生成本题信息
+		Question question=new Question();
+		question.setQuizid(quiz.getId());
+		question.setContent(quizContent);
+		question.setTitle(quizTitle);
+		question.setType(quizType);
+		questionDao.saveQuestion(question);
 		
-		//将小测信息整合学生信息存入表quizitem中
-		List<Quiz> list=quizDao.getQuizByCondition("start='"+quizTime+"' and openid='"+teaOpenid+"'");
+		//将本题信息整合学生信息存入表quizitem中
 		List<Account> list2=new ArrayList<Account>();
-		if(!list.isEmpty()){
-			quiz=list.get(0);
-		}
 		for (Worker worker : workers) {
 			QuizItem quizItem = new QuizItem();
 			list2=accountDao.getAccountByUsername(worker.getId());
@@ -93,26 +108,69 @@ public class QuizManager {
 				quizItem.setState(1);
 				quizItem.setWorAnswer("");
 				quizItem.setManOpenId(teaOpenid);
-				quizItem.setCreatetime(quizTime);
-				quizItem.setQuizId(quiz.getId());
+				quizItem.setCreateTime(quizTime);
+				quizItem.setQuizid(quiz.getId());
+				quizItem.setQuestionid(question.getId());
+				quizItemDao.saveQuizItem(quizItem);
+			}
+		}
+		return String.valueOf(quiz.getId());
+	}
+	
+	//生成本题
+	public void creatQuestion(List<Worker> workers,Integer groupId, int quizType, 
+			 String quizTitle, String quizContent, String teaOpenid,int quizid){
+		
+		Timestamp quizTime = new Timestamp(new Date().getTime());
+		String openid;
+		
+		//将本题信息存入表question中
+		Question question=new Question();
+		question.setContent(quizContent);
+		question.setQuizid(quizid);
+		question.setTitle(quizTitle);
+		question.setType(quizType);
+		questionDao.saveQuestion(question);
+		
+		//将本题信息整合学生信息存入表quizitem中
+		List<Account> list2=new ArrayList<Account>();
+		for (Worker worker : workers) {
+			QuizItem quizItem = new QuizItem();
+			list2=accountDao.getAccountByUsername(worker.getId());
+			if(!list2.isEmpty()){
+				openid=list2.get(0).getOpenid();
+				quizItem.setWorOpenId(openid);	
+				quizItem.setGrade(worker.getGrade());
+				quizItem.setGroupid(groupId);
+				quizItem.setType(quizType);
+				quizItem.setTitle(quizTitle);
+				quizItem.setContent(quizContent);
+				quizItem.setState(1);
+				quizItem.setWorAnswer("");
+				quizItem.setManOpenId(teaOpenid);
+				quizItem.setCreateTime(quizTime);
+				quizItem.setQuizid(quizid);
+				quizItem.setQuestionid(question.getId());
 				quizItemDao.saveQuizItem(quizItem);
 			}
 		}
 	}
 	
 	//提交答案
-	public boolean writeQuizAnswer(String stuOpenId, String answer){
-		QuizItem quizItem = getQuizItem(stuOpenId);
+	public boolean writeQuizAnswer(String stuOpenId, String answer,int index){
+		List<QuizItem> list=getQuizItem(stuOpenId);
+		QuizItem quizItem = list.get(index);
 		Timestamp quizTime = new Timestamp(new Date().getTime());
 		QuizAnswer quizAnswer=new QuizAnswer();
 		if (quizItem != null){
 			quizItem.setWorAnswer(answer);
 			quizItemDao.updateQuizItem(quizItem);
-			quizAnswer.setQuizId(quizItem.getQuizId());
+			quizAnswer.setQuizid(quizItem.getQuizid());
 			quizAnswer.setRecordCreateTime(quizTime);
 			quizAnswer.setWorAnswer(answer);
 			quizAnswer.setOpenid(stuOpenId);
-			quizAnswerDao.saveQiuzAnswer(quizAnswer);
+			quizAnswer.setQuestionid(quizItem.getQuestionid());
+			quizAnswerDao.saveQuizAnswer(quizAnswer);
 			return true;
 		}else{
 			return false;
@@ -135,27 +193,26 @@ public class QuizManager {
 		List<QuizItem> qList = quizItemDao.getListByCondition("manOpenId='" + manOpenid + "' and state = 1");
 		if (qList == null || qList.isEmpty()){
 			return false;
-		}			
-		int total = qList.size();
-		int answered = 0;
+		}	
+		int quizid=qList.get(0).getQuizid();
 		
-		int quizid=qList.get(0).getQuizId();
+		List<QuizAnswer> aList=quizAnswerDao.getListByQuizId(quizid);
+		List<Question> list=questionDao.getQuestionByQuizid(quizid);
+			
+		int total = qList.size()/list.size();
+		int answered = aList.size()/list.size();
+		
 		Quiz quiz=quizDao.getQuizById(quizid).get(0);
 		quiz.setEnd(quizTime);
-		quizDao.updateQuiz(quiz);
+		quizDao.updateQuiz(quiz);//设置小测结束时间
 		
 		for (QuizItem quizItem : qList) {
 			quizItem.setState(-1);   //设置state属性:-1为已结束
-			String answer = quizItem.getWorAnswer();
-			if (!(answer == null || answer.equals(""))) {
-				answered++;
-			}
 			quizItemDao.updateQuizItem(quizItem);
 		}
 		
 		String ansInfo = "";
-		String quizName = qList.get(0).getTitle();
-		ansInfo += "小测：" + quizName + "[已结束]\n";
+		ansInfo += "小测[已结束]\n";
 		ansInfo += "参与总人数：" + total + "\n提交回答人数：" + answered;
 		ansInfo += "\n-------------------------------------" + "\n点击阅读全文查看详细结果";	
 			
@@ -188,11 +245,11 @@ public class QuizManager {
     }
 	
 	//根据学生ID获取小测内容
-	public QuizItem getQuizItem(String worOpenId){
-		String condition = "worOpenId='" + worOpenId + "' and state=1 order by createtime desc";
+	public List<QuizItem> getQuizItem(String worOpenId){
+		String condition = "worOpenId='" + worOpenId + "' and state=1";
 		List<QuizItem> qList = quizItemDao.getListByCondition(condition);
 		if (!qList.isEmpty()) {
-			return qList.get(0);
+			return qList;
 		}else
 			return null;
 	}
@@ -201,7 +258,11 @@ public class QuizManager {
 	public Quiz getQuiz(String manOpenId){
 		String condition="openid='"+manOpenId+"' order by start desc";
 		List<Quiz> qList=quizDao.getQuizByCondition(condition);
-		return qList.get(0);
+		if(!qList.isEmpty()){
+			return qList.get(0);
+		}else{
+			return null;
+		}
 	}
 	
 	//根据老师ID获取小测ID
@@ -209,26 +270,6 @@ public class QuizManager {
 		List<Quiz> list=quizDao.getQuizByOpenId(openid);
 		return list.get(0).getId();
 	}
-	
-	//根据小测ID获取小测类型
-	public int getQuizTypeByQuizid(String quizid){
-		List<Quiz> list=quizDao.getQuizById(Integer.parseInt(quizid));
-		return list.get(0).getType();
-	}
-	
-	public boolean checkQuizContent(QuizItem quiz){
-        String content = quiz.getContent();
-        int quizType = quiz.getType();
-        if (quizType == 1 || quizType == 2){
-            try {
-                new JSONObject(content);
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        }
-        return false;
-    }
 	
 	public boolean checkQuizContent(PreparedQuiz quiz){
         String content = quiz.getQuizContent();

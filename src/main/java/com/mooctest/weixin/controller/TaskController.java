@@ -1,20 +1,22 @@
 package com.mooctest.weixin.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mooctest.weixin.entity.*;
+import com.mooctest.weixin.model.Account;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mooctest.weixin.entity.FinishedTask;
-import com.mooctest.weixin.entity.TaskInfo;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
+import sun.nio.cs.ISO_8859_2;
 
 /**  
 * 类说明   
@@ -57,51 +59,111 @@ public class TaskController {
 		mv.setViewName("mygrade");
 		return mv;
 	}
-	
-//	@RequestMapping(value="/query")
-//	public ModelAndView queryTask(HttpServletRequest request,HttpServletResponse response) throws IOException{
-//		
-//		String openid=request.getParameter("openid");
-//		
-//        request.setCharacterEncoding("UTF-8");
-//        response.setCharacterEncoding("UTF-8");
-//        response.setHeader("content-type", "text/html;charset=UTF-8");
-//		
-//        List<Task> list=Managers.taskManager.getTaskByOpenid(openid);
-//    	ModelAndView mv=new ModelAndView();
-//
-//    	List<String> taskname=new ArrayList<>();
-//        for(Task task : list){
-//        	taskname.add(task.getName());
-//        }
-//        
-//        mv.addObject("list", taskname);
-//        mv.addObject("openid",openid);
-//        mv.addObject("JSApiTicket", Managers.config.getTicket());
-//        mv.addObject("appid", Managers.config.getAppid());
-//        mv.setViewName("view/mytask");
-//    	return mv;
-//	}
-	
-//	@RequestMapping(value="taskinfo")
-//	public ModelAndView queryTaskInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
-//		
-//		String openid=request.getParameter("openid");
-//		String name=request.getParameter("name");
-//		
-//        request.setCharacterEncoding("UTF-8");
-//        response.setCharacterEncoding("UTF-8");
-//        response.setHeader("content-type", "text/html;charset=UTF-8");
-//        
-//        Task task=Managers.taskManager.getTaskByCondition(openid, name);
-//        ModelAndView mv=new ModelAndView();
-//        mv.addObject("name", name);
-//        mv.addObject("advisor", task.getAdvisor());
-//        mv.addObject("group",task.getGroup());
-//        mv.addObject("begin", task.getBegin());
-//        mv.addObject("end", task.getEnd());
-//        mv.addObject("password", task.getPassword());
-//        mv.setViewName("view/task_info");
-//        return mv;
-//	}
+
+	@RequestMapping(value="/manager_grade")
+	public ModelAndView workerTask(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response)throws IOException{
+
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("content-type", "text/html;charset=UTF-8");
+
+		ModelAndView mv=new ModelAndView();
+		Account account=Managers.accountManager.getAccount(openid);
+
+		if(account==null) {
+			mv.setViewName("fail");
+			mv.addObject("msg","查询失败！");
+			mv.addObject("msg_title","请先绑定账号！");
+		}
+
+		int id= account.getMoocid();
+		List<Task> list=WitestManager.getFinishedTask(id);
+
+		if(list.isEmpty()){
+			mv.addObject("msg","查询失败！");
+			mv.addObject("msg_title","当前没有可查询的任务！");
+			mv.setViewName("danger");
+		}
+		else {
+			mv.addObject("task", list);
+			mv.setViewName("manager_grade");
+		}
+		return mv;
+	}
+
+	@RequestMapping(value="/worker_grade")
+	public ModelAndView workerGrade(@RequestParam("id")String id,@RequestParam("name")String name,HttpServletResponse response,HttpServletRequest request)throws IOException{
+
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("content-type", "text/html;charset=UTF-8");
+
+		List<Grade> list=WitestManager.getWorkersGrade(id);
+		ModelAndView mv=new ModelAndView();
+
+		if(list.isEmpty()){
+			mv.addObject("msg","查询失败！");
+			mv.addObject("msg_title","此任务暂时无法查看成绩！");
+			mv.setViewName("fail");
+		}else {
+			mv.setViewName("workers_grade");
+			mv.addObject("grade", list);
+			mv.addObject("name",name);
+		}
+		return mv;
+	}
+
+	@RequestMapping(value="/manager_task")
+	public ModelAndView managerTask(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response)throws IOException{
+
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("content-type", "text/html;charset=UTF-8");
+
+		ModelAndView mv=new ModelAndView();
+
+		Account account=Managers.accountManager.getAccount(openid);
+		if(account==null){
+			mv.setViewName("fail");
+			mv.addObject("msg","查询失败！");
+			mv.addObject("msg_title","请先绑定账号！");
+		}
+		int id=account.getMoocid();
+		List<Task> list=WitestManager.getCurrentTask(id);
+		List<Task> list1=WitestManager.getUnstartedTask(id);
+
+		if(list.isEmpty()&&list1.isEmpty()){
+			mv.addObject("msg","查询失败！");
+			mv.addObject("msg_title","当前没有可查询的任务！");
+			mv.setViewName("danger");
+		}
+		else {
+			mv.addObject("current", list);
+			mv.addObject("unstart", list1);
+			mv.setViewName("manager_task");
+		}
+		return mv;
+	}
+
+	@RequestMapping(value="/worker_task")
+	public ModelAndView workerTask(@RequestParam("id")String id,HttpServletResponse response,HttpServletRequest request)throws IOException{
+
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("content-type", "text/html;charset=UTF-8");
+
+		String name =request.getParameter("name");
+		ModelAndView mv=new ModelAndView();
+		List<Password> list=WitestManager.getWorkersPassword(id);
+		if(list.isEmpty()) {
+			mv.addObject("msg", "查询失败！");
+			mv.addObject("msg_title", "此任务暂时无法查看密码！");
+			mv.setViewName("fail");
+		}else{
+			mv.addObject("pwd",list);
+			mv.addObject("name", name);
+			mv.setViewName("workers_task");
+		}
+		return mv;
+	}
 }

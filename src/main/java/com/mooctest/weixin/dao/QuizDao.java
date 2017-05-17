@@ -31,7 +31,7 @@ public class QuizDao extends BaseDao<Quiz, Integer> {
 	}
 	
 	public List<Quiz> getQuizById(int id){
-		return getQuizByColValue("id", id);
+		return getQuizByColValue("id", id).isEmpty()?null:getQuizByColValue("id", id);
 	}
 	
 	public List<Quiz> getQuizByCondition(String condition){

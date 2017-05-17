@@ -1,5 +1,7 @@
 package com.mooctest.weixin.service;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.mooctest.weixin.manager.LoggerManager;
@@ -160,30 +162,14 @@ public class MoocUserService extends GuestService{
     protected static void processQuiz(UserRequest userRequest){
 		userRequest.removeSession();
 		String respContent;
-		QuizItem quiz = Managers.quizManager.getQuizItem(userRequest.getFromUserName());
+		List<QuizItem> quiz = Managers.quizManager.getQuizItem(userRequest.getFromUserName());
 		if (quiz == null){
 			respContent = "您暂无参与的小测！";
 			userRequest.getTextMessage().setContent(respContent);
 			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
-		}else if(Managers.quizManager.checkQuizContent(quiz)){
+		}else {
 			String xml = NewsMessageUtil.createQuizPageXml2(quiz, userRequest);
 			userRequest.setResultXml(xml);
-		}else {
-			if (quiz.getType() == 1){
-				String xml = NewsMessageUtil.createQuizPageXml2(quiz, userRequest);
-				userRequest.setResultXml(xml);
-			}else if (quiz.getType() == 2){
-				String xml = NewsMessageUtil.createQuizPageXml2(quiz, userRequest);
-				userRequest.setResultXml(xml);
-			}else if (quiz.getType() == 3){
-				String xml = NewsMessageUtil.createQuizPageXml2(quiz, userRequest);
-				userRequest.setResultXml(xml);
-				
-//				respContent = "您参与的小测是：" + quiz.getQuizTitle() + "\n\n请输入您的回答并提交";
-//				userRequest.getTextMessage().setContent(respContent);
-//				userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
-//				userRequest.getSession().setOper(Operation.OPER6);
-			}
 		}
 	}
     

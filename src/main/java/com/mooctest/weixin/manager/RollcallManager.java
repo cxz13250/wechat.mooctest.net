@@ -63,15 +63,11 @@ public class RollcallManager {
 		rollcall.setGroupid(groupId);
 		rollcallDao.saveRollcall(rollcall);
 		
-		List<Rollcall> list=rollcallDao.getListByCondition("createTime='"+rollcallTime+"' and manOpenid='"+manOpenId+"'");
-		if(!list.isEmpty()){
-			rollcall=list.get(0);
-		}
-		
 		String openid;
 		for (Worker worker : workers) {
-			Account account=accountDao.getAccountByUsername(worker.getId()).get(0);
-			if(account!=null){
+			List<Account> list2=accountDao.getAccountByUsername(worker.getId());
+			if(!list2.isEmpty()){
+				Account account=list2.get(0);
 				openid=account.getOpenid();//根据学生慕测帐号编号获取openid
 				RollcallItem rollcallItem = new RollcallItem();
 				rollcallItem.setManLocation(latitude + " " + longitude);
@@ -80,7 +76,6 @@ public class RollcallManager {
 				rollcallItem.setGroupId(Integer.valueOf(groupId));
 				rollcallItem.setState(1);
 				rollcallItem.setRollcallid(rollcall.getId());
-				rollcallItem.setWorLocation("");
 				rollcallItem.setManOpenId(manOpenId);
 				rollcallItem.setCreateTime(rollcallTime);
 				rollcallItemDao.saveRollcallItem(rollcallItem);

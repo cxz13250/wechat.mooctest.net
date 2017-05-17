@@ -26,12 +26,15 @@ public class QuizAnswerDao extends BaseDao<QuizAnswer,Integer> {
         return getListByHQL(hqlString);
     }
     
-    public List<QuizAnswer> getListByQuizId(int quizId) {
-        String hqlString = "select distinct q from QuizAnswer q where q.quizId=" + quizId;
-        return getListByHQL(hqlString);
+    public List<QuizAnswer> getListByQuizId(int questionid) {
+        return getListByColumnValue("questionid", questionid);
+    }
+    
+    public List<QuizAnswer> getListById(int quizid){
+    	return getListByColumnValue("quizid", quizid);
     }
 
-    public void saveQiuzAnswer(QuizAnswer quizAnswer){
+    public void saveQuizAnswer(QuizAnswer quizAnswer){
     	save(quizAnswer);
     }
 }

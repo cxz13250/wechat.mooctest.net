@@ -8,6 +8,11 @@
   <name>weixin Maven Webapp</name>
   <url>http://maven.apache.org</url>
   
+  <properties>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<sonar.host.url>http://114.55.29.124:9000/sonar/</sonar.host.url>
+  </properties>
+  
   <repositories>
 		<repository>
 			<id>mvn-repo</id>

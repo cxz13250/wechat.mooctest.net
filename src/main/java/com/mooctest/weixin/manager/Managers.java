@@ -1,7 +1,5 @@
 package com.mooctest.weixin.manager;
 
-import java.text.SimpleDateFormat;
-
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.mooctest.weixin.config.Config;
@@ -15,8 +13,6 @@ public class Managers {
     public final static QuizManager quizManager;
     public final static RollcallManager rollcallManager;
     public final static Config config;
-
-    public final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     static {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");

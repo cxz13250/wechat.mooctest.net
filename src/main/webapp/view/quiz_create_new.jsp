@@ -17,9 +17,13 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <link rel="stylesheet" type="text/css" href="css/quiz_base.css" />
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui.css"/>
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui2.css"/>
+<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui3.css"/>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.blockUI.js"></script>
 <script type="text/javascript" src="js/application-util.js"></script>
+<script src="http://weixin.yoby123.cn/weui/zepto.min.js"></script>
 <title>创建小测</title>
 <style type="text/css">
 a {
@@ -78,17 +82,18 @@ textarea {
 				<form id="quizInfo" name="quiz_info" method="post"
 					action="q/quiz/submit_quiz">
 					<input type="hidden" name="openid" value="<%=openid%>">
+					<input type="hidden" name="param" id="param">
 					<div>
-						<br>选择班级&nbsp; <select id="classId" name="classId"
+						<br>选择班级&nbsp; <select id="groupId" name="groupId"
 							onchange="getPreparedQuizList(parseInt(this.value));">
 							<%
-								List<String> classIdList = (List<String>) request.getAttribute("classIdList");
-								List<String> classNameList = (List<String>) request.getAttribute("classNameList");
-								for (int i = 0; i < classIdList.size(); i++) {
-									String classId = classIdList.get(i);
-									String className = classNameList.get(i);
+								List<String> groupIdList = (List<String>) request.getAttribute("groupIdList");
+								List<String> groupNameList = (List<String>) request.getAttribute("groupNameList");
+								for (int i = 0; i < groupIdList.size(); i++) {
+									String groupId = groupIdList.get(i);
+									String groupName = groupNameList.get(i);
 							%>
-							<option value="<%=classId%>"><%=className%></option>
+							<option value="<%=groupId%>"><%=groupName%></option>
 							<%
 								}
 							%>
@@ -124,7 +129,7 @@ textarea {
 						<br> <label class="required-label">选项设计</label>
 						<p></p>
 						<div id="optionsDiv"></div>
-						<a href="javascript:void(0)" class="underline ml36"
+						<a href="javascript:;" class="underline ml36"
 							id="addOptionLink">+添加选项</a>
 					</div>
 				</form>
@@ -135,7 +140,8 @@ textarea {
 	<br>
 	<br>
 	<div id="div3">
-		<a href="javascript:void(0);" class="bottom_bar" id="submitBtn">发布小测</a>
+		<a href="javascript:;" class="next_bar" id="nextBtn">下一题</a>
+		<a href="javascript:;" class="bottom_bar" id="submitBtn">发布小测</a>
 	</div>
 
 	<script type="text/javascript">
@@ -167,6 +173,16 @@ textarea {
 		});
 
 		$('#submitBtn').click(function() {
+			$.confirm("你确定发布该小测?","确认发布?",function(){
+				$('#param').val('finish');
+				$('#quizInfo').submit();
+			},function(){
+				
+			});
+		});
+		
+		$('#nextBtn').click(function() {
+			$('#param').val('next');
 			$('#quizInfo').submit();
 		});
 
@@ -199,7 +215,6 @@ textarea {
 					;
 				},
 				error : function() {
-					alert("不好意思,网页出错了!请稍候重试");
 				}
 			});
 		}
@@ -212,6 +227,7 @@ textarea {
 				}
 				document.getElementById("type_single").checked = true;
 				$('#optionEditDiv').show();
+				$('#addOptionLink').show();
 				$('#opt4').hide();
 				$('#optionsDiv').html('');
 				initOptionEditDiv();
@@ -250,7 +266,7 @@ textarea {
 									$('#optionEditDiv').show();
 								}
 								;
-
+								//设置题型选项
 								$selects = $('input[name="quiz_type"]');
 								for (var i = 0; i < $selects.length; i++) {
 									if ($selects[i].value != type) {
@@ -289,6 +305,8 @@ textarea {
 									minNum : 2,
 									initNum : initOptionNum
 								});
+								
+								$('#addOptionLink').hide();
 							},
 							error : function() {
 								alert("不好意思,网页出错了!请稍候重试");
@@ -307,8 +325,8 @@ textarea {
 		}
 
 		function init() {
-			var classId = document.getElementById("classId").value;
-			getPreparedQuizList(classId);
+			var groupId = document.getElementById("groupId").value;
+			getPreparedQuizList(groupId);
 		}
 
 		function initOptionEditDiv() {

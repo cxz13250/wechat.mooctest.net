@@ -22,16 +22,14 @@ public class AccountManager {
 	@Autowired
 	private AccountDao accountDao;
 	
-	//根据openid获取慕测账号id
-	public int getMoocId(String openid){
-		List<Account> list=accountDao.getAccountByColValue("openid", openid);
-		return list.get(0).getMoocid();
-	}
-	
 	//根据openid获取慕测账号
 	public Account getAccount(String openid){
 		List<Account> list=accountDao.getAccountByColValue("openid", openid);
-		return list.get(0);
+		if(!list.isEmpty()) {
+			return list.get(0);
+		}else{
+			return null;
+		}
 	}
 	
 	//判断微信用户身份

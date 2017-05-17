@@ -21,7 +21,7 @@ import com.mooctest.weixin.util.CustomMessageUtil;
 @Controller
 @RequestMapping("/rollcall")
 public class RollcallController {
-	
+	//老师创建点名
 	@RequestMapping(value="/create")
     public ModelAndView create(@RequestParam("openid") String openid){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -37,7 +37,7 @@ public class RollcallController {
         
         List<String> groupIdList = new ArrayList<String>();
         List<String> groupNameList = new ArrayList<String>();
-        List<Group> groups = WitestManager.getGroup2(Managers.accountManager.getMoocId(openid));
+        List<Group> groups = WitestManager.getGroup2(Managers.accountManager.getAccount(openid).getMoocid());
         for (Group group : groups) {
             groupIdList.add(String.valueOf(group.getId()));
             groupNameList.add(group.getGroupName());
@@ -51,6 +51,7 @@ public class RollcallController {
         return mv;
     }
 	
+	//老师提交点名信息
 	@RequestMapping(value="/submit_rollcall")
     public ModelAndView submitRollcall(@RequestParam("openid") String openid, @RequestParam("classId") String classid, @RequestParam("latitude") String latitude, @RequestParam("longitude") String longitude){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -69,6 +70,7 @@ public class RollcallController {
         return mv;
     }
 	
+	//学生参与点名
 	@RequestMapping(value="/join_rollcall")
     public ModelAndView rollcall(@RequestParam("openid") String openid){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -93,8 +95,9 @@ public class RollcallController {
         return mv;
     }
 	
-	 @RequestMapping(value="/submit_rollcall_location")
-	    public ModelAndView submitRollcallLocation(@RequestParam("openid") String openid, @RequestParam("latitude") String latitude, @RequestParam("longitude") String longitude){
+	//学生提交签到信息
+	@RequestMapping(value="/submit_rollcall_location")
+	public ModelAndView submitRollcallLocation(@RequestParam("openid") String openid, @RequestParam("latitude") String latitude, @RequestParam("longitude") String longitude){
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	        ModelAndView mv = new ModelAndView();
 
@@ -108,8 +111,7 @@ public class RollcallController {
 				mv.addObject("msg","参与点名失败！");
 				mv.addObject("msg_title","点名失败！");
 	        }
-	        
+	       
 	        return mv;
-	    }
-
+	}
 }

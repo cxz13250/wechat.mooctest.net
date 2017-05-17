@@ -54,26 +54,4 @@ public class WeixinService {
 		}
 		return respXml;
 	}
-	
-	public static ArrayList<String> teacher_list = new ArrayList<String>();
-	public static void addTeacher(String openId){
-		if (!isTeacher(openId)) {
-			teacher_list.add(openId);
-		}
-	}
-	public static void removeTeacher(String openId){
-		if (isTeacher(openId)) {
-			teacher_list.remove(openId);
-		}
-	}
-	public static boolean isTeacher(String openId){
-		if (teacher_list.contains(openId)){
-			return true;
-		}else {
-			return false;
-		}
-	}
-	public static boolean isStudent(String openId){
-		return true;
-	}
 }
