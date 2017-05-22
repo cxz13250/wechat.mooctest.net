@@ -93,13 +93,11 @@ public class AnswerController {
 			StringBuilder text_arr=new StringBuilder();
 			Set set=map.entrySet();
 			Iterator it=set.iterator();
-	        int i=0;
 	        while(it.hasNext()){
 	        	Map.Entry me=(Map.Entry)it.next();
 				ArrayList<String> aList=(ArrayList<String>)me.getValue();
 	        	data_arr.append(aList.size()+";");
 	        	text_arr.append(me.getKey()==""?"其它"+";":me.getKey()+";");
-	        	i++;
 	        }
 			mv.setViewName("statistic");
 			mv.addObject("data_arr", data_arr.toString());

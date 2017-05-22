@@ -54,20 +54,17 @@ public class QuizManager {
 	
 	//获取学生小测回答内容
 	public List<QuizAnswer> getQuizAnswer(int questionId){
-        List<QuizAnswer> list = quizAnswerDao.getListByQuizId(questionId);
-        return list;
+        return quizAnswerDao.getListByQuizId(questionId);
     }
 	
 	//根据小测id题目获取本次小测
 	public List<Question> getQuestion(int quizid){
-        List<Question> list = questionDao.getQuestionByQuizid(quizid);
-        return list;
+        return questionDao.getQuestionByQuizid(quizid);
     }
 	
 	//根据题目id获取本题
 	public List<Question> getQuestionById(int id){
-	    List<Question> list = questionDao.getQuestionById(id);
-	    return list;
+	    return questionDao.getQuestionById(id);
 	}
 	
 	//创建小测并生成第一个题
@@ -93,7 +90,7 @@ public class QuizManager {
 		questionDao.saveQuestion(question);
 		
 		//将本题信息整合学生信息存入表quizitem中
-		List<Account> list2=new ArrayList<Account>();
+		List<Account> list2;
 		for (Worker worker : workers) {
 			QuizItem quizItem = new QuizItem();
 			list2=accountDao.getAccountByUsername(worker.getId());
@@ -133,7 +130,7 @@ public class QuizManager {
 		questionDao.saveQuestion(question);
 		
 		//将本题信息整合学生信息存入表quizitem中
-		List<Account> list2=new ArrayList<Account>();
+		List<Account> list2;
 		for (Worker worker : workers) {
 			QuizItem quizItem = new QuizItem();
 			list2=accountDao.getAccountByUsername(worker.getId());

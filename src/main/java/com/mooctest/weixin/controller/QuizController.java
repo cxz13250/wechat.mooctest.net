@@ -79,7 +79,6 @@ public class QuizController {
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String date = dateFormat.format(new Date());
 
 		List<QuizItem> list = Managers.quizManager.getQuizItem(openid);
 		ModelAndView mv = new ModelAndView();

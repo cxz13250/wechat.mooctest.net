@@ -51,10 +51,8 @@ public class WeixinServlet extends HttpServlet {
 			out.print(echostr);
 		}else{
 			LoggerManager.error(logger, "doGet{signature:"+signature+" timestamp:"+timestamp+" nonce:"+nonce+" echostr"+echostr+"}");
-			out.print("hahaha");
 		}
 		out.close();
-		out = null;
 	}
 
 	/**
@@ -87,7 +85,6 @@ public class WeixinServlet extends HttpServlet {
 			LoggerManager.error(logger, "doPost{signature:"+signature+" timestamp:"+timestamp+" nonce:"+nonce+"}");
 		}
 		out.close();
-		out = null;
 	}
 	
 }

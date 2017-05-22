@@ -100,7 +100,7 @@ public class RollcallManager {
 			String distance = rollcallItem.getDistance();
 			if (distance != null && distance.length() > 0) {
 				answered++;
-				if (Double.valueOf(distance) <= 500.0) {
+				if (Double.valueOf(distance) <= 50.0) {
 					count500m++;
 				}
 			}
@@ -113,7 +113,7 @@ public class RollcallManager {
 		String description = "";
 		description += "点名[已结束]\n";
 		description += "总人数：" + total + "\n参与人数：" + answered;
-		description += "\n有效参与人数（距离<500米）：" + count500m;
+		description += "\n有效参与人数（距离<50米）：" + count500m;
 		description += "\n-------------------------------------" + "\n点击阅读全文查看详细结果";	
 		
 		String rollcallResultXml = NewsMessageUtil.createRollcallResultXml(description, userRequest.getToUserName(), userRequest.getFromUserName(), qList.get(0).getGroupId());
@@ -161,7 +161,7 @@ public class RollcallManager {
 		double lat1=Double.valueOf(s1[0]);
 		double lng2=Double.valueOf(s2[1]);
 		double lat2=Double.valueOf(s2[0]);
-		double distance = DistanceUtil.getDistance(lng1, lat1, lng2, lat2);
+		double distance = DistanceUtil.getDistance(lng1, lat1, lng2, lat2)/(double)10;
 		return Double.toString(distance);
-	} 
+	}
 }

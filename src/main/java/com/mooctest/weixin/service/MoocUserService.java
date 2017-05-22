@@ -23,11 +23,10 @@ public class MoocUserService extends GuestService{
 
 	
 	private static Logger logger = Logger.getLogger(MoocUserService.class);
-	public static String defaultContent = "未知的消息类型！";
 	
 	public static String processRequest(UserRequest userRequest) {
 		String respXml = "";
-		String respContent = defaultContent;
+		String respContent = "未知的消息类型！";
 
 		try {
 			String fromUserName = userRequest.getFromUserName(); // 发送方帐号
@@ -119,8 +118,9 @@ public class MoocUserService extends GuestService{
 						return userRequest.getResultXml();
 					}
 				}
-			}			
-			processHelpMessage(userRequest);
+			}
+			userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
 			return userRequest.getResultXml();
 		} catch (Exception e) {
 			logger.error(e.getStackTrace());

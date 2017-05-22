@@ -23,11 +23,10 @@ public class GuestService {
 	 */
 	private static Logger logger = Logger.getLogger(GuestService.class);
 	//private static String Subscribe_Info = "欢迎关注慕测平台！Web请访问mooctest.net!\n\n慕测平台功能包括：Java测试驱动编程，Java度量驱动编程，JavaBug修复，Java覆盖测试，JavaBug测试。\n\nC++和Python相关客户端将于2014年年底发布，Appium和Jmeter客户端将于2015年3年发布。\n\n微信端将于11月22日开通。微信端功能包括：密码，成绩，小测统计，小测（单选，多选，其他），注册，关联和客服。";
-	public static String defaultContent = "未知的消息类型！";
 	
     public static String processRequest(UserRequest userRequest) {
 		String respXml = "";
-		String respContent = defaultContent;
+		String respContent = "未知的消息类型！";
 
 		try {
 			String fromUserName = userRequest.getFromUserName(); // 发送方帐号
@@ -113,8 +112,9 @@ public class GuestService {
 						return userRequest.getResultXml();
 					}
 				}
-			}			
-			processHelpMessage(userRequest);
+			}
+			userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
 			return userRequest.getResultXml();
 		} catch (Exception e) {
 			logger.error(e.getStackTrace());

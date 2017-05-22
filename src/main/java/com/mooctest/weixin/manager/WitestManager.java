@@ -8,47 +8,50 @@ import com.mooctest.weixin.util.HttpRequestUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
+import org.apache.log4j.Logger;
 
 
 public class WitestManager {
-	
+
+	private static Logger logger = Logger.getLogger(WitestManager.class);
+
 	//服务器url
 	//private static String server = "http://976a29f6.ngrok.io/weixin/";
 	private static String server= "http://wechat.mooctest.net/weixin/";
 	 
 	
-	public static String account_page=server +"q/account/info";  //账号信息页面url
-	public static String bind_page=server+"q/account/new";  //账号绑定页面url
-	public static String check_account=server+"q/account/check";  //验证账号控制器url
-	public static String task_page=server+"q/task/query";//任务密码url	
-	public static String grade_page=server+"q/task/grade";//任务成绩url
-	public static String group_page=server+"q/group/query";//我的群组url
-	public static String join_page=server+"q/group/join";//加入群组url
-	public static String createquiz_page=server+"q/quiz/create";//创建小测url
-	public static String showquiz_page=server+"q/quiz/show";//参与小测url
-	public static String quiz_result_page=server +"q/answer/result?quizid=QUIZID";//老师端本次小测结果url
-	public static String quiz_result_page1=server+"q/answer/toresult";//老师端历次小测结果url
-	public static String rollcall_create_page=server+"q/rollcall/create";//创建点名url
-	public static String rollcall_join_page=server+"q/rollcall/join_rollcall";//参与点名url
-	public static String rollcall_result_page=server+"q/rollcall/result?openid=OPEN&rollcallid=ROLLCALLID";//老师端点名结果
-	public static String manager_grade_page=server+"q/task/manager_grade";
-	public static String manager_task_page=server+"q/task/manager_task";
+	public static final String account_page=server +"q/account/info";  //账号信息页面url
+	public static final String bind_page=server+"q/account/new";  //账号绑定页面url
+	public static final String check_account=server+"q/account/check";  //验证账号控制器url
+	public static final String task_page=server+"q/task/query";//任务密码url
+	public static final String grade_page=server+"q/task/grade";//任务成绩url
+	public static final String group_page=server+"q/group/query";//我的群组url
+	public static final String join_page=server+"q/group/join";//加入群组url
+	public static final String createquiz_page=server+"q/quiz/create";//创建小测url
+	public static final String showquiz_page=server+"q/quiz/show";//参与小测url
+	public static final String quiz_result_page=server +"q/answer/result?quizid=QUIZID";//老师端本次小测结果url
+	public static final String quiz_result_page1=server+"q/answer/toresult";//老师端历次小测结果url
+	public static final String rollcall_create_page=server+"q/rollcall/create";//创建点名url
+	public static final String rollcall_join_page=server+"q/rollcall/join_rollcall";//参与点名url
+	public static final String rollcall_result_page=server+"q/rollcall/result?openid=OPEN&rollcallid=ROLLCALLID";//老师端点名结果
+	public static final String manager_grade_page=server+"q/task/manager_grade";
+	public static final String manager_task_page=server+"q/task/manager_task";
 	
 	//慕测主站url
-	private static String moocserver="http://www.mooctest.net/api/wechat";
+	private static final String moocserver="http://www.mooctest.net/api/wechat";
 	
-	public static String is_Mooc_url=moocserver+"/checkWorker";
-	public static String taskinfo_url=moocserver+"/getTaskInfo";
-	public static String taskgrade_url=moocserver+"/getFinishedTaskInfo";
-	public static String group_url=moocserver+"/getGroupList";
-	public static String join_url=moocserver+"/joinGroup";
-	public static String is_Manager_url=moocserver+"/checkManager";
-	public static String getstudent_url=moocserver+"/getWorkersByGroup";
-	public static String group_url2=moocserver+"/getGroupsByManager";
-	public static String accountinfo_url=moocserver+"/getUserInfo";
-	public static String manager_task_url=moocserver+"/getManagerTask";
-	public static String worker_grade_url=moocserver+"/getWorkersGrade";
-	public static String worker_password_url=moocserver+"/getWorkersPassword";
+	public static final String is_Mooc_url=moocserver+"/checkWorker";
+	public static final String taskinfo_url=moocserver+"/getTaskInfo";
+	public static final String taskgrade_url=moocserver+"/getFinishedTaskInfo";
+	public static final String group_url=moocserver+"/getGroupList";
+	public static final String join_url=moocserver+"/joinGroup";
+	public static final String is_Manager_url=moocserver+"/checkManager";
+	public static final String getstudent_url=moocserver+"/getWorkersByGroup";
+	public static final String group_url2=moocserver+"/getGroupsByManager";
+	public static final String accountinfo_url=moocserver+"/getUserInfo";
+	public static final String manager_task_url=moocserver+"/getManagerTask";
+	public static final String worker_grade_url=moocserver+"/getWorkersGrade";
+	public static final String worker_password_url=moocserver+"/getWorkersPassword";
 	
 	//判断用户身份
 	public static int identity(String openid){		
@@ -65,10 +68,9 @@ public class WitestManager {
 				return 0;
 			}
 			JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
-			int isMooc=object.getInt("id");
-			System.out.println(isMooc);
-			return isMooc;
+			return object.getInt("id");
 		}catch(Exception ex){
+			logger.error(ex.getStackTrace());
 			ex.printStackTrace();
 			return 0;
 		}
@@ -83,9 +85,9 @@ public class WitestManager {
 			JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
 			if(object==null)
 				return 0;
-			int id=object.getInt("id");
-			return id;
+			return object.getInt("id");
 		} catch (Exception e) {
+			logger.error(e.getStackTrace());
 			e.printStackTrace();
 			return 0;
 		}
@@ -97,11 +99,11 @@ public class WitestManager {
 		String result=HttpRequestUtil.sendGet(taskinfo_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONArray ja=JSONArray.fromObject(jsonObject.get("data"));
-		JSONObject obj=new JSONObject();
+		JSONObject obj;
+		TaskInfo taskInfo;
 		List<TaskInfo> list=new ArrayList<TaskInfo>();
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
-			TaskInfo taskInfo=new TaskInfo();
 			taskInfo=(TaskInfo)JSONObject.toBean(obj, TaskInfo.class);
 			list.add(taskInfo);
 		}
@@ -115,8 +117,8 @@ public class WitestManager {
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONArray ja=JSONArray.fromObject(jsonObject.get("data"));
 		List<FinishedTask> list=new ArrayList<>();
-		JSONObject obj=new JSONObject();
-		FinishedTask fTask=new FinishedTask();
+		JSONObject obj;
+		FinishedTask fTask;
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
 			fTask=(FinishedTask)JSONObject.toBean(obj, FinishedTask.class);
@@ -132,8 +134,8 @@ public class WitestManager {
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONArray ja=JSONArray.fromObject(jsonObject.get("data"));
 		List<Group> list=new ArrayList<Group>();
-		Group group=new Group();
-		JSONObject obj=new JSONObject();
+		Group group;
+		JSONObject obj;
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
 			group=(Group)JSONObject.toBean(obj, Group.class);
@@ -153,8 +155,7 @@ public class WitestManager {
 		String result=HttpRequestUtil.post(join_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		//JSON转对象
-		JoinResult jr=(JoinResult)JSONObject.toBean(jsonObject, JoinResult.class);
-		return jr;
+		return (JoinResult)JSONObject.toBean(jsonObject, JoinResult.class);
 	}
 	
 	//根据老师账号获取群组
@@ -165,8 +166,8 @@ public class WitestManager {
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
 		JSONArray ja=JSONArray.fromObject(object.get("groups"));
-		Group group=new Group();
-		JSONObject obj=new JSONObject();
+		Group group;
+		JSONObject obj;
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
 			group=(Group)JSONObject.toBean(obj, Group.class);
@@ -183,8 +184,8 @@ public class WitestManager {
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject jObject=JSONObject.fromObject(jsonObject.get("data"));
 		JSONArray jArray=JSONArray.fromObject(jObject.get("workers"));
-		Worker worker=new Worker();
-		JSONObject object=new JSONObject();
+		Worker worker;
+		JSONObject object;
 		for(int i=0;i<jArray.size();i++){
 			object=jArray.getJSONObject(i);
 			worker=(Worker)JSONObject.toBean(object, Worker.class);
@@ -199,8 +200,7 @@ public class WitestManager {
 		String result=HttpRequestUtil.sendGet(accountinfo_url, param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
-		Accountinfo accountinfo=(Accountinfo)JSONObject.toBean(object, Accountinfo.class);
-		return accountinfo;
+		return (Accountinfo)JSONObject.toBean(object, Accountinfo.class);
 	}
 
 	//根据老师id获取已结束的任务
@@ -211,8 +211,8 @@ public class WitestManager {
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
 		JSONArray ja=JSONArray.fromObject(object.get("tasks"));
-		JSONObject obj=new JSONObject();
-		Task task=new Task();
+		JSONObject obj;
+		Task task;
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
 			task=(Task)JSONObject.toBean(obj,Task.class);
@@ -232,8 +232,8 @@ public class WitestManager {
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
 		JSONArray ja=JSONArray.fromObject(object.get("tasks"));
-		JSONObject obj=new JSONObject();
-		Task task=new Task();
+		JSONObject obj;
+		Task task;
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
 			task=(Task)JSONObject.toBean(obj,Task.class);
@@ -253,8 +253,8 @@ public class WitestManager {
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
 		JSONArray ja=JSONArray.fromObject(object.get("tasks"));
-		JSONObject obj=new JSONObject();
-		Task task=new Task();
+		JSONObject obj;
+		Task task;
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
 			task=(Task)JSONObject.toBean(obj,Task.class);
@@ -274,8 +274,8 @@ public class WitestManager {
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
 		JSONArray ja=JSONArray.fromObject(object.get("grades"));
-		Grade grade=new Grade();
-		JSONObject obj=new JSONObject();
+		Grade grade;
+		JSONObject obj;
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
 			grade=(Grade)JSONObject.toBean(obj,Grade.class);
@@ -292,8 +292,8 @@ public class WitestManager {
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
 		JSONArray ja=JSONArray.fromObject(object.get("passwords"));
-		Password password=new Password();
-		JSONObject obj=new JSONObject();
+		Password password;
+		JSONObject obj;
 		for(int i=0;i<ja.size();i++){
 			obj=ja.getJSONObject(i);
 			password=(Password)JSONObject.toBean(obj,Password.class);

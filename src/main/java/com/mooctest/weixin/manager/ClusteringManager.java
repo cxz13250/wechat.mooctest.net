@@ -17,10 +17,7 @@ import java.util.Map.Entry;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.FilterModifWord;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.mooctest.weixin.dao.QuizAnswerDao;
-import com.mooctest.weixin.model.QuizAnswer;
 import com.mooctest.weixin.util.AnswerValue;
 
 
@@ -85,7 +82,6 @@ public class ClusteringManager {
     		ArrayList<AnswerValue> keys = new ArrayList<AnswerValue>();
     		int length = answers.size();
             int min = (int) (length * 0.05);
-            int max = (int) (length * 0.95);           
             if (entries.length < 2) {
                 return null;
             } else {

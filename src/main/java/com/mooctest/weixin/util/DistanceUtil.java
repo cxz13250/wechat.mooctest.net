@@ -10,8 +10,8 @@ public class DistanceUtil {
 	/**
 	 * 根据两点间经纬度坐标（double值），计算两点间距离，单位为米
 	 * 
-	 * @param lng1
-	 * @param lat1
+	 * @param lng1 纬度
+	 * @param lat1 经度
 	 * @param lng2
 	 * @param lat2
 	 * @return

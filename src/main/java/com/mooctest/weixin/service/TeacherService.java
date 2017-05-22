@@ -21,12 +21,11 @@ import com.mooctest.weixin.util.NewsMessageUtil;
 
 public class TeacherService extends GuestService{
 
-	private static Logger logger=Logger.getLogger(TeacherService.class);	
-	public static String defaultContent = "未知的消息类型！";
+	private static Logger logger=Logger.getLogger(TeacherService.class);
 	
 	public static String processRequest(UserRequest userRequest) {
 		String respXml = "";
-		String respContent = defaultContent;
+		String respContent = "未知的消息类型！";
 
 		try {
 			String fromUserName = userRequest.getFromUserName(); // 发送方帐号
@@ -115,8 +114,9 @@ public class TeacherService extends GuestService{
 						return userRequest.getResultXml();
 					}
 				}
-			}			
-			processHelpMessage(userRequest);
+			}
+			userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
 			return userRequest.getResultXml();
 		} catch (Exception e) {
 			logger.error(e.getStackTrace());

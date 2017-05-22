@@ -54,8 +54,7 @@ public class RollcallController {
 	//老师提交点名信息
 	@RequestMapping(value="/submit_rollcall")
     public ModelAndView submitRollcall(@RequestParam("openid") String openid, @RequestParam("classId") String classid, @RequestParam("latitude") String latitude, @RequestParam("longitude") String longitude){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date = dateFormat.format(new Date());
+
         ModelAndView mv = new ModelAndView();
         if (Managers.rollcallManager.startRollcall(classid, openid, latitude, longitude)){
             CustomMessageUtil.sendTextCustomMessage(openid, "点名创建成功！\n\n您的学生在此公众号中使用【点名菜单】就可以参与此次点名。\n\n如需结束此次点名请再次点击下方的【点名菜单】", Managers.config.getToken());  
@@ -76,14 +75,12 @@ public class RollcallController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = dateFormat.format(new Date());        
         RollcallItem rollcall = Managers.rollcallManager.getRollcall(openid);
-        
         ModelAndView mv = new ModelAndView();
         if (null == rollcall){
             mv.setViewName("danger");
 			mv.addObject("msg","点名已经结束！");
 			mv.addObject("msg_title","签到失败");
         }else if(rollcall.getWorLocation()!=""&&rollcall.getWorLocation()!=null){
-        	System.out.println(rollcall.getWorLocation());
         	mv.setViewName("danger");
         	mv.addObject("msg", "你已经签过到了！");
         	mv.addObject("msg_title", "签到失败");
@@ -98,7 +95,7 @@ public class RollcallController {
 	//学生提交签到信息
 	@RequestMapping(value="/submit_rollcall_location")
 	public ModelAndView submitRollcallLocation(@RequestParam("openid") String openid, @RequestParam("latitude") String latitude, @RequestParam("longitude") String longitude){
-	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
 	        ModelAndView mv = new ModelAndView();
 
 	        if (Managers.rollcallManager.writeStudentLocation(openid, latitude, longitude)) {
