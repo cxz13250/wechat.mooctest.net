@@ -154,12 +154,7 @@ public class GuestService {
 		if (!userRequest.hasSession()){
 			return result;
 		}
-		//String fromUserName = userRequest.getFromUserName(); // 发送方帐号
-		//String toUserName = requestMap.get("ToUserName"); // 开发者微信号
-		//String msgType = userRequest.getMsgType(); // 消息类型
-		//String content = userRequest.getContent(); // 内容
-		//String createTime = requestMap.get("CreateTime"); // 生成时间
-		
+		result = true;
 		return result;
 	}
 }
