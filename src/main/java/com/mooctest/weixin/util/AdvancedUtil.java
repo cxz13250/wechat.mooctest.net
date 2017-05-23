@@ -727,7 +727,6 @@ public class AdvancedUtil {
 			inputStreamReader.close();
 			// 释放资源
 			inputStream.close();
-			inputStream = null;
 			uploadConn.disconnect();
 
 			// 使用JSON-lib解析返回结果

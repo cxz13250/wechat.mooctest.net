@@ -210,7 +210,6 @@ public class JSONML {
                                 throw x.syntaxError("Mismatched '" + tagName +
                                         "' and '" + closeTag + "'");
                             }
-                            tagName = null;
                             if (!arrayForm && newja.length() > 0) {
                                 newjo.put("childNodes", newja);
                             }

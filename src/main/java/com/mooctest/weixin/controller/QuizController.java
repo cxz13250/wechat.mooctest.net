@@ -77,8 +77,6 @@ public class QuizController {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		List<QuizItem> list = Managers.quizManager.getQuizItem(openid);
 		ModelAndView mv = new ModelAndView();

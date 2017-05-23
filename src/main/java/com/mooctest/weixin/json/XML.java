@@ -407,7 +407,6 @@ public class XML {
                 if (value == null) {
                     value = "";
                 }
-                string = value instanceof String ? (String)value : null;
 
 // Emit content in body
 
