@@ -85,7 +85,7 @@ public class CommonUtil {
 			bufferedReader.close();
 			inputStreamReader.close();
 			inputStream.close();
-			inputStream = null;
+
 			conn.disconnect();
 			jsonObject = JSONObject.fromObject(buffer.toString());
 		} catch (ConnectException ce) {

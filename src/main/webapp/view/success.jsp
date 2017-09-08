@@ -26,7 +26,7 @@
         <div class="weui-msg__extra-area">
             <div class="weui-footer">
                 <p class="weui-footer__links">
-                    <a href="javascript:void(0);" class="weui-footer__link">幕测</a>
+                    <a href="javascript:void(0);" class="weui-footer__link">慕测</a>
                 </p>
                 <p class="weui-footer__text">Copyright &copy; 2016-2017 MoocTest</p>
             </div>

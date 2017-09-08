@@ -39,9 +39,9 @@
             border-right: 1px solid #e0e0e0;
             text-align: center; }
     </style>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui.css"/>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui2.css"/>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui3.css"/>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="<%=basePath%>css/weui.css">
 </head>
 <body>
 <div id="container" align="center">
@@ -49,7 +49,7 @@
         <h1 class="weui-header-title" align="center">任务列表</h1>
     </div> <br/>
     <div id="div2">
-        <table>
+        <table class="weui-table weui-border-tb">
             <thead>
             <tr><th width="50%">任务名称</th>
                 <th width="50%">查看详情</th>

@@ -22,13 +22,9 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui.css"/>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui2.css"/>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui3.css"/>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+    <title>学生秘钥</title>
+    <link rel="stylesheet" href="<%=basePath%>css/weui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 </head>
     <style type="text/css">
         td{
@@ -37,11 +33,11 @@
     </style>
 <body>
 <div id="div1">
-    <p><label>任务名称:</label><%=name%></p><br/>
+    <%--<p><label>任务名称:</label><%=name%></p><br/>--%>
 </div>
 <div id="div2">
     <h1 class="weui-header-title" align="center">学生列表</h1>
-    <table id="example" class="display" cellspacing="0" width="100%">
+    <table id="example" class="weui-table">
         <thead>
         <tr>
             <th width="30%">学生姓名</th>

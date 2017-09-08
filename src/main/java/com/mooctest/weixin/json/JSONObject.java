@@ -1442,7 +1442,7 @@ public class JSONObject {
 		try {
 			return this.toString(0);
 		} catch (Exception e) {
-			return null;
+			return "";
 		}
 	}
 

@@ -24,33 +24,9 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>任务列表</title>
-    <link rel="stylesheet" href="http://jqweui.com/dist/lib/weui.min.css"/>
-    <link rel="stylesheet" href="http://jqweui.com/dist/demos/css/demos.css"/>
-    <link rel="stylesheet" href="http://jqweui.com/dist/css/jquery-weui.css"/>
-    <script src="http://jqweui.com/dist/lib/jquery-2.1.4.js"></script>
-    <script src="http://jqweui.com/dist/lib/fastclick.js"></script>
-    <script src="http://jqweui.com/dist/js/jquery-weui.js"></script>
-    <script>
-        $(function(){
-            FastClick.attach(document.body);
-        });
-    </script>
-    <style type="text/css">
-        td{
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #fff;
-            line-height: 32px;
-            text-align: center;
-        }
-        .table td, .table th {
-            border-bottom: 1px solid #e0e0e0;
-            border-right: 1px solid #e0e0e0;
-            text-align: center; }
-    </style>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="<%=basePath%>css/weui.css">
 </head>
 <body>
 <div id="container">
@@ -66,10 +42,10 @@
         <div class="weui-tab__bd">
             <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
                 <h1 class="weui-header-title" align="center">任务列表</h1><br/>
-                <table>
+                <table class="weui-table">
                     <thead>
-                    <tr><td width="50%">任务名称</td>
-                        <td width="50%">查看详情</td>
+                    <tr><th width="50%">任务名称</th>
+                        <th width="50%">查看详情</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -84,7 +60,7 @@
             </div>
             <div id="tab2" class="weui-tab__bd-item">
                 <h1 class="weui-header-title" align="center">任务列表</h1><br/>
-                <table>
+                <table class="weui-table">
                     <thead>
                     <tr><th width="50%">任务名称</th>
                         <th width="50%">查看详情</th>
@@ -104,6 +80,9 @@
     </div>
 
 </div>
-
+    <script src="http://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
+    <script src="http://cdn.bootcss.com/jquery-weui/1.0.1/js/swiper.min.js"></script>
+    <script src="http://cdn.bootcss.com/jquery-weui/1.0.1/js/city-picker.min.js"></script>
 </body>
 </html>

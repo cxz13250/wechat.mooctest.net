@@ -23,12 +23,8 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>任务成绩</title>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui.css"/>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui2.css"/>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui3.css"/>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="<%=basePath%>css/weui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 </head>
     <style type="text/css">
         td{
@@ -38,23 +34,17 @@
 <body>
 <div id="container">
     <div id="div1">
-        <p><label>任务名称:</label><%=name%></p>
+        <%--<p><label>任务名称:</label><%=name%></p>--%>
     </div>
     <div id="div2">
         <h1 class="weui-header-title" align="center">学生列表</h1>
-        <table id="example" class="display" cellspacing="0" width="100%">
+        <table id="example" cellspacing="0" width="100%" class="weui-table weui-border-tb">
             <thead>
             <tr>
                 <th width="50%">学生姓名</th>
                 <th width="50%">学生成绩</th>
             </tr>
             </thead>
-            <tfoot>
-            <tr>
-                <th width="50%">学生姓名</th>
-                <th width="50%">学生成绩</th>
-            </tr>
-            </tfoot>
             <tbody>
             <%for(Grade grade:list){%>
             <tr>
@@ -71,10 +61,5 @@
         </p>
     </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#example').DataTable();
-    } );
-</script>
 </body>
 </html>

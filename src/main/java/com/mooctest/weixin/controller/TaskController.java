@@ -92,11 +92,14 @@ public class TaskController {
 	}
 
 	@RequestMapping(value="/worker_grade")
-	public ModelAndView workerGrade(@RequestParam("id")String id,@RequestParam("name")String name,HttpServletResponse response,HttpServletRequest request)throws IOException{
+	public ModelAndView workerGrade(@RequestParam("id")String id,HttpServletResponse response,HttpServletRequest request)throws IOException{
 
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
+		String name=request.getParameter("name");
+
+		System.out.println(name);
 
 		List<Grade> list=WitestManager.getWorkersGrade(id);
 		ModelAndView mv=new ModelAndView();
