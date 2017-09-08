@@ -23,7 +23,7 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>学生秘钥</title>
-    <link rel="stylesheet" href="<%=basePath%>css/weui.css">
+    <link rel="stylesheet" href="<%=basePath%>css/rokg.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 </head>
     <style type="text/css">

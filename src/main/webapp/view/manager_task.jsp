@@ -26,7 +26,7 @@
     <title>任务列表</title>
     <link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
-    <link rel="stylesheet" href="<%=basePath%>css/weui.css">
+    <link rel="stylesheet" href="<%=basePath%>css/rokg.css">
 </head>
 <body>
 <div id="container">
@@ -43,6 +43,9 @@
             <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
                 <h1 class="weui-header-title" align="center">任务列表</h1><br/>
                 <table class="weui-table">
+                    <% if(current.isEmpty()||current == null){ %>
+                    <p align="center">暂无进行中的任务</p>
+                    <% }else{%>
                     <thead>
                     <tr><th width="50%">任务名称</th>
                         <th width="50%">查看详情</th>
@@ -54,13 +57,16 @@
                         <td width="50%"><%=task.getTaskName()%></td>
                         <td width="50%"><a href="worker_task?id=<%=task.getId()%>&name=<%=task.getTaskName()%>">详情</a></td>
                     </tr>
-                    <%}%>
+                    <%}}%>
                     </tbody>
                 </table>
             </div>
             <div id="tab2" class="weui-tab__bd-item">
                 <h1 class="weui-header-title" align="center">任务列表</h1><br/>
                 <table class="weui-table">
+                    <% if(unstart.isEmpty()||unstart == null){ %>
+                    <p align="center">暂无未开始的任务</p>
+                    <% }else{%>
                     <thead>
                     <tr><th width="50%">任务名称</th>
                         <th width="50%">查看详情</th>
@@ -72,7 +78,7 @@
                         <td width="50%"><%=task.getTaskName()%></td>
                         <td width="50%"><a href="q/task/worker_task?id=<%=task.getId()%>&name=<%=task.getTaskName()%>">详情</a></td>
                     </tr>
-                    <%}%>
+                    <%}}%>
                     </tbody>
                 </table>
             </div>

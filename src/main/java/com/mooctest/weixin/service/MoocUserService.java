@@ -116,6 +116,9 @@ public class MoocUserService extends GuestService{
 					} else if(eventKey.equals("rollcall")){
 						processRollcall(userRequest);
 						return userRequest.getResultXml();
+					} else {
+						processHelpMessage(userRequest);
+						return userRequest.getResultXml();
 					}
 				}
 			}

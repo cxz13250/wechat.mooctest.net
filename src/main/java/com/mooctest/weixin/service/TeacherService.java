@@ -112,6 +112,9 @@ public class TeacherService extends GuestService{
 					}else if(eventKey.equals("mytask")){
 						processPassword(userRequest);
 						return userRequest.getResultXml();
+					}else {
+						processHelpMessage(userRequest);
+						return userRequest.getResultXml();
 					}
 				}
 			}

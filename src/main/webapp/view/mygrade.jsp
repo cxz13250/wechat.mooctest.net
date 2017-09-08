@@ -20,10 +20,7 @@
     <title><%=title%></title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui2.css" />
-
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>css/rokg.css" />
 </head>
 <body ontouchstart style="background-color: #f8f8f8;">
 <div id="container">

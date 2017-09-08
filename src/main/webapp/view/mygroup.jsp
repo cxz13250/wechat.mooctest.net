@@ -19,7 +19,7 @@
 <title>我的群组</title>
     <link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
-    <link rel="stylesheet" href="<%=basePath%>css/weui.css">
+    <link rel="stylesheet" href="<%=basePath%>css/rokg.css">
 </head>
 <style type="text/css">
 #main h1, #main p {
@@ -36,7 +36,7 @@
     <div id="div2">
         <div id="main">
         	<h1>我的群组</h1>
-            <table class="weui-table weui-border-tb">
+            <table class="weui-table">
                 <thead>
                 <tr><th width=50%>群主名称</th>
                     <th width=50%>群组名称</th></tr>

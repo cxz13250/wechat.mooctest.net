@@ -23,7 +23,9 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>任务成绩</title>
-    <link rel="stylesheet" href="<%=basePath%>css/weui.css">
+    <link rel="stylesheet" href="<%=basePath%>css/rokg.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 </head>
     <style type="text/css">
@@ -56,8 +58,8 @@
         </table>
     </div>
     <div>
-        <p class="weui_btn_area">
-            <a onclick="javascript:history.back()" class="weui_btn weui_btn_primary">返回</a>
+        <p class="weui-btn-area">
+            <a onclick="javascript:history.back()" class="weui-btn weui-btn_primary">返回</a>
         </p>
     </div>
 </div>

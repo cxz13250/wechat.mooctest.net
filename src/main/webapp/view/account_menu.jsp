@@ -26,7 +26,7 @@
 <title><%=title%></title>
 	<link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
 	<link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
-	<link rel="stylesheet" href="<%=basePath%>css/weui.css">
+	<link rel="stylesheet" href="<%=basePath%>css/rokg.css">
 <style type="text/css">
 #main h1, #main p {
 	text-align: center;
@@ -50,7 +50,7 @@
 		<div id="div2">
 			<div id="main">
 				<h1>账号信息</h1>
-				<table class="weui-table weui-border-tb">
+				<table class="weui-table">
 				<tbody>
 				<tr><td width=50%>账号邮箱</td>
 					<td width=50%><%=email%></td>
@@ -64,7 +64,7 @@
 				</tbody>
 				</table>
 				<h1>基本信息</h1>
-				<table class="weui-table weui-border-tb">
+				<table class="weui-table">
 				<tbody>
 				<tr><td width=50%>姓名</td>
 					<td width=50%><%=name%></td>

@@ -20,8 +20,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui.css" />
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/weui2.css" />
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>css/rokg.css" />
 	<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.js"></script>
 
 </head>
@@ -33,7 +32,7 @@
 		<div id="div2">
 			<div id="main">
 				<% for(TaskInfo name:list){%>
-				<table class="weui-table weui-border-tb">
+				<table class="weui-table">
 					<thead>
 					<tr><th width=30%>任务名称</th>
 						<th width=70%><%=name.getTaskName()%></th></tr>

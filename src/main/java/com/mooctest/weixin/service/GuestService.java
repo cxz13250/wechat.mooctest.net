@@ -110,6 +110,9 @@ public class GuestService {
 					}else if (eventKey.equals("help")){
 						processHelpMessage(userRequest);
 						return userRequest.getResultXml();
+					}else {
+						processBingding(userRequest);
+						return userRequest.getResultXml();
 					}
 				}
 			}
