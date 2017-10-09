@@ -1,7 +1,12 @@
 package com.mooctest.weixin.service;
 
+import java.util.Date;
 import java.util.List;
 
+import com.mooctest.weixin.message.Image;
+import com.mooctest.weixin.message.ImageMessage;
+import com.mooctest.weixin.pojo.WeixinMedia;
+import com.mooctest.weixin.util.CommonUtil;
 import org.apache.log4j.Logger;
 
 import com.mooctest.weixin.manager.LoggerManager;
@@ -44,7 +49,11 @@ public class MoocUserService extends GuestService{
 			// 处理Text
 			if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
 				LoggerManager.info(logger, "(StudentText)" + createTime + ":" + fromUserName + "---->" + toUserName + ":" + content);
-				respContent = "您发送的是文本消息！";
+				if(CommonUtil.isNumeric(content)){
+					processContest(userRequest);
+				}
+				return userRequest.getResultXml();
+//				respContent = "您发送的是文本消息！";
 			}
 			// 图片消息
 			else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {
@@ -189,4 +198,25 @@ public class MoocUserService extends GuestService{
 			userRequest.setResultXml(NewsMessageUtil.createRollcallXml(userRequest));
 		}
     }
+
+    protected static void processContest(UserRequest userRequest){
+		userRequest.removeSession();
+		String respContent;
+		WeixinMedia media=Managers.contestManager.getContestInfo(userRequest.getContent(),userRequest.getFromUserName());
+		if(media==null) {
+			respContent = "您尚未参加任何考试！";
+			userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+		}else {
+			Image image=new Image();
+			image.setMediaId(media.getMediaId());
+			ImageMessage imageMessage=new ImageMessage();
+			imageMessage.setFromUserName(userRequest.getToUserName());
+			imageMessage.setToUserName(userRequest.getFromUserName());
+			imageMessage.setImage(image);
+			imageMessage.setMsgType(media.getType());
+			imageMessage.setCreateTime(new Date().getTime());
+			userRequest.setResultXml(MessageUtil.messageToXml(imageMessage));
+		}
+	}
 }

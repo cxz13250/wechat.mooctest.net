@@ -1,4 +1,4 @@
-<%@page import="com.mooctest.weixin.entity.Group"%>
+<%@page import="com.mooctest.weixin.data.Group"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>

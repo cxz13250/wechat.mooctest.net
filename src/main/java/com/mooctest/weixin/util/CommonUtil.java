@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -167,5 +169,15 @@ public class CommonUtil {
 		else if ("video/mpeg4".equals(contentType))
 			fileExt = ".mp4";
 		return fileExt;
+	}
+
+	public static boolean isNumeric(String str){
+		Pattern pattern=Pattern.compile("[0-9]*");
+		Matcher isNum=pattern.matcher(str);
+		if(!isNum.matches())
+			return false;
+		else
+			return true;
+
 	}
 }

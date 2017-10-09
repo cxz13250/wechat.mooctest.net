@@ -1,15 +1,12 @@
-package com.mooctest.weixin.entity;
+package com.mooctest.weixin.data;
 
 /**
  * Created by ROGK on 2017/5/10.
  */
-public class Password {
-
+public class Grade {
     private int workerId;
-
     private String workerName;
-
-    private String password;
+    private double grade;
 
     public int getWorkerId() {
         return workerId;
@@ -27,11 +24,11 @@ public class Password {
         this.workerName = workerName;
     }
 
-    public String getPassword() {
-        return password;
+    public double getGrade() {
+        return grade;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setGrade(double grade) {
+        this.grade = grade;
     }
 }

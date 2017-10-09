@@ -1,4 +1,4 @@
-package com.mooctest.weixin.entity;
+package com.mooctest.weixin.data;
 
 public class FinishedTask {
 

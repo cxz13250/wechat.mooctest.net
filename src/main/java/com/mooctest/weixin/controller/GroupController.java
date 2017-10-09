@@ -1,7 +1,7 @@
 package com.mooctest.weixin.controller;
 
-import com.mooctest.weixin.entity.Group;
-import com.mooctest.weixin.entity.JoinResult;
+import com.mooctest.weixin.data.Group;
+import com.mooctest.weixin.data.JoinResult;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
 

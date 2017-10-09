@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.mooctest.weixin.entity.Task" %>
+<%@ page import="com.mooctest.weixin.data.Task" %>
 <%--
   Created by IntelliJ IDEA.
   User: ROGK

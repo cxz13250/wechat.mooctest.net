@@ -1,7 +1,6 @@
 package com.mooctest.weixin.manager;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import com.mooctest.weixin.dao.QuestionDao;
 import com.mooctest.weixin.dao.QuizAnswerDao;
 import com.mooctest.weixin.dao.QuizDao;
 import com.mooctest.weixin.dao.QuizItemDao;
-import com.mooctest.weixin.entity.Worker;
+import com.mooctest.weixin.data.Worker;
 import com.mooctest.weixin.json.JSONObject;
 import com.mooctest.weixin.model.Account;
 import com.mooctest.weixin.model.PreparedQuiz;

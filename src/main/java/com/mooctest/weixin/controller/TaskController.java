@@ -1,13 +1,12 @@
 package com.mooctest.weixin.controller;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mooctest.weixin.entity.*;
+import com.mooctest.weixin.data.*;
 import com.mooctest.weixin.model.Account;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
-import sun.nio.cs.ISO_8859_2;
 
 /**  
 * 类说明   

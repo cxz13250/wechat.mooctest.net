@@ -1,4 +1,4 @@
-package com.mooctest.weixin.entity;
+package com.mooctest.weixin.data;
 
 /**
  * Created by ROGK on 2017/5/10.

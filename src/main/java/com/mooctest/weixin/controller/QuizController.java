@@ -9,14 +9,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mooctest.weixin.model.Quiz;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mooctest.weixin.entity.Group;
-import com.mooctest.weixin.entity.Worker;
+import com.mooctest.weixin.data.Group;
+import com.mooctest.weixin.data.Worker;
 import com.mooctest.weixin.json.JSONArray;
 import com.mooctest.weixin.json.JSONObject;
 import com.mooctest.weixin.manager.Managers;

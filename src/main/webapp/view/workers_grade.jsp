@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.mooctest.weixin.entity.Grade" %><%--
+<%@ page import="com.mooctest.weixin.data.Grade" %><%--
   Created by IntelliJ IDEA.
   User: ROGK
   Date: 2017/5/10

@@ -11,7 +11,7 @@ import com.mooctest.weixin.dao.AccountDao;
 import com.mooctest.weixin.dao.RollcallAnswerDao;
 import com.mooctest.weixin.dao.RollcallDao;
 import com.mooctest.weixin.dao.RollcallItemDao;
-import com.mooctest.weixin.entity.Worker;
+import com.mooctest.weixin.data.Worker;
 import com.mooctest.weixin.model.Account;
 import com.mooctest.weixin.model.Rollcall;
 import com.mooctest.weixin.model.RollcallAnswer;

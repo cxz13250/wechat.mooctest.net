@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mooctest.weixin.dao.AccountDao;
-import com.mooctest.weixin.entity.Accountinfo;
+import com.mooctest.weixin.data.Accountinfo;
 import com.mooctest.weixin.model.Account;
 
 /**  

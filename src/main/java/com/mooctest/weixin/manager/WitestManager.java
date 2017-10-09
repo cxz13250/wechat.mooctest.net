@@ -1,9 +1,11 @@
 package com.mooctest.weixin.manager;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mooctest.weixin.entity.*;
+import com.mooctest.weixin.data.*;
+import com.mooctest.weixin.pojo.WeixinUserInfo;
 import com.mooctest.weixin.util.HttpRequestUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -52,6 +54,10 @@ public class WitestManager {
 	public static final String manager_task_url=moocserver+"/getManagerTask";
 	public static final String worker_grade_url=moocserver+"/getWorkersGrade";
 	public static final String worker_password_url=moocserver+"/getWorkersPassword";
+	public static final String worker_contest_url=moocserver+"/contest";
+
+	//生成比赛结果图片
+	public static final String contest_image_url="http://118.178.18.181:10086";
 	
 	//判断用户身份
 	public static int identity(String openid){		
@@ -300,5 +306,23 @@ public class WitestManager {
 			list.add(password);
 		}
 		return list;
+	}
+
+	public static ContestResult getContest(long taskId,long userId){
+		String param="taskId="+taskId+"&userId="+userId;
+		String result=HttpRequestUtil.sendGet(worker_contest_url,param);
+		JSONObject jsonObject=JSONObject.fromObject(result);
+		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
+		if(object==null)
+			return null;
+		else
+			return (ContestResult)JSONObject.toBean(object,ContestResult.class);
+	}
+
+	public static String getImage(WeixinUserInfo userInfo, ContestResult contestResult){
+		String param="userName="+userInfo.getNickname()+"&userAvatar="+userInfo.getHeadImgUrl()+"&score="
+				+contestResult.getScore()+"&rank="+contestResult.getRank()+"&testName="+contestResult.getName();
+		String result=HttpRequestUtil.sendGet(contest_image_url,param);
+		return result;
 	}
 }

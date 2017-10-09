@@ -1,18 +1,16 @@
 package com.mooctest.weixin.service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.mooctest.weixin.entity.Task;
+import com.mooctest.weixin.data.Task;
 import org.apache.log4j.Logger;
 
-import com.mooctest.weixin.entity.Group;
+import com.mooctest.weixin.data.Group;
 import com.mooctest.weixin.manager.LoggerManager;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
-import com.mooctest.weixin.message.Article;
 import com.mooctest.weixin.model.Quiz;
 import com.mooctest.weixin.pojo.UserRequest;
 import com.mooctest.weixin.util.MessageUtil;

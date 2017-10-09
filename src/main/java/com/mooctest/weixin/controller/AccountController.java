@@ -1,6 +1,6 @@
 package com.mooctest.weixin.controller;
 
-import com.mooctest.weixin.entity.Accountinfo;
+import com.mooctest.weixin.data.Accountinfo;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
 import com.mooctest.weixin.model.Account;

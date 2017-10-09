@@ -1,20 +1,3 @@
-import com.mooctest.weixin.entity.Group;
-import com.mooctest.weixin.entity.JoinGroup;
-import com.mooctest.weixin.entity.JoinResult;
-import com.mooctest.weixin.entity.TaskInfo;
-import com.mooctest.weixin.json.JSONObject;
-import com.mooctest.weixin.manager.Managers;
-import com.mooctest.weixin.manager.WitestManager;
-import com.mooctest.weixin.model.Quiz;
-import com.mooctest.weixin.util.CommonUtil;
-import com.mooctest.weixin.util.HttpRequestUtil;
-
-
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 
 /**
