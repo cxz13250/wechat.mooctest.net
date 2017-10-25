@@ -1,11 +1,15 @@
 package com.mooctest.weixin.manager;
 import java.awt.*;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Formatter;
 
 import com.mooctest.weixin.data.*;
 import com.mooctest.weixin.pojo.WeixinUserInfo;
+import com.mooctest.weixin.util.CommonUtil;
 import com.mooctest.weixin.util.HttpRequestUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -58,7 +62,8 @@ public class WitestManager {
 
 	//生成比赛结果图片
 	public static final String contest_image_url="http://118.178.18.181:10086";
-	
+//	public static final String contest_image_url="http://10.0.0.45:10080";
+
 	//判断用户身份
 	public static int identity(String openid){		
 		return Managers.accountManager.checkAccount(openid);
@@ -319,9 +324,22 @@ public class WitestManager {
 			return (ContestResult)JSONObject.toBean(object,ContestResult.class);
 	}
 
-	public static String getImage(WeixinUserInfo userInfo, ContestResult contestResult){
-		String param="userName="+userInfo.getNickname()+"&userAvatar="+userInfo.getHeadImgUrl()+"&score="
-				+contestResult.getScore()+"&rank="+contestResult.getRank()+"&testName="+contestResult.getName();
+	public static ContestResult getContest2(long userId){
+		String param="userId="+userId;
+		String result=HttpRequestUtil.sendGet(worker_contest_url,param);
+		JSONObject jsonObject=JSONObject.fromObject(result);
+		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
+		if(object==null)
+			return null;
+		else
+			return (ContestResult)JSONObject.toBean(object,ContestResult.class);
+	}
+
+	public static String getImage(WeixinUserInfo userInfo, ContestResult contestResult)throws Exception{
+		System.out.println(contestResult.getScore());
+		String score= new Formatter().format("%.2f",contestResult.getScore()).toString();
+		String param="userName="+ URLEncoder.encode(userInfo.getNickname(),"utf-8")+"&userAvatar="+userInfo.getHeadImgUrl()+"&score="
+				+score+"&rank="+contestResult.getRank()+"&testName="+URLEncoder.encode(contestResult.getName(),"utf-8");
 		String result=HttpRequestUtil.sendGet(contest_image_url,param);
 		return result;
 	}

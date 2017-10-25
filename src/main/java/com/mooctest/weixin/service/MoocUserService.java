@@ -49,7 +49,7 @@ public class MoocUserService extends GuestService{
 			// 处理Text
 			if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
 				LoggerManager.info(logger, "(StudentText)" + createTime + ":" + fromUserName + "---->" + toUserName + ":" + content);
-				if(CommonUtil.isNumeric(content)){
+				if(CommonUtil.isNumeric(content)||content.equals("比赛")){
 					processContest(userRequest);
 				}
 				return userRequest.getResultXml();
@@ -202,21 +202,28 @@ public class MoocUserService extends GuestService{
     protected static void processContest(UserRequest userRequest){
 		userRequest.removeSession();
 		String respContent;
-		WeixinMedia media=Managers.contestManager.getContestInfo(userRequest.getContent(),userRequest.getFromUserName());
-		if(media==null) {
-			respContent = "您尚未参加任何考试！";
-			userRequest.getTextMessage().setContent(respContent);
-			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
-		}else {
-			Image image=new Image();
-			image.setMediaId(media.getMediaId());
-			ImageMessage imageMessage=new ImageMessage();
-			imageMessage.setFromUserName(userRequest.getToUserName());
-			imageMessage.setToUserName(userRequest.getFromUserName());
-			imageMessage.setImage(image);
-			imageMessage.setMsgType(media.getType());
-			imageMessage.setCreateTime(new Date().getTime());
-			userRequest.setResultXml(MessageUtil.messageToXml(imageMessage));
+		try{
+			WeixinMedia media = Managers.contestManager.getContestInfo(userRequest.getContent(), userRequest.getFromUserName());
+			if (media == null) {
+				respContent = "您尚未参加任何考试！";
+				userRequest.getTextMessage().setContent(respContent);
+				userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+			} else {
+				Image image = new Image();
+				image.setMediaId(media.getMediaId());
+				ImageMessage imageMessage = new ImageMessage();
+				imageMessage.setFromUserName(userRequest.getToUserName());
+				imageMessage.setToUserName(userRequest.getFromUserName());
+				imageMessage.setImage(image);
+				imageMessage.setMsgType(media.getType());
+				imageMessage.setCreateTime(new Date().getTime());
+				userRequest.setResultXml(MessageUtil.messageToXml(imageMessage));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+//			respContent = "有异常！";
+//			userRequest.getTextMessage().setContent(respContent);
+//			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
 		}
 	}
 }

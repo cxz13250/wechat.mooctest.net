@@ -89,6 +89,7 @@ public class CommonUtil {
 			inputStream.close();
 
 			conn.disconnect();
+			System.out.println(buffer);
 			jsonObject = JSONObject.fromObject(buffer.toString());
 		} catch (ConnectException ce) {
 			LoggerManager.error(logger, "连接超时：" + ce);

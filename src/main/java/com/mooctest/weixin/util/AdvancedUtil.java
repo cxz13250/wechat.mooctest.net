@@ -700,7 +700,7 @@ public class AdvancedUtil {
 			outputStream.write(String.format("Content-Disposition: form-data; name=\"media\"; filename=\"file1%s\"\r\n", fileExt).getBytes());
 			outputStream.write(String.format("Content-Type: %s\r\n\r\n", contentType).getBytes());
 
-			// 获取媒体文件的输入流（读取文件）
+			//获取媒体文件的输入流（读取文件）
 			BufferedInputStream bis = new BufferedInputStream(meidaConn.getInputStream());
 			byte[] buf = new byte[8096];
 			int size = 0;
@@ -708,10 +708,10 @@ public class AdvancedUtil {
 				// 将媒体文件写到输出流（往微信服务器写数据）
 				outputStream.write(buf, 0, size);
 			}
-			// 请求体结束
+
 			outputStream.write(("\r\n--" + boundary + "--\r\n").getBytes());
 			outputStream.close();
-			bis.close();
+ 			bis.close();
 			meidaConn.disconnect();
 
 			// 获取媒体文件上传的输入流（从微信服务器读数据）

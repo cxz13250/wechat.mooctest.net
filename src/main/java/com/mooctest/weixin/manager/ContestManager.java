@@ -10,6 +10,7 @@ import com.mooctest.weixin.util.AdvancedUtil;
 import com.mooctest.weixin.util.CommonUtil;
 import com.mooctest.weixin.util.MessageUtil;
 import org.springframework.stereotype.Service;
+import sun.java2d.pipe.SolidTextRenderer;
 
 /**
  * Created by ROGK on 2017/10/5.
@@ -17,11 +18,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContestManager {
 
-    public WeixinMedia getContestInfo(String content,String fromUserName){
+    public WeixinMedia getContestInfo(String content,String fromUserName)throws Exception{
         Account account=Managers.accountManager.getAccount(fromUserName);
         if(account==null)
             return null;
-        ContestResult contestResult=WitestManager.getContest(Integer.parseInt(content),account.getMoocid());
+        ContestResult contestResult;
+        if(content.equals("比赛"))
+            contestResult=WitestManager.getContest2(account.getMoocid());
+        else
+            contestResult=WitestManager.getContest(Integer.parseInt(content),account.getMoocid());
         if(contestResult==null)
             return null;
         Token token=Managers.config.getToken();
