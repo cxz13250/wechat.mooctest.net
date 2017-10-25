@@ -37,6 +37,4 @@ $RECYCLE.BIN/
 .idea/*
 target/*
 *.iml
-src/main/resources/jdbc.properties
-src/main/resources/log4j.properties
 /target/
