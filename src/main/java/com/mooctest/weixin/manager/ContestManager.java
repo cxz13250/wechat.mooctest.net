@@ -1,6 +1,8 @@
 package com.mooctest.weixin.manager;
 
 import com.mooctest.weixin.data.ContestResult;
+import com.mooctest.weixin.data.TeacherContest;
+import com.mooctest.weixin.data.WorkerContest;
 import com.mooctest.weixin.model.Account;
 import com.mooctest.weixin.pojo.Token;
 import com.mooctest.weixin.pojo.UserRequest;
@@ -9,8 +11,12 @@ import com.mooctest.weixin.pojo.WeixinUserInfo;
 import com.mooctest.weixin.util.AdvancedUtil;
 import com.mooctest.weixin.util.CommonUtil;
 import com.mooctest.weixin.util.MessageUtil;
+import javassist.expr.NewArray;
 import org.springframework.stereotype.Service;
 import sun.java2d.pipe.SolidTextRenderer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ROGK on 2017/10/5.
@@ -32,6 +38,37 @@ public class ContestManager {
         Token token=Managers.config.getToken();
         WeixinUserInfo userInfo= AdvancedUtil.getUserInfo(token.getAccessToken(),fromUserName);
         String imageUrl=WitestManager.getImage(userInfo,contestResult);
+        WeixinMedia media=AdvancedUtil.uploadMedia(token.getAccessToken(), MessageUtil.REQ_MESSAGE_TYPE_IMAGE,imageUrl);
+        return media;
+    }
+
+    public WeixinMedia getWorkersContest(String content,String fromUserName)throws Exception{
+        Account account=Managers.accountManager.getAccount(fromUserName);
+        if(account==null)
+            return null;
+        List<WorkerContest> list = new ArrayList<>();
+        if(content.equals("比赛"))
+            list=WitestManager.getContestForTeacher(account.getMoocid());
+        if(list==null||list.size()==0)
+            return null;
+        int num = (int) (Math.random() * list.size());
+        Token token=Managers.config.getToken();
+        String imageUrl=WitestManager.getImage2(list.get(num));
+        WeixinMedia media=AdvancedUtil.uploadMedia(token.getAccessToken(), MessageUtil.REQ_MESSAGE_TYPE_IMAGE,imageUrl);
+        return media;
+    }
+
+    public WeixinMedia getWorkersContest2(String content,String fromUserName)throws Exception{
+        Account account=Managers.accountManager.getAccount(fromUserName);
+        if(account==null)
+            return null;
+        TeacherContest teacherContest=new TeacherContest();
+        if(content.equals("比赛"))
+            teacherContest=WitestManager.getContestForTeacher2(account.getMoocid());
+        if(teacherContest==null)
+            return null;
+        Token token=Managers.config.getToken();
+        String imageUrl=WitestManager.getImage22(teacherContest);
         WeixinMedia media=AdvancedUtil.uploadMedia(token.getAccessToken(), MessageUtil.REQ_MESSAGE_TYPE_IMAGE,imageUrl);
         return media;
     }

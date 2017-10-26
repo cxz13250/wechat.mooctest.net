@@ -24,7 +24,6 @@ public class WitestManager {
 	//服务器url
 	//private static String server = "http://976a29f6.ngrok.io/weixin/";
 	private static String server= "http://wechat.mooctest.net/weixin/";
-	 
 	
 	public static final String account_page=server +"q/account/info";  //账号信息页面url
 	public static final String bind_page=server+"q/account/new";  //账号绑定页面url
@@ -45,7 +44,8 @@ public class WitestManager {
 	
 	//慕测主站url
 	private static final String moocserver="http://www.mooctest.net/api/wechat";
-	
+	private static final String test="http://127.0.0.1:8080/api/wechat";
+
 	public static final String is_Mooc_url=moocserver+"/checkWorker";
 	public static final String taskinfo_url=moocserver+"/getTaskInfo";
 	public static final String taskgrade_url=moocserver+"/getFinishedTaskInfo";
@@ -59,9 +59,11 @@ public class WitestManager {
 	public static final String worker_grade_url=moocserver+"/getWorkersGrade";
 	public static final String worker_password_url=moocserver+"/getWorkersPassword";
 	public static final String worker_contest_url=moocserver+"/contest";
+	public static final String workers_contest_url=moocserver+"/contests/worker";
 
 	//生成比赛结果图片
 	public static final String contest_image_url="http://118.178.18.181:10086";
+	public static final String worker_image_url="http://118.178.18.181:15006";
 //	public static final String contest_image_url="http://10.0.0.45:10080";
 
 	//判断用户身份
@@ -335,12 +337,66 @@ public class WitestManager {
 			return (ContestResult)JSONObject.toBean(object,ContestResult.class);
 	}
 
+	public static List<WorkerContest> getContestForTeacher(long userId){
+		String param="userId="+userId;
+		String result=HttpRequestUtil.sendGet(workers_contest_url,param);
+		JSONObject jsonObject=JSONObject.fromObject(result);
+		JSONArray array=JSONArray.fromObject(jsonObject.get("data"));
+		if(array==null || array.size()==0)
+			return null;
+		else {
+			List<WorkerContest> list = new ArrayList<>();
+			JSONObject obj;
+			WorkerContest workerContest;
+			for (int i = 0; i < array.size(); i++) {
+				obj = array.getJSONObject(i);
+				workerContest = (WorkerContest) JSONObject.toBean(obj, WorkerContest.class);
+				list.add(workerContest);
+			}
+			return list;
+		}
+	}
+
+	public static TeacherContest getContestForTeacher2(long userId){
+		String param="userId="+userId;
+		String result=HttpRequestUtil.sendGet(workers_contest_url,param);
+		JSONObject jsonObject=JSONObject.fromObject(result);
+		JSONArray array=JSONArray.fromObject(jsonObject.get("data"));
+		String teacherName=jsonObject.getString("message");
+		if(array==null || array.size()==0)
+			return null;
+		else {
+			int num = (int) (Math.random() * array.size());
+			WorkerContest workerContest=(WorkerContest) JSONObject.toBean(array.getJSONObject(num), WorkerContest.class);;
+			TeacherContest teacherContest=new TeacherContest(workerContest,teacherName);
+			return teacherContest;
+		}
+	}
+
 	public static String getImage(WeixinUserInfo userInfo, ContestResult contestResult)throws Exception{
 		System.out.println(contestResult.getScore());
 		String score= new Formatter().format("%.2f",contestResult.getScore()).toString();
 		String param="userName="+ URLEncoder.encode(userInfo.getNickname(),"utf-8")+"&userAvatar="+userInfo.getHeadImgUrl()+"&score="
 				+score+"&rank="+contestResult.getRank()+"&testName="+URLEncoder.encode(contestResult.getName(),"utf-8");
 		String result=HttpRequestUtil.sendGet(contest_image_url,param);
+		return result;
+	}
+
+	public static String getImage2(WorkerContest workerContest)throws Exception{
+		System.out.println(workerContest.getScore());
+		String score= new Formatter().format("%.2f",workerContest.getScore()).toString();
+		String param="userName="+ URLEncoder.encode(workerContest.getWorkerName(),"utf-8")+"&score="
+				+score+"&rank="+workerContest.getRank()+"&testName="+URLEncoder.encode(workerContest.getTaskName(),"utf-8");
+		String result=HttpRequestUtil.sendGet(worker_image_url,param);
+		return result;
+	}
+
+	public static String getImage22(TeacherContest teacherContest)throws Exception{
+		System.out.println(teacherContest.getTeacherName());
+		String score= new Formatter().format("%.2f",teacherContest.getScore()).toString();
+		String param="userName="+ URLEncoder.encode(teacherContest.getWorkerName(),"utf-8")+"&score="
+				+score+"&rank="+teacherContest.getRank()+"&testName="+URLEncoder.encode(teacherContest.getTaskName(),"utf-8");
+		String result=HttpRequestUtil.sendGet(worker_image_url,param);
 		return result;
 	}
 }

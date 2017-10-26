@@ -5,6 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.mooctest.weixin.data.Task;
+import com.mooctest.weixin.message.Image;
+import com.mooctest.weixin.message.ImageMessage;
+import com.mooctest.weixin.pojo.WeixinMedia;
+import com.mooctest.weixin.util.CommonUtil;
 import org.apache.log4j.Logger;
 
 import com.mooctest.weixin.data.Group;
@@ -41,7 +45,10 @@ public class TeacherService extends GuestService{
 			// 处理Text
 			if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
 				LoggerManager.info(logger, "(StudentText)" + createTime + ":" + fromUserName + "---->" + toUserName + ":" + content);
-				respContent = "您发送的是文本消息！";
+				if(content.equals("比赛")){
+					processContest(userRequest);
+				}
+				return userRequest.getResultXml();
 			}
 			// 图片消息
 			else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {
@@ -225,6 +232,28 @@ public class TeacherService extends GuestService{
 		}else{
 			String getPassowrdXml=NewsMessageUtil.CreatePasswordXml(userRequest);
 			userRequest.setResultXml(getPassowrdXml);
+		}
+	}
+
+	protected static void processContest(UserRequest userRequest){
+		userRequest.removeSession();
+		try {
+			WeixinMedia media = Managers.contestManager.getWorkersContest2(userRequest.getContent(), userRequest.getFromUserName());
+			if (media == null) {
+				return;
+			} else {
+				Image image = new Image();
+				image.setMediaId(media.getMediaId());
+				ImageMessage imageMessage = new ImageMessage();
+				imageMessage.setFromUserName(userRequest.getToUserName());
+				imageMessage.setToUserName(userRequest.getFromUserName());
+				imageMessage.setImage(image);
+				imageMessage.setMsgType(media.getType());
+				imageMessage.setCreateTime(new Date().getTime());
+				userRequest.setResultXml(MessageUtil.messageToXml(imageMessage));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 }
