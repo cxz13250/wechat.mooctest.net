@@ -374,10 +374,10 @@ public class WitestManager {
 	}
 
 	public static String getImage(WeixinUserInfo userInfo, ContestResult contestResult)throws Exception{
-		System.out.println(contestResult.getScore());
 		String score= new Formatter().format("%.2f",contestResult.getScore()).toString();
+		String rank= new Formatter().format("%.2f",contestResult.getRank()).toString();
 		String param="userName="+ URLEncoder.encode(userInfo.getNickname(),"utf-8")+"&userAvatar="+userInfo.getHeadImgUrl()+"&score="
-				+score+"&rank="+contestResult.getRank()+"&testName="+URLEncoder.encode(contestResult.getName(),"utf-8");
+				+score+"&rank="+rank+"&testName="+URLEncoder.encode(contestResult.getName(),"utf-8");
 		String result=HttpRequestUtil.sendGet(contest_image_url,param);
 		return result;
 	}

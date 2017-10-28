@@ -6,7 +6,7 @@ package com.mooctest.weixin.data;
 public class ContestResult {
     private String name;
     private double score;
-    private long rank;
+    private double rank;
 
     public String getName() {
         return name;
@@ -24,11 +24,11 @@ public class ContestResult {
         this.score = score;
     }
 
-    public long getRank() {
+    public double getRank() {
         return rank;
     }
 
-    public void setRank(long rank) {
+    public void setRank(double rank) {
         this.rank = rank;
     }
 }

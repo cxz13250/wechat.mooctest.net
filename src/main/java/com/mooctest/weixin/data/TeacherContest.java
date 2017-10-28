@@ -7,7 +7,7 @@ public class TeacherContest {
     private String taskName;
     private double score;
     private String workerName;
-    private Long rank;
+    private double rank;
     private String teacherName;
 
     public TeacherContest(){
@@ -46,11 +46,11 @@ public class TeacherContest {
         this.workerName = workerName;
     }
 
-    public Long getRank() {
+    public double getRank() {
         return rank;
     }
 
-    public void setRank(Long rank) {
+    public void setRank(double rank) {
         this.rank = rank;
     }
 
