@@ -223,7 +223,7 @@ public class WitestManager {
 		String result=HttpRequestUtil.sendGet(manager_task_url,param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
-		JSONArray ja=JSONArray.fromObject(object.get("tasks"));
+		JSONArray ja=JSONArray.fromObject(object.get("exams"));
 		JSONObject obj;
 		Task task;
 		for(int i=0;i<ja.size();i++){
@@ -244,7 +244,7 @@ public class WitestManager {
 		String result=HttpRequestUtil.sendGet(manager_task_url,param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
-		JSONArray ja=JSONArray.fromObject(object.get("tasks"));
+		JSONArray ja=JSONArray.fromObject(object.get("exams"));
 		JSONObject obj;
 		Task task;
 		for(int i=0;i<ja.size();i++){
@@ -265,7 +265,7 @@ public class WitestManager {
 		String result=HttpRequestUtil.sendGet(manager_task_url,param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
-		JSONArray ja=JSONArray.fromObject(object.get("tasks"));
+		JSONArray ja=JSONArray.fromObject(object.get("exams"));
 		JSONObject obj;
 		Task task;
 		for(int i=0;i<ja.size();i++){
@@ -282,7 +282,7 @@ public class WitestManager {
 	//根据任务id获取workers成绩
 	public static List<Grade> getWorkersGrade(String id){
 		List<Grade> list=new ArrayList<Grade>();
-		String param="taskId="+id;
+		String param="examId="+id;
 		String result=HttpRequestUtil.sendGet(worker_grade_url,param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
@@ -300,7 +300,7 @@ public class WitestManager {
 	//根据任务id获取workers密码
 	public static List<Password> getWorkersPassword(String id){
 		List<Password> list=new ArrayList<Password>();
-		String param="taskId="+id;
+		String param="examId="+id;
 		String result=HttpRequestUtil.sendGet(worker_password_url,param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));
@@ -316,7 +316,7 @@ public class WitestManager {
 	}
 
 	public static ContestResult getContest(long taskId,long userId){
-		String param="taskId="+taskId+"&userId="+userId;
+		String param="examId="+taskId+"&userId="+userId;
 		String result=HttpRequestUtil.sendGet(worker_contest_url,param);
 		JSONObject jsonObject=JSONObject.fromObject(result);
 		JSONObject object=JSONObject.fromObject(jsonObject.get("data"));

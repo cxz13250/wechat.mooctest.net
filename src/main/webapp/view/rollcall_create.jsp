@@ -1,15 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java"
 	import="java.util.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://"
-            + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
+	String basePath = Managers.config.getBaseUrl();
 %>
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -40,7 +38,7 @@
 
 		<div id="div2">
 			<div id="main">
-				<form name="rollcall_info" method="post" action="q/rollcall/submit_rollcall">
+				<form name="rollcall_info" method="post" action="<%=basePath%>q/rollcall/submit_rollcall">
 					<input type="hidden" id="openid" name="openid" value="<%=openid%>">
 					<input type="hidden" id="latitude" name="latitude" value="">
 					<input type="hidden" id="longitude" name="longitude" value="">		

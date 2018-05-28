@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java"
 	import="java.util.*,java.io.*"%>
 
@@ -9,10 +10,7 @@
 
 <head>
 <%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://"
-            + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
+	String basePath = Managers.config.getBaseUrl();
 %>
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -56,7 +54,7 @@ div#head h2 {
 				</p>
 			</div>
 			<div id="main">
-				<form name="form" method="post" action="q/rollcall/submit_rollcall_location">
+				<form name="form" method="post" action="<%=basePath%>q/rollcall/submit_rollcall_location">
 				<input type="hidden" name="openid" value="<%=openid %>">
 				<input type="hidden" id="latitude" name="latitude" value="">
 				<input type="hidden" id="longitude" name="longitude" value="">

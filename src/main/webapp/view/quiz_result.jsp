@@ -1,6 +1,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%
@@ -8,9 +9,7 @@
 %>
 <head>
 <%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-             + path + "/";
+	String basePath = Managers.config.getBaseUrl();
 %>
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -52,7 +51,7 @@
 			<%int i=1;
 			  for(String str:question) {%>
 				<tr><td width=50%>第<%=i%>题</td>
-					<td width=50%><a href="q/answer/cluster?questionid=<%=str%>">详情</a></td>
+					<td width=50%><a href="<%=basePath%>q/answer/cluster?questionid=<%=str%>">详情</a></td>
 				</tr>
 			<%i++;} %>
 				</tbody>

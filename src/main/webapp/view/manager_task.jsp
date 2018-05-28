@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.mooctest.weixin.data.Task"%>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <%--
   Created by IntelliJ IDEA.
   User: ROGK
@@ -15,10 +16,7 @@
     %>
 <head>
     <%
-        String path = request.getContextPath();
-        String basePath = request.getScheme() + "://"
-                + request.getServerName() + ":" + request.getServerPort()
-                + path + "/";
+        String basePath = Managers.config.getBaseUrl();
     %>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -55,7 +53,7 @@
                     <%for(Task task:current){%>
                     <tr>
                         <td width="50%"><%=task.getTaskName()%></td>
-                        <td width="50%"><a href="worker_task?id=<%=task.getId()%>&name=<%=task.getTaskName()%>">详情</a></td>
+                        <td width="50%"><a href="<%=basePath%>q/task/worker_task?id=<%=task.getId()%>&name=<%=task.getTaskName()%>">详情</a></td>
                     </tr>
                     <%}}%>
                     </tbody>
@@ -76,7 +74,7 @@
                     <%for(Task task:unstart){%>
                     <tr>
                         <td width="50%"><%=task.getTaskName()%></td>
-                        <td width="50%"><a href="q/task/worker_task?id=<%=task.getId()%>&name=<%=task.getTaskName()%>">详情</a></td>
+                        <td width="50%"><a href="<%=basePath%>q/task/worker_task?id=<%=task.getId()%>&name=<%=task.getTaskName()%>">详情</a></td>
                     </tr>
                     <%}}%>
                     </tbody>

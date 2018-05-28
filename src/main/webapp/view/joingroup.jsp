@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page language="java" import="com.mooctest.weixin.pojo.JSApiTicket,java.util.*,com.mooctest.weixin.util.JsSDKSign,java.io.*,com.mooctest.weixin.manager.WitestManager" %>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%
@@ -8,9 +8,7 @@
 %>
 <head>
 <%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
+	String basePath = Managers.config.getBaseUrl();
 %>
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -44,7 +42,7 @@
 			<div id="main">
 				<h1>加入群组</h1>
 
-				<form name="form" id="join" style="width:100%;" method="post" action="q/group/join">
+				<form name="form" id="join" style="width:100%;" method="post" action="<%=basePath%>q/group/join">
 					<div class="weui-cells weui-cells_form">
 						<input type="hidden" value="<%=openid%>" name="openid">
 						<div class="weui-cell">

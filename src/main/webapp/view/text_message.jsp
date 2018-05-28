@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java"
 	import="java.util.*,java.io.*,com.mooctest.weixin.pojo.JSApiTicket,com.mooctest.weixin.util.JsSDKSign"%>
 
@@ -15,10 +16,7 @@
 
 <head>
 <%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://"
-            + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
+	String basePath = Managers.config.getBaseUrl();
 %>
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

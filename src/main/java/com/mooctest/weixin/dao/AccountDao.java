@@ -20,6 +20,11 @@ public class AccountDao extends BaseDao<Account, Integer> {
 		String hqlstring="select distinct q from Account q where q."+colName+" = ?";
 		return getListByHQL(hqlstring, colValue);
 	}
+
+	public List<Account> getAccounts(){
+		String hqlstring="select distinct q from Account q";
+		return getListByHQL(hqlstring, null);
+	}
 	
 	public List<Account> getAccountByUsername(int moocid){
 		return getAccountByColValue("moocid", moocid);
@@ -36,5 +41,9 @@ public class AccountDao extends BaseDao<Account, Integer> {
 		for(Account w : Accounts){
 			delete(w);
 		}
+	}
+
+	public void updateAccount(Account account){
+		saveOrUpdate(account);
 	}
 }

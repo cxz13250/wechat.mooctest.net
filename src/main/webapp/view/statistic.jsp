@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <html>
 <%
     String data_arr=(String)request.getAttribute("data_arr");
@@ -15,10 +16,7 @@
 %>
 <head>
     <%
-        String path = request.getContextPath();
-        String basePath = request.getScheme() + "://"
-                + request.getServerName() + ":" + request.getServerPort()
-                + path + "/";
+        String basePath = Managers.config.getBaseUrl();
     %>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">

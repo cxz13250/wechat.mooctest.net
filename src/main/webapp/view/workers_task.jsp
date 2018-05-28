@@ -1,4 +1,5 @@
 <%@ page import="java.util.List" %>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <%@ page import="com.mooctest.weixin.data.Password" %><%--
   Created by IntelliJ IDEA.
   User: ROGK
@@ -14,16 +15,15 @@
     %>
 <head>
     <%
-        String path = request.getContextPath();
-        String basePath = request.getScheme() + "://"
-                + request.getServerName() + ":" + request.getServerPort()
-                + path + "/";
+        String basePath = Managers.config.getBaseUrl();
     %>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>学生秘钥</title>
     <link rel="stylesheet" href="<%=basePath%>css/rokg.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 </head>
     <style type="text/css">
@@ -62,7 +62,7 @@
 </div>
 <div>
     <p class="weui_btn_area">
-        <a onclick="javascript:history.back()" class="weui_btn weui_btn_primary">返回</a>
+        <a onclick="javascript:history.back()" class="weui-btn weui-btn_primary">返回</a>
     </p>
 </div>
 </div>
