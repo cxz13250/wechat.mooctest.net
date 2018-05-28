@@ -1,5 +1,6 @@
 <%@page import="com.mooctest.weixin.data.Group"%>
 <%@page import="java.util.List"%>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -10,8 +11,7 @@
 %>
 <head>
 <%
-     String path = request.getContextPath();
-     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ path + "/";
+    String basePath = Managers.config.getBaseUrl();
 %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport"
@@ -51,7 +51,7 @@
             </table> 
         </div>
         <div class="myform-row">
-            <a href='<%=basePath%>q/group/tojoin?openid=<%=openid%>' class="weui_btn weui_btn_primary">加入群组</a>    	
+            <a href='<%=basePath%>q/group/tojoin?openid=<%=openid%>' class="weui-btn weui-btn_primary">加入群组</a>
         </div>
     </div>
 </div>

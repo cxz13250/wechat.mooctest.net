@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java"
 	import="java.util.*,java.io.*,com.mooctest.weixin.model.PreparedQuiz,com.mooctest.weixin.model.QuizItem,java.sql.Timestamp"%>
 
@@ -8,10 +9,7 @@
 
 <head>
 <%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://"
-            + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
+	String basePath = Managers.config.getBaseUrl();
 %>
 <base href="<%=basePath%>">
 <meta name="viewport"
@@ -61,7 +59,7 @@ div#head h2 {
 				</p>
 			</div>
 			<div id="main">
-				<form id="answer" name="form" method="post" action="q/quiz/submit_answer">
+				<form id="answer" name="form" method="post" action="<%=basePath%>q/quiz/submit_answer">
 				<input type="hidden" name="quiz_type" value="<%= quizType %>">
 				<input type="hidden" name="openid" value="<%=quiz.getWorOpenId() %>">
 				<input type="hidden" name="index" value="<%=index%>">

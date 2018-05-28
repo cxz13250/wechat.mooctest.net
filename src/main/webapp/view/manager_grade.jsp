@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.mooctest.weixin.data.Task" %>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <%--
   Created by IntelliJ IDEA.
   User: ROGK
@@ -14,10 +15,7 @@
     %>
 <head>
     <%
-        String path = request.getContextPath();
-        String basePath = request.getScheme() + "://"
-                + request.getServerName() + ":" + request.getServerPort()
-                + path + "/";
+        String basePath = Managers.config.getBaseUrl();
     %>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">

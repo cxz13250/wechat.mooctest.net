@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java"
 	import="java.util.*,java.io.*,com.mooctest.weixin.data.Group,com.mooctest.weixin.manager.Managers,com.mooctest.weixin.model.PreparedQuiz"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -8,9 +9,7 @@
 
 <head>
 <%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+	String basePath = Managers.config.getBaseUrl();
 %>
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -192,7 +191,7 @@ textarea {
 			};
 			$.ajax({
 				type : 'GET',
-				url : 'q/quiz/get_prepared_quiz_list_new',
+				url : '<%=basePath%>q/quiz/get_prepared_quiz_list_new',
 				data : param,
 				dataType : 'json',
 				beforeSend : function() {
@@ -242,7 +241,7 @@ textarea {
 				$
 						.ajax({
 							type : 'GET',
-							url : 'q/quiz/get_prepared_quiz_new',
+							url : '<%=basePath%>q/quiz/get_prepared_quiz_new',
 							data : param,
 							dataType : 'json',
 							beforeSend : function() {

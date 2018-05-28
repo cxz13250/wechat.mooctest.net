@@ -459,6 +459,8 @@ public class AdvancedUtil {
 				weixinUserInfo.setLanguage(jsonObject.getString("language"));
 				// 用户头像
 				weixinUserInfo.setHeadImgUrl(jsonObject.getString("headimgurl"));
+
+				weixinUserInfo.setUnionid(jsonObject.getString("unionid"));
 			} catch (Exception e) {
 				if (0 == weixinUserInfo.getSubscribe()) {
 					LoggerManager.error(logger, "用户" + weixinUserInfo.getOpenId() + "已取消关注");

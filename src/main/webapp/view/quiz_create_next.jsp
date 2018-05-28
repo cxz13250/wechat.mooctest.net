@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%
@@ -10,9 +11,7 @@
 %>
 <head>
 <%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+	String basePath = Managers.config.getBaseUrl();
 %>
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -76,7 +75,7 @@ textarea {
 			<div id="main">
 
 				<form id="quizInfo" name="quiz_info" method="post"
-					action="q/quiz/submit_quiz_next">
+					action="<%=basePath%>q/quiz/submit_quiz_next">
 					<input type="hidden" name="openid" value="<%=openid%>">
 					<input type="hidden" name="quizid" value="<%=quizid%>">
 					<input type="hidden" name="groupId" value="<%=groupId%>">

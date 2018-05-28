@@ -33,7 +33,7 @@ public class TaskController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
-		String username=Managers.accountManager.getAccount(openid).getUsername();		
+		String username=Managers.accountManager.getAccount(openid).getUsername();
 		List<TaskInfo> list=WitestManager.getTaskInfo(username);
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("list", list);

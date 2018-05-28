@@ -1,9 +1,11 @@
 package com.mooctest.weixin.controller;
 
 import com.mooctest.weixin.data.Accountinfo;
+import com.mooctest.weixin.manager.AccountManager;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
 import com.mooctest.weixin.model.Account;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +25,9 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/account")
 public class AccountController {
+
+	@Autowired
+	AccountManager accountManager;
 	
 	@RequestMapping(value="/new")
 	public ModelAndView toAccountBind(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response) throws IOException{
@@ -75,7 +80,8 @@ public class AccountController {
 			mv.addObject("msg_title", "绑定失败！");
 		}
 		else{
-			boolean temp=Managers.accountManager.checkAccount1(username);
+			System.out.println(accountManager);
+			boolean temp=accountManager.checkAccount1(username);
 			if(!temp)
 			{
 				mv.setViewName("fail");

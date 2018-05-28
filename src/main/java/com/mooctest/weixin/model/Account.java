@@ -34,6 +34,9 @@ public class Account {
 	@Column(name="mooc_id")
 	private int moocid;
 
+	@Column(name = "union_id")
+	private String unionId;
+
 	public Integer getId() {
 		return id;
 	}
@@ -72,5 +75,13 @@ public class Account {
 
 	public void setType(int type) {
 		this.type = type;
-	}	
+	}
+
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
+	}
 }

@@ -1,9 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="utf-8" %>
+<%@ page import="com.mooctest.weixin.manager.Managers" %>
 <html>
 <%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
+    String basePath = Managers.config.getBaseUrl();
 %>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

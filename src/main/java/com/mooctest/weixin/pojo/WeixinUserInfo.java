@@ -28,6 +28,8 @@ public class WeixinUserInfo {
 	// 用户头像
 	private String headImgUrl;
 
+	private String unionid;
+
 	public String getOpenId() {
 		return openId;
 	}
@@ -106,5 +108,13 @@ public class WeixinUserInfo {
 
 	public void setHeadImgUrl(String headImgUrl) {
 		this.headImgUrl = headImgUrl;
+	}
+
+	public String getUnionid() {
+		return unionid;
+	}
+
+	public void setUnionid(String unionid) {
+		this.unionid = unionid;
 	}
 }
