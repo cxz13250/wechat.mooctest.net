@@ -42,21 +42,7 @@ public class ContestManager {
         return media;
     }
 
-    public WeixinMedia getWorkersContest(String content,String fromUserName)throws Exception{
-        Account account=Managers.accountManager.getAccount(fromUserName);
-        if(account==null)
-            return null;
-        List<WorkerContest> list = new ArrayList<>();
-        if(content.equals("比赛"))
-            list=WitestManager.getContestForTeacher(account.getMoocid());
-        if(list==null||list.size()==0)
-            return null;
-        int num = (int) (Math.random() * list.size());
-        Token token=Managers.config.getToken();
-        String imageUrl=WitestManager.getImage2(list.get(num));
-        WeixinMedia media=AdvancedUtil.uploadMedia(token.getAccessToken(), MessageUtil.REQ_MESSAGE_TYPE_IMAGE,imageUrl);
-        return media;
-    }
+
 
     public WeixinMedia getWorkersContest2(String content,String fromUserName)throws Exception{
         Account account=Managers.accountManager.getAccount(fromUserName);

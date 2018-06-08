@@ -60,6 +60,7 @@ public class WitestManager {
 	public static final String worker_password_url=moocserver+"/getWorkersPassword";
 	public static final String worker_contest_url=moocserver+"/contest";
 	public static final String workers_contest_url=moocserver+"/contests/worker";
+	public static final String enter_competion_url=moocserver+"/competition";
 
 	//生成比赛结果图片
 	public static final String contest_image_url="http://118.178.18.181:10086";
@@ -337,26 +338,6 @@ public class WitestManager {
 			return (ContestResult)JSONObject.toBean(object,ContestResult.class);
 	}
 
-	public static List<WorkerContest> getContestForTeacher(long userId){
-		String param="userId="+userId;
-		String result=HttpRequestUtil.sendGet(workers_contest_url,param);
-		JSONObject jsonObject=JSONObject.fromObject(result);
-		JSONArray array=JSONArray.fromObject(jsonObject.get("data"));
-		if(array==null || array.size()==0)
-			return null;
-		else {
-			List<WorkerContest> list = new ArrayList<>();
-			JSONObject obj;
-			WorkerContest workerContest;
-			for (int i = 0; i < array.size(); i++) {
-				obj = array.getJSONObject(i);
-				workerContest = (WorkerContest) JSONObject.toBean(obj, WorkerContest.class);
-				list.add(workerContest);
-			}
-			return list;
-		}
-	}
-
 	public static TeacherContest getContestForTeacher2(long userId){
 		String param="userId="+userId;
 		String result=HttpRequestUtil.sendGet(workers_contest_url,param);
@@ -398,5 +379,16 @@ public class WitestManager {
 				+score+"&rank="+teacherContest.getRank()+"&testName="+URLEncoder.encode(teacherContest.getTaskName(),"utf-8");
 		String result=HttpRequestUtil.sendGet(worker_image_url,param);
 		return result;
+	}
+
+	public static boolean enterCompetition(long userId,long competitionId)throws Exception{
+		String params="userId="+userId+"&competitionId="+competitionId;
+		String result=HttpRequestUtil.sendPost(enter_competion_url,params);
+		JSONObject object=JSONObject.fromObject(result);
+		if (object.getInt("status")==200){
+			return true;
+		}else {
+			return false;
+		}
 	}
 }
