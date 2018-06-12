@@ -133,6 +133,11 @@ public class GuestService {
 		userRequest.getTextMessage().setContent(respContent);
 		userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
 	}
+
+	//提示用户进入慕测六月赛界面
+	protected static void processMonthlyMatch(UserRequest userRequest){
+		userRequest.setResultXml(NewsMessageUtil.joinMonthlyMatch(userRequest));
+	}
     
 	//使用帮助图文消息
 	protected static void processHelpMessage(UserRequest userRequest) {

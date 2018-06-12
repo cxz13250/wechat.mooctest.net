@@ -1,14 +1,17 @@
 package com.mooctest.weixin.controller;
 
 import com.mooctest.weixin.data.JoinResult;
-import com.mooctest.weixin.manager.AccountManager;
-import com.mooctest.weixin.manager.CompetitionManager;
-import com.mooctest.weixin.manager.WitestManager;
+import com.mooctest.weixin.manager.*;
 import com.mooctest.weixin.model.Account;
 import com.mooctest.weixin.model.Competition;
-import com.sun.istack.internal.NotNull;
+import com.mooctest.weixin.model.User2Competition;
+import com.mooctest.weixin.model.UserAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author ROKG
@@ -26,13 +29,58 @@ public class CompetitionController {
     @Autowired
     CompetitionManager competitionManager;
 
-    @RequestMapping(value = "/enter",method = RequestMethod.GET)
-    public boolean enterCompetition(@RequestParam(value = "openId")String openId){
+    @Autowired
+    User2CompetitionManager user2CompetitionManager;
+
+    @Autowired
+    UserAddressManager addressManager;
+
+    @RequestMapping(value = "/to",method = RequestMethod.GET)
+    public ModelAndView toCompetition(@RequestParam(value = "openid")String openid, HttpServletRequest request, HttpServletResponse response)throws Exception{
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("content-type", "text/html;charset=UTF-8");
+        ModelAndView mv=new ModelAndView();
+        Account account=accountManager.getAccount(openid);
+
+        if(account==null) {
+            mv.setViewName("fail");
+            mv.addObject("msg","查询失败！");
+            mv.addObject("msg_title","请先绑定账号！");
+        }else {
+            Competition competition=competitionManager.get();
+            User2Competition user2Competition=user2CompetitionManager.get(account.getMoocid(),competition.getId());
+            mv.setViewName("monthly");
+            mv.addObject("openid",openid);
+            mv.addObject("flag",user2Competition!=null);
+        }
+        return mv;
+    }
+
+    @RequestMapping(value = "/enter",method = RequestMethod.POST)
+    public boolean enterCompetition(@RequestParam(value = "openid")String openId,@RequestParam(value = "address")String address,HttpServletRequest request,HttpServletResponse response)throws Exception{
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("content-type", "text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         Account account=accountManager.getAccount(openId);
         Competition competition=competitionManager.get();
         try {
+            UserAddress userAddress=addressManager.getAddress(account.getMoocid());
+            if (userAddress==null){
+                userAddress=new UserAddress();
+            }
+            userAddress.setAddress(address);
+            userAddress.setUserId(account.getMoocid());
+            addressManager.save(userAddress);
             JoinResult joinResult = WitestManager.joinGroup(account.getUsername(), String.valueOf(competition.getGroupId()), competition.getManagerName());
-            return true;
+            if (joinResult.isSuccess()){
+                User2Competition user2Competition=new User2Competition();
+                user2Competition.setCompetitionId(competition.getId());
+                user2Competition.setUserId(account.getMoocid());
+                user2CompetitionManager.save(user2Competition);
+            }
+            return joinResult.isSuccess();
         }catch (Exception e){
             return false;
         }
@@ -44,7 +92,7 @@ public class CompetitionController {
     }
 
     @RequestMapping(value = "",method = RequestMethod.PUT)
-    public Competition update(@RequestBody @NotNull Competition c){
+    public Competition update(@RequestBody Competition c){
         Competition competition=competitionManager.get();
         if (competition!=null) {
             competition.setGroupId(c.getGroupId());

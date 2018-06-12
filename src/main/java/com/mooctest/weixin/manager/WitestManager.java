@@ -22,7 +22,7 @@ public class WitestManager {
 	private static Logger logger = Logger.getLogger(WitestManager.class);
 
 	//服务器url
-	//private static String server = "http://976a29f6.ngrok.io/weixin/";
+//	private static String server = "http://553497eb.ngrok.io/weixin/";
 	private static String server= "http://wechat.mooctest.net/weixin/";
 	
 	public static final String account_page=server +"q/account/info";  //账号信息页面url
@@ -41,6 +41,7 @@ public class WitestManager {
 	public static final String rollcall_result_page=server+"q/rollcall/result?openid=OPEN&rollcallid=ROLLCALLID";//老师端点名结果
 	public static final String manager_grade_page=server+"q/task/manager_grade";
 	public static final String manager_task_page=server+"q/task/manager_task";
+	public static final String monthly_match_page=server+"q/competition/to";
 	
 	//慕测主站url
 	private static final String moocserver="http://www.mooctest.net/api/wechat";

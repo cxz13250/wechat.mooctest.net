@@ -72,6 +72,7 @@ public class TaskController {
 			mv.setViewName("fail");
 			mv.addObject("msg","查询失败！");
 			mv.addObject("msg_title","请先绑定账号！");
+			return mv;
 		}
 
 		int id= account.getMoocid();

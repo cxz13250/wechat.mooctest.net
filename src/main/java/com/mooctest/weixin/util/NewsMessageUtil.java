@@ -345,4 +345,28 @@ public class NewsMessageUtil {
 		String respXml=MessageUtil.messageToXml(newsMessage);
 		return respXml;
 	}
+
+	//生成月度赛的图文消息
+	public static String joinMonthlyMatch(UserRequest userRequest){
+		String description="点击查看详情";
+		String url=WitestManager.monthly_match_page+"?openid="+CommonUtil.urlEncodeUTF8(userRequest.getFromUserName());
+		Article article=new Article();
+		article.setDescription(description);
+		article.setTitle("参加慕测六月赛，赢取丰厚奖励~");
+		article.setUrl(url);
+		article.setPicUrl("http://mooctest-site.oss-cn-shanghai.aliyuncs.com/wechat/monthly_logo.jpg");
+
+		List<Article> articles=new ArrayList<Article>();
+		articles.add(article);
+
+		NewsMessage newsMessage=new NewsMessage();
+		newsMessage.setArticleCount(articles.size());
+		newsMessage.setArticles(articles);
+		newsMessage.setFromUserName(userRequest.getToUserName());
+		newsMessage.setToUserName(userRequest.getFromUserName());
+		newsMessage.setCreateTime(new Date().getTime());
+		newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+		String respXml=MessageUtil.messageToXml(newsMessage);
+		return respXml;
+	}
 }

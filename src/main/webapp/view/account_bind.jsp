@@ -68,6 +68,9 @@
 		</div>
 	</div>
 <script type="text/javascript">
+	$(function(){
+	    console.log('<%=basePath%>');
+	});
 	function toBindAccount() {
         $.confirm("您确定要绑定此账号?","确认绑定?",function(){
             $('#loginForm').submit();

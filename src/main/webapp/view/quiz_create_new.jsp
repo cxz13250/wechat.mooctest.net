@@ -15,13 +15,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<link rel="stylesheet" type="text/css" href="css/quiz_base.css" />
+<link rel="stylesheet" type="text/css" href="<%=basePath%>css/quiz_base.css" />
 <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui.css"/>
 <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui2.css"/>
 <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui3.css"/>
-<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="js/jquery.blockUI.js"></script>
-<script type="text/javascript" src="js/application-util.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/jquery.blockUI.js"></script>
+<script type="text/javascript" src=<%=basePath%>"js/application-util.js"></script>
 <script src="http://weixin.yoby123.cn/weui/zepto.min.js"></script>
 <title>创建小测</title>
 <style type="text/css">
