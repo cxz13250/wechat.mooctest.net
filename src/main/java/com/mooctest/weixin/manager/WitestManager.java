@@ -22,8 +22,8 @@ public class WitestManager {
 	private static Logger logger = Logger.getLogger(WitestManager.class);
 
 	//服务器url
-//	private static String server = "http://553497eb.ngrok.io/weixin/";
-	private static String server= "http://wechat.mooctest.net/weixin/";
+//	private static String server= "http://wechat.mooctest.net/weixin/";
+	private static String server= Managers.config.getBaseUrl();
 	
 	public static final String account_page=server +"q/account/info";  //账号信息页面url
 	public static final String bind_page=server+"q/account/new";  //账号绑定页面url
