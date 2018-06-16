@@ -16,8 +16,6 @@
 <title>账号绑定</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
-	<link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
 <style type="text/css">
 #main h1, #main p {
 	text-align: center;/*  */
@@ -27,7 +25,7 @@
 }
 </style>
 </head>
-
+<jsp:include page="header.jsp" flush="true"></jsp:include>
 <body>
 	<div id="container">
 		<div id="div1">
@@ -79,10 +77,6 @@
         });
     }
 </script>
-	<script src="http://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-	<script src="http://cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
-	<script src="http://cdn.bootcss.com/jquery-weui/1.0.1/js/swiper.min.js"></script>
-	<script src="http://cdn.bootcss.com/jquery-weui/1.0.1/js/city-picker.min.js"></script>
 </body>
 
 

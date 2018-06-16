@@ -1,5 +1,6 @@
 package com.mooctest.weixin.controller;
 
+import com.mooctest.weixin.config.Config;
 import com.mooctest.weixin.data.JoinResult;
 import com.mooctest.weixin.manager.*;
 import com.mooctest.weixin.model.Account;
@@ -73,14 +74,15 @@ public class CompetitionController {
             userAddress.setAddress(address);
             userAddress.setUserId(account.getMoocid());
             addressManager.save(userAddress);
-            JoinResult joinResult = WitestManager.joinGroup(account.getUsername(), String.valueOf(competition.getGroupId()), competition.getManagerName());
-            if (joinResult.isSuccess()){
+            //JoinResult joinResult = WitestManager.joinGroup(account.getUsername(), String.valueOf(competition.getGroupId()), competition.getManagerName());
+            boolean result=WitestManager.enterCompetition(account.getMoocid(),competition.getCompetitionId());
+            if (result){
                 User2Competition user2Competition=new User2Competition();
                 user2Competition.setCompetitionId(competition.getId());
                 user2Competition.setUserId(account.getMoocid());
                 user2CompetitionManager.save(user2Competition);
             }
-            return joinResult.isSuccess();
+            return result;
         }catch (Exception e){
             return false;
         }

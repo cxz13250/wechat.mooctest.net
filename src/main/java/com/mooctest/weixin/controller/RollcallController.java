@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.mooctest.weixin.manager.AccountManager;
+import com.mooctest.weixin.manager.RollcallManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +24,13 @@ import com.mooctest.weixin.util.CustomMessageUtil;
 @Controller
 @RequestMapping("/rollcall")
 public class RollcallController {
+
+    @Autowired
+    RollcallManager rollcallManager;
+
+    @Autowired
+    AccountManager accountManager;
+
 	//老师创建点名
 	@RequestMapping(value="/create")
     public ModelAndView create(@RequestParam("openid") String openid){
@@ -28,7 +38,7 @@ public class RollcallController {
         String date = dateFormat.format(new Date());
         ModelAndView mv = new ModelAndView();
         
-        if (Managers.rollcallManager.existRollcall(openid)){
+        if (rollcallManager.existRollcall(openid)){
             mv.setViewName("danger");
 			mv.addObject("msg", "存在进行中的点名！");
 			mv.addObject("msg_title", "无法创建");
@@ -37,7 +47,7 @@ public class RollcallController {
         
         List<String> groupIdList = new ArrayList<String>();
         List<String> groupNameList = new ArrayList<String>();
-        List<Group> groups = WitestManager.getGroup2(Managers.accountManager.getAccount(openid).getMoocid());
+        List<Group> groups = WitestManager.getGroup2(accountManager.getAccount(openid).getMoocid());
         for (Group group : groups) {
             groupIdList.add(String.valueOf(group.getId()));
             groupNameList.add(group.getGroupName());
@@ -56,7 +66,7 @@ public class RollcallController {
     public ModelAndView submitRollcall(@RequestParam("openid") String openid, @RequestParam("classId") String classid, @RequestParam("latitude") String latitude, @RequestParam("longitude") String longitude){
 
         ModelAndView mv = new ModelAndView();
-        if (Managers.rollcallManager.startRollcall(classid, openid, latitude, longitude)){
+        if (rollcallManager.startRollcall(classid, openid, latitude, longitude)){
             CustomMessageUtil.sendTextCustomMessage(openid, "点名创建成功！\n\n您的学生在此公众号中使用【点名菜单】就可以参与此次点名。\n\n如需结束此次点名请再次点击下方的【点名菜单】", Managers.config.getToken());  
             mv.setViewName("success");
             mv.addObject("msg", "点名创建成功！");
@@ -74,7 +84,7 @@ public class RollcallController {
     public ModelAndView rollcall(@RequestParam("openid") String openid){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = dateFormat.format(new Date());        
-        RollcallItem rollcall = Managers.rollcallManager.getRollcall(openid);
+        RollcallItem rollcall = rollcallManager.getRollcall(openid);
         ModelAndView mv = new ModelAndView();
         if (null == rollcall){
             mv.setViewName("danger");
@@ -98,8 +108,8 @@ public class RollcallController {
 
 	        ModelAndView mv = new ModelAndView();
 
-	        if (Managers.rollcallManager.writeStudentLocation(openid, latitude, longitude)) {
-	            String distance = Managers.rollcallManager.getRollcall(openid).getDistance();
+	        if (rollcallManager.writeStudentLocation(openid, latitude, longitude)) {
+	            String distance = rollcallManager.getRollcall(openid).getDistance();
 	            mv.setViewName("success");
 	            mv.addObject("msg", "<h1>成功参与点名</h1><p>距离教师：" + distance + "米</p>");
 	            mv.addObject("msg_title", "签到成功");

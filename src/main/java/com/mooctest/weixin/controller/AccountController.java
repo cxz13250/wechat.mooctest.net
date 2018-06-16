@@ -1,5 +1,6 @@
 package com.mooctest.weixin.controller;
 
+import com.mooctest.weixin.config.Config;
 import com.mooctest.weixin.data.Accountinfo;
 import com.mooctest.weixin.manager.AccountManager;
 import com.mooctest.weixin.manager.Managers;
@@ -80,7 +81,6 @@ public class AccountController {
 			mv.addObject("msg_title", "绑定失败！");
 		}
 		else{
-			System.out.println(accountManager);
 			boolean temp=accountManager.checkAccount1(username);
 			if(!temp)
 			{
@@ -101,7 +101,7 @@ public class AccountController {
 						account.setOpenid(openid);
 						account.setType(type);
 						account.setMoocid(id);
-						Managers.accountManager.saveAccount(account);
+						accountManager.saveAccount(account);
 						mv.addObject("msg", "您的账户已经成功绑定！");
 						mv.addObject("msg_title","绑定成功！");
 						mv.setViewName("success");
@@ -145,7 +145,7 @@ public class AccountController {
 			mv.addObject("msg_title", "查看失败！");
 			return mv;
 		}
-		Accountinfo accountinfo=Managers.accountManager.getAccountInfo(openid);
+		Accountinfo accountinfo=accountManager.getAccountInfo(openid);
 		
 		mv.addObject("accouninfo", accountinfo);
 		mv.addObject("openid", openid);
@@ -162,7 +162,7 @@ public class AccountController {
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
 		
-		Managers.accountManager.deleteAccount(openid);
+		accountManager.deleteAccount(openid);
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("msg", "您的账户已经成功解绑！");
 		mv.addObject("msg_title","解绑成功！");

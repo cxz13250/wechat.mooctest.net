@@ -18,8 +18,8 @@
     <title><%=title%></title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>css/rokg.css" />
 </head>
+<jsp:include page="header.jsp" flush="true"></jsp:include>
 <body ontouchstart style="background-color: #f8f8f8;">
 <div id="container">
     <div id="div1">

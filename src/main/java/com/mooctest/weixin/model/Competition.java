@@ -22,6 +22,9 @@ public class Competition {
     @Column(name = "manager_name")
     private String managerName;
 
+    @Column(name = "competition_id")
+    private long competitionId;
+
     @Column(name = "is_delete")
     private boolean is_delete;
 
@@ -45,8 +48,17 @@ public class Competition {
         return managerName;
     }
 
-    public void setManagerName(String managerName) {
+    public void setManagerName(String managerName)
+    {
         this.managerName = managerName;
+    }
+
+    public long getCompetitionId() {
+        return competitionId;
+    }
+
+    public void setCompetitionId(long competitionId) {
+        this.competitionId = competitionId;
     }
 
     public boolean isIs_delete() {

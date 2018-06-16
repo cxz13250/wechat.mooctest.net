@@ -21,11 +21,10 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>任务列表</title>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
-    <link rel="stylesheet" href="<%=basePath%>css/rokg.css">
+
 </head>
-<body>
+    <jsp:include page="header.jsp" flush="true"></jsp:include>
+    <body>
 <div id="container" align="center">
     <div id="div1" >
         <h1 class="weui-header-title" align="center">任务列表</h1>

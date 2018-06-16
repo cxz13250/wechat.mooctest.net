@@ -72,7 +72,11 @@
     $('#sign').click(function() {
         var address=$('#addressStr').val();
         //console.log(address);
-        join(address);
+        if (!address||address.trim()==''||address=='请输入收货地址!'){
+            $('#addressStr').val('请输入收货地址!');
+        }else {
+            join(address);
+        }
     });
 
     function join(address) {

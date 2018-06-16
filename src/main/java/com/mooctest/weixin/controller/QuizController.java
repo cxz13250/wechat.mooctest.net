@@ -9,6 +9,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mooctest.weixin.config.Config;
+import com.mooctest.weixin.manager.AccountManager;
+import com.mooctest.weixin.manager.QuizManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +34,15 @@ import com.mooctest.weixin.util.QuizAnswerFormat;
 @RequestMapping("/quiz")
 public class QuizController {
 
+	@Autowired
+	QuizManager quizManager;
+
+	@Autowired
+	AccountManager accountManager;
+
+	@Autowired
+	Config config;
+
 	//老师创建小测
 	@RequestMapping(value = "/create")
 	public ModelAndView create(@RequestParam("openid") String openid,HttpServletRequest request,HttpServletResponse response) throws IOException {
@@ -41,7 +54,7 @@ public class QuizController {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String date = dateFormat.format(new Date());
 
-		if (Managers.quizManager.existQuiz(openid)) {
+		if (quizManager.existQuiz(openid)) {
 			ModelAndView mv = new ModelAndView();
 			mv.setViewName("danger");
 			mv.addObject("msg", "存在进行中的小测！");
@@ -52,12 +65,12 @@ public class QuizController {
 		List<String> groupIdList = new ArrayList<String>();
 		List<String> groupNameList = new ArrayList<String>();
 
-		List<Group> groups = WitestManager.getGroup2(Managers.accountManager.getAccount(openid).getMoocid());
+		List<Group> groups = WitestManager.getGroup2(accountManager.getAccount(openid).getMoocid());
 		List<List<PreparedQuiz>> list = new ArrayList<List<PreparedQuiz>>();
 		for (Group group : groups) {
 			groupIdList.add(String.valueOf(group.getId()));
 			groupNameList.add(group.getGroupName());
-			list.add(Managers.quizManager.getPreparedQuiz((int)group.getId()));
+			list.add(quizManager.getPreparedQuiz((int)group.getId()));
 		}
 
 		ModelAndView mv = new ModelAndView();
@@ -77,7 +90,7 @@ public class QuizController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 
-		List<QuizItem> list = Managers.quizManager.getQuizItem(openid);
+		List<QuizItem> list = quizManager.getQuizItem(openid);
 		ModelAndView mv = new ModelAndView();
 		if (list.isEmpty()) {
 			mv.setViewName("fail");
@@ -123,7 +136,7 @@ public class QuizController {
 					jo.put(key, value);
 				}
 				List<Worker> workers = WitestManager.getMember(groupId);
-				quizid=Managers.quizManager.startQuiz(workers,
+				quizid=quizManager.startQuiz(workers,
 				Integer.parseInt(groupId), Integer.parseInt(quizType),
 				quizTitle, jo.toString(), openid);
 			} else {
@@ -132,17 +145,17 @@ public class QuizController {
 					description = "暂无题目描述";
 				};
 				List<Worker> workers = WitestManager.getMember(String.valueOf(groupId));
-				quizid=Managers.quizManager.startQuiz(workers,
+				quizid=quizManager.startQuiz(workers,
 				Integer.parseInt(groupId), Integer.parseInt(quizType),
 				quizTitle, description, openid);
 			}
 		} else {
-			PreparedQuiz quiz = Managers.quizManager.getPreparedQuizById(Integer.valueOf(preparedQuizId));
+			PreparedQuiz quiz = quizManager.getPreparedQuizById(Integer.valueOf(preparedQuizId));
 			int groupId = quiz.getGroupId();
 			int quizType = quiz.getQuizType();
 			String quizTitle = quiz.getQuizTitle();
 			List<Worker> workers = WitestManager.getMember(String.valueOf(groupId));
-			 quizid=Managers.quizManager.startQuiz(workers, groupId, quizType,
+			 quizid=quizManager.startQuiz(workers, groupId, quizType,
 			  quizTitle, quiz.getQuizContent(),
 			 openid);
 		}
@@ -190,16 +203,16 @@ public class QuizController {
 				jo.put(key, value);
 			}
 			List<Worker> workers = WitestManager.getMember(groupId);
-			Managers.quizManager.creatQuestion(workers,
+			quizManager.creatQuestion(workers,
 					Integer.parseInt(groupId), Integer.parseInt(quizType),
 					quizTitle, jo.toString(), openid, Integer.parseInt(quizid));
 		} else {
 			String description = request.getParameter("quizDescription");//小测描述
 			if(description.equals("")){
 				description = "暂无题目描述";
-			};
+			}
 			List<Worker> workers = WitestManager.getMember(String.valueOf(groupId));
-			Managers.quizManager.creatQuestion(workers,
+			quizManager.creatQuestion(workers,
 					Integer.parseInt(groupId), Integer.parseInt(quizType),
 					quizTitle, description, openid,Integer.parseInt(quizid));
 		}
@@ -228,7 +241,7 @@ public class QuizController {
 			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 
-		List<QuizItem> list=Managers.quizManager.getQuizItem(openid);
+		List<QuizItem> list=quizManager.getQuizItem(openid);
 		QuizItem quiz=new QuizItem();
 		
 		if (quiz_type.equals("1")) {
@@ -257,13 +270,13 @@ public class QuizController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 
-		PreparedQuiz preparedQuiz = Managers.quizManager.getPreparedQuizById(quizId);
+		PreparedQuiz preparedQuiz = quizManager.getPreparedQuizById(quizId);
 		JSONObject quiz = new JSONObject();
 		quiz.put("title", preparedQuiz.getQuizTitle());
 		quiz.put("type", preparedQuiz.getQuizType());
 		String quizContent = preparedQuiz.getQuizContent();
 		JSONArray content = new JSONArray();
-		if (Managers.quizManager.checkQuizContent(preparedQuiz)) {
+		if (quizManager.checkQuizContent(preparedQuiz)) {
 			content = quizOptionsToStringNew(quizContent);
 		}
 		quiz.put("content", content);
@@ -279,7 +292,7 @@ public class QuizController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 
-		List<PreparedQuiz> preparedQuiz = Managers.quizManager.getPreparedQuiz(clazzid);
+		List<PreparedQuiz> preparedQuiz = quizManager.getPreparedQuiz(clazzid);
 		if(!preparedQuiz.isEmpty()){
 			JSONArray preparedQuizList = new JSONArray();
 			for (PreparedQuiz quiz : preparedQuiz) {
@@ -366,7 +379,7 @@ public class QuizController {
 	public void sendCustomMessage(String openid,String formatedAnswer,ModelAndView mv){
 		CustomMessageUtil.sendTextCustomMessage(openid,
 				"你已成功提交回答:\n\n  " + formatedAnswer + "\n\n您可以在小测结束前重复提交回答，最后一次提交的结果将作为您的最终回答",
-				Managers.config.getToken());
+				config.getToken());
 
 		mv.addObject("msg","成功提交答案！");
 		mv.addObject("msg_title","提交成功");
@@ -374,7 +387,7 @@ public class QuizController {
 	}
 
 	public void writeAnswer(String openid, String formatedAnswer, int index, String param, ModelAndView mv, QuizItem quiz,List<QuizItem> list){
-		if(!Managers.quizManager.writeQuizAnswer(openid, formatedAnswer,index)){
+		if(!quizManager.writeQuizAnswer(openid, formatedAnswer,index)){
 			mv.setViewName("fail");
 			mv.addObject("msg","该小测已结束！");
 			mv.addObject("msg_title","提交失败！");

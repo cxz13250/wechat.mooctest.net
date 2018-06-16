@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.mooctest.weixin.data.*;
+import com.mooctest.weixin.manager.AccountManager;
 import com.mooctest.weixin.model.Account;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +27,9 @@ import com.mooctest.weixin.manager.WitestManager;
 @Controller
 @RequestMapping("/task")
 public class TaskController {
+
+	@Autowired
+	AccountManager accountManager;
 	
 	@RequestMapping(value="/query")
 	public ModelAndView getTaskInfo(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response) throws IOException{
@@ -33,7 +38,7 @@ public class TaskController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
-		String username=Managers.accountManager.getAccount(openid).getUsername();
+		String username=accountManager.getAccount(openid).getUsername();
 		List<TaskInfo> list=WitestManager.getTaskInfo(username);
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("list", list);
@@ -48,7 +53,7 @@ public class TaskController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
-		String username=Managers.accountManager.getAccount(openid).getUsername();
+		String username=accountManager.getAccount(openid).getUsername();
 		
 		List<FinishedTask> list=WitestManager.getFinishedTaskInfo(username);
 		
@@ -66,7 +71,7 @@ public class TaskController {
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 
 		ModelAndView mv=new ModelAndView();
-		Account account=Managers.accountManager.getAccount(openid);
+		Account account=accountManager.getAccount(openid);
 
 		if(account==null) {
 			mv.setViewName("fail");
@@ -98,7 +103,6 @@ public class TaskController {
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		String name=request.getParameter("name");
 
-		System.out.println(name);
 
 		List<Grade> list=WitestManager.getWorkersGrade(id);
 		ModelAndView mv=new ModelAndView();
@@ -124,7 +128,7 @@ public class TaskController {
 
 		ModelAndView mv=new ModelAndView();
 
-		Account account=Managers.accountManager.getAccount(openid);
+		Account account=accountManager.getAccount(openid);
 		if(account==null){
 			mv.setViewName("fail");
 			mv.addObject("msg","查询失败！");

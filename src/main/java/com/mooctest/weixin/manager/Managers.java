@@ -1,6 +1,5 @@
 package com.mooctest.weixin.manager;
 
-import com.mooctest.weixin.data.ContestResult;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.mooctest.weixin.config.Config;

@@ -21,16 +21,14 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>学生秘钥</title>
-    <link rel="stylesheet" href="<%=basePath%>css/rokg.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
 </head>
     <style type="text/css">
         td{
             text-align: center;
         }
     </style>
+    <jsp:include page="header.jsp" flush="true"></jsp:include>
 <body>
 <div id="div1">
     <%--<p><label>任务名称:</label><%=name%></p><br/>--%>

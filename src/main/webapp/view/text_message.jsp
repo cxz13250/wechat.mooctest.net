@@ -22,7 +22,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<link rel="stylesheet" type="text/css" href="css/quiz_base.css" />
+
 <title><%=title %></title>
 <style type="text/css">
 #main h1, #main p {
@@ -30,7 +30,7 @@
 }
 </style>
 </head>
-
+	<jsp:include page="header.jsp" flush="true"></jsp:include>
 <body>
 	<input type="hidden" name="appId" id="appId" value="">
 	<input type="hidden" name="timestamp" id="timestamp"

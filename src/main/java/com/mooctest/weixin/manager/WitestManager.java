@@ -386,7 +386,7 @@ public class WitestManager {
 		String params="userId="+userId+"&competitionId="+competitionId;
 		String result=HttpRequestUtil.sendPost(enter_competion_url,params);
 		JSONObject object=JSONObject.fromObject(result);
-		if (object.getInt("status")==200){
+		if (object.getInt("status")==2000){
 			return true;
 		}else {
 			return false;

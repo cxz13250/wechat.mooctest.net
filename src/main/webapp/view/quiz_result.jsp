@@ -15,9 +15,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui.css"/>
-	<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui2.css"/>
-	<link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui3.css"/>
+
 <title>小测结果</title>
 	<style type="text/css">
 		td{
@@ -36,6 +34,7 @@
 			text-align: center; }
 	</style>
 </head>
+<jsp:include page="header.jsp" flush="true"></jsp:include>
 <body ontouchstart style="background-color: #f8f8f8;">
 	<div id="container">
 		<div id="div1" >

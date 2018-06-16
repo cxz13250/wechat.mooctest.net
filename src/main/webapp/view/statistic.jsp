@@ -22,12 +22,8 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>本题结果</title>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui.css"/>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui2.css"/>
-    <link rel="stylesheet" href="http://weixin.yoby123.cn/weui/style/weui3.css"/>
-    <script src="<%=basePath%>echarts/echarts.js"></script>
-    <script src="<%=basePath%>echarts/echarts-all.js"></script>
 </head>
+<jsp:include page="header.jsp" flush="true"></jsp:include>
 <body>
 <div id="container" align="center">
     <input type="hidden" id="data_arr" value="<%=data_arr%>" />

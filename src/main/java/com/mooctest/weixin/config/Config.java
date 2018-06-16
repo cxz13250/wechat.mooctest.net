@@ -4,7 +4,7 @@ import com.mooctest.weixin.pojo.JSApiTicket;
 import com.mooctest.weixin.pojo.Token;
 import com.mooctest.weixin.util.AdvancedUtil;
 import com.mooctest.weixin.util.CommonUtil;
-
+import org.springframework.context.annotation.Configuration;
 
 
 

@@ -13,9 +13,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<link rel="stylesheet" type="text/css" href="<%=basePath%>css/quiz_base.css" />
+
 <title>课堂点名</title>
 </head>
+<jsp:include page="header.jsp" flush="true"></jsp:include>
 <body>
 	<%
 		String openid = (String) request.getAttribute("openid");

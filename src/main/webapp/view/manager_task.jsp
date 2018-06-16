@@ -22,10 +22,9 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>任务列表</title>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">
-    <link rel="stylesheet" href="<%=basePath%>css/rokg.css">
+
 </head>
+    <jsp:include page="header.jsp" flush="true"></jsp:include>
 <body>
 <div id="container">
     <div class="weui-tab">
@@ -84,9 +83,6 @@
     </div>
 
 </div>
-    <script src="http://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-    <script src="http://cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
-    <script src="http://cdn.bootcss.com/jquery-weui/1.0.1/js/swiper.min.js"></script>
-    <script src="http://cdn.bootcss.com/jquery-weui/1.0.1/js/city-picker.min.js"></script>
+
 </body>
 </html>

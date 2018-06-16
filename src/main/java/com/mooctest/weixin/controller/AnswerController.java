@@ -13,7 +13,9 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mooctest.weixin.manager.QuizManager;
 import org.hibernate.transform.ToListResultTransformer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,12 +33,15 @@ import com.mooctest.weixin.model.QuizAnswer;
 @RequestMapping("/answer")
 public class AnswerController {
 
+	@Autowired
+	QuizManager quizManager;
+
 	@RequestMapping(value="/toresult")
 	public ModelAndView queryResult(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response){
 		ModelAndView mv=new ModelAndView();
 		
-		Quiz quiz=Managers.quizManager.getQuiz(openid);
-		List<Question> list=Managers.quizManager.getQuestion(quiz.getId());	
+		Quiz quiz=quizManager.getQuiz(openid);
+		List<Question> list=quizManager.getQuestion(quiz.getId());
 		List<String> list2=new ArrayList<String>();
 		for(Question question:list){
 			list2.add(String.valueOf(question.getId()));
@@ -50,7 +55,7 @@ public class AnswerController {
 	public ModelAndView toResult(@RequestParam("quizid")String quizid){
 		ModelAndView mv=new ModelAndView();		
 
-		List<Question> list=Managers.quizManager.getQuestion(Integer.parseInt(quizid));	
+		List<Question> list=quizManager.getQuestion(Integer.parseInt(quizid));
 		List<String> list2=new ArrayList<String>();
 		for(Question question:list){
 			list2.add(String.valueOf(question.getId()));
@@ -67,8 +72,8 @@ public class AnswerController {
         String date = dateFormat.format(new Date());
         
         ModelAndView mv=new ModelAndView();
-        List<QuizAnswer> list = Managers.quizManager.getQuizAnswer(Integer.valueOf(questionid));
-        List<Question> list2=Managers.quizManager.getQuestionById(Integer.parseInt(questionid));	
+        List<QuizAnswer> list = quizManager.getQuizAnswer(Integer.valueOf(questionid));
+        List<Question> list2=quizManager.getQuestionById(Integer.parseInt(questionid));
         Question question=new Question();
         if(!list2.isEmpty()){
         	question=list2.get(0);

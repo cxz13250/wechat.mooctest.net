@@ -2,9 +2,11 @@ package com.mooctest.weixin.controller;
 
 import com.mooctest.weixin.data.Group;
 import com.mooctest.weixin.data.JoinResult;
+import com.mooctest.weixin.manager.AccountManager;
 import com.mooctest.weixin.manager.Managers;
 import com.mooctest.weixin.manager.WitestManager;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,9 @@ import java.util.List;
 @RequestMapping("/group")
 public class GroupController {
 
+	@Autowired
+	AccountManager accountManager;
+
 	@RequestMapping(value="/query")
 	public ModelAndView getMyGroup(@RequestParam("openid")String openid,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		
@@ -26,7 +31,7 @@ public class GroupController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
-		String username=Managers.accountManager.getAccount(openid).getUsername();
+		String username=accountManager.getAccount(openid).getUsername();
 		List<Group> list=WitestManager.getGroup(username);
 		
 		ModelAndView mv=new ModelAndView();
@@ -56,7 +61,7 @@ public class GroupController {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		
-		String username=Managers.accountManager.getAccount(openid).getUsername();
+		String username=accountManager.getAccount(openid).getUsername();
 		String managerName=request.getParameter("managerName"); 
 		String groupId=request.getParameter("groupId");
 		
