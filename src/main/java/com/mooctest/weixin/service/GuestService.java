@@ -1,11 +1,14 @@
 package com.mooctest.weixin.service;
 
+import com.mooctest.weixin.manager.CompetitionManager;
+import com.mooctest.weixin.manager.Managers;
 import org.apache.log4j.Logger;
 
 import com.mooctest.weixin.manager.LoggerManager;
 import com.mooctest.weixin.pojo.UserRequest;
 import com.mooctest.weixin.util.MessageUtil;
 import com.mooctest.weixin.util.NewsMessageUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -15,6 +18,7 @@ import com.mooctest.weixin.util.NewsMessageUtil;
  * @date
  */
 public class GuestService {
+
 	/**
 	 * 处理微信发来的请求
 	 * 
@@ -137,6 +141,18 @@ public class GuestService {
 	//提示用户进入慕测六月赛界面
 	protected static void processMonthlyMatch(UserRequest userRequest){
 		userRequest.setResultXml(NewsMessageUtil.joinMonthlyMatch(userRequest));
+	}
+
+	//接收月度赛获奖学生合影照片
+	protected static void processImageMessage(UserRequest userRequest){
+		String picUrl=userRequest.getRequestMap().get("PicUrl");
+		String openid=userRequest.getFromUserName();
+		boolean result= Managers.competitionManager.processImageForCompetition(openid,picUrl);
+		if (result){
+			String respContent="我们已经接收到您的照片，接下来我们会评选出最佳照片奖，并赠送神秘大礼包一份，敬请期待！";
+			userRequest.getTextMessage().setContent(respContent);
+			userRequest.setResultXml(MessageUtil.messageToXml(userRequest.getTextMessage()));
+		}
 	}
     
 	//使用帮助图文消息

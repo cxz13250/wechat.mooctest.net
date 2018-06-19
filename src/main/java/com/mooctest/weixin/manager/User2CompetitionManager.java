@@ -24,7 +24,7 @@ public class User2CompetitionManager {
         return competitions.size()==0?null:competitions.get(0);
     }
 
-    public void save(User2Competition address){
-        competitionDao.updateUser2Competition(address);
+    public void save(User2Competition user2Competition){
+        competitionDao.updateUser2Competition(user2Competition);
     }
 }

@@ -22,6 +22,9 @@ public class User2Competition {
     @Column(name = "competition_id")
     private long competitionId;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     public long getId() {
         return id;
     }
@@ -42,7 +45,16 @@ public class User2Competition {
         return competitionId;
     }
 
-    public void setCompetitionId(long competitionId) {
+    public void setCompetitionId(long competitionId)
+    {
         this.competitionId = competitionId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

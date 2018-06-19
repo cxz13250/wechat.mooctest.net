@@ -13,6 +13,7 @@ public class Managers {
     public final static QuizManager quizManager;
     public final static RollcallManager rollcallManager;
     public final static ContestManager contestManager;
+    public final static CompetitionManager competitionManager;
     public final static Config config;
 
     static {
@@ -22,6 +23,7 @@ public class Managers {
         quizManager=context.getBean(QuizManager.class);
         rollcallManager=context.getBean(RollcallManager.class);
         contestManager=context.getBean(ContestManager.class);
+        competitionManager=context.getBean(CompetitionManager.class);
         config = (Config) context.getBean("mooctestConfig");       
     }
 }
